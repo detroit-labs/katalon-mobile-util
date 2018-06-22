@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.detroitlabs</groupId>
+	<artifactId>katalonsupport</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>katalonsupport</name>
+	<url>http://detroitlabs.com</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>my-local-repo</id>
+			<url>file://${basedir}/lib</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.kms.katalon</groupId>
+			<artifactId>core</artifactId>
+			<version>1.0.0.201804270757</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kms.katalon.core</groupId>
+			<artifactId>mobile</artifactId>
+			<version>1.0.0.201804270757</version>
+		</dependency>
+	</dependencies>
+	<organization>
+		<name>Detroit Labs</name>
+		<url>http://detroitlabs.com</url>
+	</organization>
+</project>
