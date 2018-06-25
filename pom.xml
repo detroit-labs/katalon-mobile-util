@@ -13,8 +13,39 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Change this to point to your project's /Drivers directory -->
+		<project.target.katalon.directory>/Users/chris/Katalon Studio/MobileTestingSample/Drivers</project.target.katalon.directory>
 	</properties>
 
+	<build>
+		<plugins>
+			<!-- `mvn install` will copy the built jar to your Katalon project -->
+	        <plugin>
+	            <artifactId>maven-antrun-plugin</artifactId>
+	            <version>1.8</version>
+	            <executions>
+	                <execution>
+	                    <id>copy</id>
+	                    <phase>install</phase>
+	                    <configuration>
+	                        <target>
+	                            <echo>ANT TASK - copying output files....</echo>
+	                            <copy todir="${project.target.katalon.directory}" overwrite="true" flatten="true">
+	                                <fileset dir="${project.build.directory}" includes="*.jar" />
+	                            </copy>
+	                        </target>
+	                    </configuration>
+	                    <goals>
+	                        <goal>run</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	        </plugin>			
+		</plugins>
+	</build>
+
+
+	<!-- Used to link in the Katalon libraries as if they were an .m2 repo -->
 	<repositories>
 		<repository>
 			<id>my-local-repo</id>
