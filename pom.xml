@@ -20,27 +20,27 @@
 	<build>
 		<plugins>
 			<!-- `mvn install` will copy the built jar to your Katalon project -->
-	        <plugin>
-	            <artifactId>maven-antrun-plugin</artifactId>
-	            <version>1.8</version>
-	            <executions>
-	                <execution>
-	                    <id>copy</id>
-	                    <phase>install</phase>
-	                    <configuration>
-	                        <target>
-	                            <echo>ANT TASK - copying output files....</echo>
-	                            <copy todir="${project.target.katalon.directory}" overwrite="true" flatten="true">
-	                                <fileset dir="${project.build.directory}" includes="*.jar" />
-	                            </copy>
-	                        </target>
-	                    </configuration>
-	                    <goals>
-	                        <goal>run</goal>
-	                    </goals>
-	                </execution>
-	            </executions>
-	        </plugin>			
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>install</phase>
+						<configuration>
+							<target>
+								<echo>ANT TASK - copying output files....</echo>
+								<copy todir="${project.target.katalon.directory}" overwrite="true" flatten="true">
+									<fileset dir="${project.build.directory}" includes="*.jar" />
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -59,6 +59,18 @@
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.5.0</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>5.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kms.katalon</groupId>
