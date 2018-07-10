@@ -4,6 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import com.kms.katalon.core.testobject.TestObject;
+import com.kms.katalon.core.testobject.TestObjectProperty;
 
 public class Logger {
 
@@ -17,7 +21,8 @@ public class Logger {
 
 	public static void initialize(String logFilePath, LogLevel level) throws FileNotFoundException {
 		writer = new PrintWriter(logFilePath);
-		writer.println(String.format("Initializing log: %s", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())) );
+		String startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		writer.println(String.format("Initializing log: %s with logging level: %s", startDate, level ));
 		writer.flush();
 		baseLevel = level;
 	}
@@ -44,7 +49,15 @@ public class Logger {
 	
 	public static void fatal(String text) {
 		log(text, LogLevel.FATAL);
-	}	
+	}
+	
+	public static void printTestObject(TestObject testObject, LogLevel level) {
+		Logger.log(String.format("Test Object: %s", testObject.getObjectId()), level);
+		List<TestObjectProperty> props = testObject.getProperties();
+		for (TestObjectProperty p : props) {
+			Logger.log(String.format("    %s: %s (active? %s)", p.getName(), p.getValue(), p.isActive()), level);
+		}
+	}
 	
 	public static void log(String text, LogLevel level) {
 		if (writer == null) {
