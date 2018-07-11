@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Keyboard;
 import com.detroitlabs.katalonsupport.device.Device;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
+import com.kms.katalon.core.model.FailureHandling;
 import com.kms.katalon.core.testobject.TestObject;
 
 import io.appium.java_client.AppiumDriver;
@@ -30,7 +31,7 @@ public class TextField {
 			
 			// Press the clear button, if it was provided
 			if (clearButton != null) {
-				MobileBuiltInKeywords.tap(clearButton, timeout);
+				MobileBuiltInKeywords.tap(clearButton, timeout, FailureHandling.OPTIONAL);
 			}
 		}
 	}
