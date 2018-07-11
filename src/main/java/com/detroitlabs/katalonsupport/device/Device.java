@@ -7,34 +7,30 @@ import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 
 public class Device {
 	
-	public Device() {
-		
-	}
-	
-	public boolean isIOS() {
-		return "ios".equals(this.getDeviceOS().toLowerCase());
+	public static boolean isIOS() {
+		return "ios".equals(getDeviceOS().toLowerCase());
 	}
 
-	public boolean isAndroid() {
-		return "android".equals(this.getDeviceOS().toLowerCase());	
+	public static boolean isAndroid() {
+		return "android".equals(getDeviceOS().toLowerCase());	
 	}
 
-	public void startApp(String iOSFile, String androidFile) {
-		this.startApp(iOSFile, androidFile, false);
+	public static void startApp(String iOSFile, String androidFile) {
+		startApp(iOSFile, androidFile, false);
 	}
 	
-	public void startApp(String iOSFile, String androidFile, boolean resetSimulator) {
-		String appFile = "ios".equals(this.getDeviceOS().toLowerCase()) ? iOSFile : androidFile;
+	public static void startApp(String iOSFile, String androidFile, boolean resetSimulator) {
+		String appFile = "ios".equals(getDeviceOS().toLowerCase()) ? iOSFile : androidFile;
 		MobileBuiltInKeywords.startApplication(appFile, resetSimulator);
 	}
 	
-	public String getDeviceOS() {
+	public static String getDeviceOS() {
 		ExecutionProperties props = new ExecutionProperties(RunConfiguration.getExecutionProperties());
 		String deviceOS = props.getDeviceOS();
 		return deviceOS;
 	}
 	
-	private class ExecutionProperties {
+	private static class ExecutionProperties {
 		
 		Map<String, Object> properties;
 		

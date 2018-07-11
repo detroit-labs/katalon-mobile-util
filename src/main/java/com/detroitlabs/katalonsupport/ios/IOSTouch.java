@@ -14,14 +14,29 @@ import io.appium.java_client.TouchAction;
 
 public class IOSTouch {
 
-	AppiumDriver<MobileElement> driver;
-
-	@SuppressWarnings("unchecked")
-	IOSTouch() {
-		this.driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
+	public static boolean scrollListToElementWithText(String accessibilityId, String elementText) {
+		boolean isElementFound = false;
+		while (isElementFound == false) {
+			try {
+				 Logger.debug("Checking for specific element");
+				// The Xcode accessibility id comes through as "name" in the page document
+				@SuppressWarnings("unchecked")
+				AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();				 
+				driver.findElementByXPath("//XCUIElementTypeStaticText[@name='" + accessibilityId
+						+ "' and @visible ='true' and @label='" + elementText + "']");
+				isElementFound = true;
+				 Logger.debug("Found one!");
+			} catch (WebDriverException ex) {
+				 Logger.debug("Didn't find any matching elements");
+				scrollEntireList(accessibilityId);
+			}
+		}
+		return isElementFound;
 	}
-
-	private void scrollEntireList(String accessibilityId) {
+	
+	private static void scrollEntireList(String accessibilityId) {
+		@SuppressWarnings("unchecked")
+		AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
 		// The Xcode accessibility id comes through as "name" in the page document
 		List<MobileElement> listElement = driver.findElementsByXPath(
 				"//XCUIElementTypeStaticText[@name='" + accessibilityId + "' and @visible ='true']");
@@ -34,25 +49,6 @@ public class IOSTouch {
 		touchAction.longPress(bottomElement).moveTo(topElement).release().perform();
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(5);
-
-	}
-
-	public boolean scrollListToElementWithText(String accessibilityId, String elementText) {
-		boolean isElementFound = false;
-		while (isElementFound == false) {
-			try {
-				 Logger.debug("Checking for specific element");
-				// The Xcode accessibility id comes through as "name" in the page document
-				driver.findElementByXPath("//XCUIElementTypeStaticText[@name='" + accessibilityId
-						+ "' and @visible ='true' and @label='" + elementText + "']");
-				isElementFound = true;
-				 Logger.debug("Found one!");
-			} catch (WebDriverException ex) {
-				 Logger.debug("Didn't find any matching elements");
-				scrollEntireList(accessibilityId);
-			}
-		}
-		return isElementFound;
-	}
+	}	
 
 }

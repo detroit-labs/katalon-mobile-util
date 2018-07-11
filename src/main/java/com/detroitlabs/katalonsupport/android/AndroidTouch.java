@@ -14,14 +14,27 @@ import io.appium.java_client.TouchAction;
 
 public class AndroidTouch {
 
-	AppiumDriver<MobileElement> driver;
-
-	@SuppressWarnings("unchecked")
-	AndroidTouch() {
-		this.driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
-	}
-
-	private void scrollEntireList() {
+	public static boolean scrollListToElementWithText(String elementText) {
+		boolean isElementFound = false;
+		while (isElementFound == false) {
+			try {
+				Logger.debug("Checking for specific element");
+				@SuppressWarnings("unchecked")
+				AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();				
+				driver.findElementByXPath("//android.widget.CheckedTextView[@text='" + elementText + "']");
+				isElementFound = true;
+				Logger.debug("Found one!");
+			} catch (WebDriverException ex) {
+				Logger.debug("Didn't find any matching elements");
+				scrollEntireList();
+			}
+		}
+		return isElementFound;
+	}	
+	
+	private static void scrollEntireList() {
+		@SuppressWarnings("unchecked")
+		AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
 		List<MobileElement> listElement = driver.findElementsByClassName("android.widget.CheckedTextView");
 		Logger.debug("Getting list of all elements");
 		TouchAction touchAction = new TouchAction(driver);
@@ -33,22 +46,6 @@ public class AndroidTouch {
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(5);
 
-	}
-
-	public boolean scrollListToElementWithText(String elementText) {
-		boolean isElementFound = false;
-		while (isElementFound == false) {
-			try {
-				Logger.debug("Checking for specific element");
-				driver.findElementByXPath("//android.widget.CheckedTextView[@text='" + elementText + "']");
-				isElementFound = true;
-				Logger.debug("Found one!");
-			} catch (WebDriverException ex) {
-				Logger.debug("Didn't find any matching elements");
-				scrollEntireList();
-			}
-		}
-		return isElementFound;
 	}
 
 }

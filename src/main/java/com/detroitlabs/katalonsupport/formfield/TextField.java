@@ -10,23 +10,15 @@ import com.kms.katalon.core.testobject.TestObject;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
-public class FormField {
-
-	AppiumDriver<MobileElement> driver;
-
-	@SuppressWarnings("unchecked")
-	FormField() {
-		this.driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
+public class TextField {
+	
+	public static void clearText(TestObject field, int timeout) {
+		TextField.clearText(field, timeout, null);
 	}
 	
-	public void clearText(TestObject field, int timeout) {
-		this.clearText(field, timeout, null);
-	}
-	
-	public void clearText(TestObject field, int timeout, TestObject clearButton) {
-		Device device = new Device();
+	public static void clearText(TestObject field, int timeout, TestObject clearButton) {
 		
-		if (device.isIOS()) {
+		if (Device.isIOS()) {
 			// iOS identifies the text fields directly with accessibilityIds.
 			// The iOS text field can be cleared directly.
 			MobileBuiltInKeywords.clearText(field, timeout);
@@ -43,11 +35,9 @@ public class FormField {
 		}
 	}
 	
-	public void typeText(TestObject field, String text, int timeout) {
-		
-		Device device = new Device();
-		
-		if (device.isIOS()) {
+	public static void typeText(TestObject field, String text, int timeout) {
+				
+		if (Device.isIOS()) {
 			// iOS identifies the text fields directly with accessibilityIds.
 			// Text can be set directly on the iOS field.
 			MobileBuiltInKeywords.setText(field, text, timeout);
@@ -60,7 +50,9 @@ public class FormField {
 			MobileBuiltInKeywords.tap(field, timeout);
 			
 			// Using the keyboard API, send all of the keys (luckily, this doesn't need to be done one at a time).
-			Keyboard keyboard = this.driver.getKeyboard();
+			@SuppressWarnings("unchecked")
+			AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
+			Keyboard keyboard = driver.getKeyboard();
 			keyboard.sendKeys(text);
 			
 		}

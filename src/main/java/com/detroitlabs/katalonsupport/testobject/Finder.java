@@ -6,14 +6,9 @@ import com.detroitlabs.katalonsupport.device.Device;
 import com.kms.katalon.core.testobject.TestObject;
 
 public class Finder {
-
-	public Finder() {
-		
-	}
 	
-	private TestObject findObject(String type, String name) {
-		Device device = new Device();
-		String deviceOS = device.getDeviceOS();
+	private static TestObject findObject(String type, String name) {
+		String deviceOS = Device.getDeviceOS();
 
 		String objectRepo = deviceOS + " Test";
 
@@ -24,27 +19,27 @@ public class Finder {
 		return findTestObject(object);
 	}
 
-	TestObject findButton(String name) {
+	public static TestObject findButton(String name) {
 		return findObject("Buttons", name);
 	}
 
-	TestObject findAlert(String name) {
+	public static TestObject findAlert(String name) {
 		return findObject("Alerts", name);
 	}
 
-	TestObject findTextField(String name) {
+	public static TestObject findTextField(String name) {
 		return findObject("Text Fields", name);
 	}
 
-	TestObject findTab(String name) {
+	public static TestObject findTab(String name) {
 		return findObject("Tabs", name);
 	}
 
-	TestObject findLabel(String name) {
+	public static TestObject findLabel(String name) {
 		return findObject("Labels", name);
 	}
 
-	TestObject findGeneric(String name) {
+	public static TestObject findGeneric(String name) {
 		return findObject(null, name);
 	}
 	
