@@ -1,4 +1,4 @@
-package com.detroitlabs.katalonsupport.formfield;
+package com.detroitlabs.katalonsupport.textfield;
 
 import org.openqa.selenium.interactions.Keyboard;
 
