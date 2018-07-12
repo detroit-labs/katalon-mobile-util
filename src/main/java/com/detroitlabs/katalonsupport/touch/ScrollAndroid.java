@@ -1,4 +1,4 @@
-package com.detroitlabs.katalonsupport.android;
+package com.detroitlabs.katalonsupport.touch;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
-public class AndroidTouch {
+public class ScrollAndroid {
 
 	// Xpath 1 (used by Selenium) doesn't have ends-with, so this is a substitute
 	// TODO: Use "contains()"?
@@ -24,19 +24,19 @@ public class AndroidTouch {
 	}
 	
 	// For Android, elementId equates to the resource-id
-	public static boolean scrollListToElementWithText(String elementId, String elementText) {
+	public static boolean scrollListToElementWithText(String resourceId, String elementText) {
 		boolean isElementFound = false;
 		while (isElementFound == false) {
 			try {
 				Logger.debug("Checking for specific element");
 				@SuppressWarnings("unchecked")
 				AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();				
-				driver.findElementByXPath("//*[" + textViewXpathString + resourceXpathString(elementId) + " and @text='" + elementText + "']");
+				driver.findElementByXPath("//*[" + textViewXpathString + resourceXpathString(resourceId) + " and @text='" + elementText + "']");
 				isElementFound = true;
 				Logger.debug("Found one!");
 			} catch (WebDriverException ex) {
 				Logger.debug("Didn't find any matching elements");
-				scrollEntireList(elementId);
+				scrollEntireList(resourceId);
 			}
 		}
 		return isElementFound;

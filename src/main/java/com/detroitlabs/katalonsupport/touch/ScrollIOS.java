@@ -1,4 +1,4 @@
-package com.detroitlabs.katalonsupport.ios;
+package com.detroitlabs.katalonsupport.touch;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
-public class IOSTouch {
+public class ScrollIOS {
 
 	public static boolean scrollListToElementWithText(String accessibilityId, String elementText) {
 		boolean isElementFound = false;
