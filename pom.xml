@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Change this to point to your project's /Drivers directory -->
-		<project.target.katalon.directory>/Users/chris/Katalon Studio/MobileTestingSample/Drivers</project.target.katalon.directory>
+		<project.target.katalon.directory>/myTestDirectory/Drivers</project.target.katalon.directory>
 	</properties>
 
 	<build>
@@ -72,6 +72,8 @@
 			<artifactId>java-client</artifactId>
 			<version>5.0.4</version>
 		</dependency>
+		<!-- Katalon jars are not included in maven repositories and need to be copied to the ${basedir}/lib --> 
+		<!-- See http://mark.koli.ch/maven-add-local-jar-dependency-to-classpath -->
 		<dependency>
 			<groupId>com.kms.katalon</groupId>
 			<artifactId>core</artifactId>
