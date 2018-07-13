@@ -11,7 +11,7 @@ Building from source requires [Apache Maven](https://maven.apache.org/).
 
 To use this `katalonsupport` library in Katalon Studio tests, it is not required that you build from source.
 
-Place the release artifact jar into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalonsupport/releases/download/1.0.0/katalonsupport-1.0.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 ## Building from source
 
