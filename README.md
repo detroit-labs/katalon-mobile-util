@@ -15,7 +15,7 @@ Place the release artifact jar into your Katalon test project's `/Drivers` direc
 
 ## Building from source
 
-The Katalon Studio jar files are not available via Maven Central and are not packaged with this library, so we can set up a local maven repository to contain the required files:
+The Katalon Studio jar files are not available via Maven Central and are not packaged with the `katalonsupport` library, so we can set up a local maven repository to contain the required files:
 
 1. Create a `lib` directory which will act as a local Maven `.m2` repository:
 
@@ -52,7 +52,7 @@ mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
 mvn package
 ```
 
-The resulting `.jar` file will be created in this library's `target` directory.
+The resulting `.jar` file will be created in the `katalonsupport` library's `target` directory.
 
 ## Installing from source
 
@@ -265,4 +265,8 @@ Scroll element collection with the `accessibility id` (for iOS) or `resource-id`
 [Appium API Documentation](http://appium.io/docs/en/about-appium/api/)
 
 [Selenium API Documentation](https://seleniumhq.github.io/selenium/docs/api/java/)
+
+## License
+
+katalonsupport is available under the Apache License, Version 2.0. See the LICENSE file for more info.
 
