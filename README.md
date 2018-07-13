@@ -54,7 +54,7 @@ mvn package
 
 The resulting `.jar` file will be created in this library's `target` directory.
 
-# Installing from source
+## Installing from source
 
 1. Edit the `katalonsupport` project's `pom.xml` file to set `project.target.katalon.directory` to your Katalon Studio test project's `/Drivers` directory.
 
