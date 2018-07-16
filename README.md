@@ -1,5 +1,7 @@
 # katalon-mobile-util
-[Katalon Studio](https://www.katalon.com/) is an IDE that provides a unified way to test UI for mobile and web. **katalon-mobile-util** is a library of utilities to make mobile UI testing in Katalon Studio easier.
+[Katalon Studio](https://www.katalon.com/) is an IDE that provides a unified way to test UI for mobile and web. 
+
+**katalon-mobile-util** is a library of utilities to make mobile UI testing in Katalon Studio easier.
 
 ## Prerequisites
 
