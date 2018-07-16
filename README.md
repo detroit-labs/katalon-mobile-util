@@ -170,8 +170,9 @@ Logger.fatal("This FATAL message will NOT be logged to the file.")
 
 ### TestObject Finder
 
-The basic elements of Katalon Studio tests are [TestObjects](https://docs.katalon.com/display/KD/Manage+Test+Object). These objects are stored in the Object Repository. To keep thing consistently organized, **katalon-mobile-util** assumes that the following structure will be used to store `TestObjects`. 
+The basic elements of Katalon Studio tests are [TestObjects](https://docs.katalon.com/display/KD/Manage+Test+Object). These objects are stored in the Object Repository. To keep thing consistently organized, **katalon-mobile-util** assumes that the following structure will be used to store `TestObjects`:
 
+![Object Repository](/../screenshots/img/object_repository.png?raw=true "Object Repository")
 
 Because iOS and Android `TestObject` properties vary slightly, using "iOS Test" and "Android Test" folders allows **katalon-mobile-util** to dynamically switch between the `TestObjects` based on the test device platform. Store the `TestObject` with the same name for each platform, e.g. `Checkout button` and **katalon-mobile-util** will pick the correct object for the platform.
 
