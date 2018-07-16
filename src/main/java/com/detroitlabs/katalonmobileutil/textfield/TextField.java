@@ -1,8 +1,8 @@
-package com.detroitlabs.katalonsupport.textfield;
+package com.detroitlabs.katalonmobileutil.textfield;
 
 import org.openqa.selenium.interactions.Keyboard;
 
-import com.detroitlabs.katalonsupport.device.Device;
+import com.detroitlabs.katalonmobileutil.device.Device;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import com.kms.katalon.core.model.FailureHandling;

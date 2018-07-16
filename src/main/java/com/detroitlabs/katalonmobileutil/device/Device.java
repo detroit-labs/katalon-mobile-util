@@ -1,4 +1,4 @@
-package com.detroitlabs.katalonsupport.device;
+package com.detroitlabs.katalonmobileutil.device;
 
 import java.util.Map;
 

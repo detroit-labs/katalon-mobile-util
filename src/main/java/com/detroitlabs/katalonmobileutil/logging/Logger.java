@@ -1,4 +1,4 @@
-package com.detroitlabs.katalonsupport.logging;
+package com.detroitlabs.katalonmobileutil.logging;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

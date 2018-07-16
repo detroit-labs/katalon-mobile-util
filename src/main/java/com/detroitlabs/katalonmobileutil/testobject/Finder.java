@@ -1,8 +1,8 @@
-package com.detroitlabs.katalonsupport.testobject;
+package com.detroitlabs.katalonmobileutil.testobject;
 
 import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject;
 
-import com.detroitlabs.katalonsupport.device.Device;
+import com.detroitlabs.katalonmobileutil.device.Device;
 import com.kms.katalon.core.testobject.TestObject;
 
 public class Finder {

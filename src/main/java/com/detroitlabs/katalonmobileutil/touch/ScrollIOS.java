@@ -1,10 +1,10 @@
-package com.detroitlabs.katalonsupport.touch;
+package com.detroitlabs.katalonmobileutil.touch;
 
 import java.util.List;
 
 import org.openqa.selenium.WebDriverException;
 
-import com.detroitlabs.katalonsupport.logging.Logger;
+import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 

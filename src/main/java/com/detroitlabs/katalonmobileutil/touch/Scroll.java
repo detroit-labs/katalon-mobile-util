@@ -1,6 +1,6 @@
-package com.detroitlabs.katalonsupport.touch;
+package com.detroitlabs.katalonmobileutil.touch;
 
-import com.detroitlabs.katalonsupport.device.Device;
+import com.detroitlabs.katalonmobileutil.device.Device;
 
 public class Scroll {
 

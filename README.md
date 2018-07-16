@@ -1,5 +1,5 @@
-# katalonsupport
-Support library to make mobile UI testing in Katalon easier.
+# katalon-mobile-util
+[Katalon Studio](https://www.katalon.com/) is an IDE that provides a unified way to test UI for mobile and web. **katalon-mobile-util** is a library of utilities to make mobile UI testing in Katalon Studio easier.
 
 ## Prerequisites
 
@@ -9,18 +9,18 @@ Building from source requires [Apache Maven](https://maven.apache.org/).
 
 ## Manual installation
 
-To use this `katalonsupport` library in Katalon Studio tests, it is not required that you build from source.
+To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalonsupport/releases/download/1.0.0/katalonsupport-1.0.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.0.0/katalon-mobile-util-1.0.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 ## Building from source
 
-The Katalon Studio jar files are not available via Maven Central and are not packaged with the `katalonsupport` library, so we can set up a local maven repository to contain the required files:
+The Katalon Studio jar files are not available via Maven Central and are not packaged with the **katalon-mobile-util** library, so we can set up a local maven repository to contain the required files:
 
 1. Create a `lib` directory which will act as a local Maven `.m2` repository:
 
 ```
-cd katalonsupport
+cd katalon-mobile-util
 mkdir lib
 ```
 
@@ -38,7 +38,7 @@ mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
 
 ```
 mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_1.0.0.201805301004.jar" \
+  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201805301004.jar" \
   -DgroupId=com.kms.katalon.core \
   -DartifactId=mobile \
   -Dversion=1.0.0.201805301004 \
@@ -52,11 +52,11 @@ mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
 mvn package
 ```
 
-The resulting `.jar` file will be created in the `katalonsupport` library's `target` directory.
+The resulting `.jar` file will be created in the **katalon-mobile-util** library's `target` directory.
 
 ## Installing from source
 
-1. Edit the `katalonsupport` project's `pom.xml` file to set `project.target.katalon.directory` to your Katalon Studio test project's `/Drivers` directory.
+1. Edit the **katalon-mobile-util** project's `pom.xml` file to set `project.target.katalon.directory` to your Katalon Studio test project's `/Drivers` directory.
 
 2. Follow the steps for "Building from source".
 
@@ -66,11 +66,11 @@ The resulting `.jar` file will be created in the `katalonsupport` library's `tar
 mvn install
 ```
 
-4. The `katalonsupport` `.jar` file will be placed in your Katalon Studio test project's `/Drivers` directory.
+4. The **katalon-mobile-util** `.jar` file will be placed in your Katalon Studio test project's `/Drivers` directory.
 
 ## Usage
 
-This `katalonsupport` library provides convenience functions for interacting with Katalon Studio and Appium features:
+This **katalon-mobile-util** library provides convenience functions for interacting with Katalon Studio and Appium features:
 
 ### Device
 
@@ -79,7 +79,7 @@ Provides information about the platform of the device on which the tests are run
 Add this import statement to your test file:
 
 ```
-import com.detroitlabs.katalonsupport.device.Device
+import com.detroitlabs.katalonmobileutil.device.Device
 ```
 
 Start the test application on the device, using the device platform to determine which application file to load - will reset the simulator.
@@ -119,7 +119,7 @@ Katalon Studio logs output from `println()` to the console, but it is often diff
 
 Katalon Studio also provides a way to write to the Log Viewer tab using [`KeywordLogger`](http://www.sanspantalones.com/2018/02/14/output-status-messages-and-test-information-by-writing-to-the-log-file-viewer-in-katalon-studio/). However, the logged statements are mixed in with the test results in this case. 
 
-`katalonsupport` provides a cleaner way to log your own events to a file of your choosing. 
+**katalon-mobile-util** provides a cleaner way to log your own events to a file of your choosing. 
 
 #### Log Levels
 
@@ -136,8 +136,8 @@ The `Logger` provides multiple [levels of logging](http://www.thejoyofcode.com/L
 Add these import statements to your test file:
 
 ```
-import com.detroitlabs.katalonsupport.logging.Logger as Logger
-import com.detroitlabs.katalonsupport.logging.Logger.LogLevel as LogLevel
+import com.detroitlabs.katalonmobileutil.logging.Logger as Logger
+import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel as LogLevel
 ```
 
 Initialize the `Logger` with the `LogLevel` for which you want to see output in your file. Setting a particular log level will show all events at that level or higher.
@@ -168,15 +168,15 @@ Logger.fatal("This FATAL message will NOT be logged to the file.")
 
 ### TestObject Finder
 
-The basic elements of Katalon Studio tests are [TestObjects](https://docs.katalon.com/display/KD/Manage+Test+Object). These objects are stored in the Object Repository. To keep thing consistently organized, `katalonsupport` assumes that the following structure will be used to store `TestObjects`. 
+The basic elements of Katalon Studio tests are [TestObjects](https://docs.katalon.com/display/KD/Manage+Test+Object). These objects are stored in the Object Repository. To keep thing consistently organized, **katalon-mobile-util** assumes that the following structure will be used to store `TestObjects`. 
 
 
-Because iOS and Android `TestObject` properties vary slightly, using "iOS Test" and "Android Test" folders allows `katalonsupport` to dynamically switch between the `TestObjects` based on the test device platform. Store the `TestObject` with the same name for each platform, e.g. `Checkout button` and `katalonsupport` will pick the correct object for the platform.
+Because iOS and Android `TestObject` properties vary slightly, using "iOS Test" and "Android Test" folders allows **katalon-mobile-util** to dynamically switch between the `TestObjects` based on the test device platform. Store the `TestObject` with the same name for each platform, e.g. `Checkout button` and **katalon-mobile-util** will pick the correct object for the platform.
 
 Add this import statement to your test file:
 
 ```
-import com.detroitlabs.katalonsupport.testobject.Finder
+import com.detroitlabs.katalonmobileutil.testobject.Finder
 ```
 
 Find a `TestObject` from the Object Repository:
@@ -200,12 +200,12 @@ MobileBuiltInKeywords.setText(textFieldObject, 'Text to set', timeout)
 
 Android text fields are sometimes auto-wrapped in an `android.widget.RelativeLayout`, where the `RelativeLayout` gets the `resource-id` reference, not the text field itself. Katalon's `MobileBuiltInKeywords.setText()` doesn't work with `RelativeLayout` objects.
 
-`katalonsupport` provides a wrapper to interact with text fields in both iOS or Android; the implementation is determined by the test device platform.
+**katalon-mobile-util** provides a wrapper to interact with text fields in both iOS or Android; the implementation is determined by the test device platform.
 
 Add this import statement to your test file:
 
 ```
-import com.detroitlabs.katalonsupport.textfield.TextField
+import com.detroitlabs.katalonmobileutil.textfield.TextField
 ```
 
 If you are testing on an Android device, and the text fields have a clear button, be sure to create a `TestObject` for that button:
@@ -237,13 +237,13 @@ TextField.typeText(streetAddress, '123 My Street', timeout)
 
 Katalon Studio provides a method for [scrolling](https://docs.katalon.com/display/KD/%5BMobile%5D+Scroll+To+Text) a list until particular text is visible on the screen. Unfortunately, this function has proven problematic and results in erratic scrolling.
 
-`katalonsupport` provides a wrapper to scroll lists using the [Appium TouchAction](http://appium.io/docs/en/writing-running-appium/touch-actions/).
+**katalon-mobile-util** provides a wrapper to scroll lists using the [Appium TouchAction](http://appium.io/docs/en/writing-running-appium/touch-actions/).
 
 
 Add this import statement to your test file:
 
 ```
-import com.detroitlabs.katalonsupport.touch.Scroll
+import com.detroitlabs.katalonmobileutil.touch.Scroll
 ```
 
 Scroll element collection with the `accessibility id` (for iOS) or `resource-id` (for Android) until you get to the given text:
@@ -268,5 +268,5 @@ Scroll element collection with the `accessibility id` (for iOS) or `resource-id`
 
 ## License
 
-katalonsupport is available under the Apache License, Version 2.0. See the LICENSE file for more info.
+katalon-mobile-util is available under the Apache License, Version 2.0. See the LICENSE file for more info.
 

@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.detroitlabs</groupId>
-	<artifactId>katalonsupport</artifactId>
+	<artifactId>katalon-mobile-util</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>katalonsupport</name>
+	<name>katalon-mobile-util</name>
 	<url>http://detroitlabs.com</url>
 
 	<properties>
@@ -77,12 +77,12 @@
 		<dependency>
 			<groupId>com.kms.katalon</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.0.201804270757</version>
+			<version>1.0.0.201805301004</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
 			<artifactId>mobile</artifactId>
-			<version>1.0.0.201804270757</version>
+			<version>1.0.0.201805301004</version>
 		</dependency>
 	</dependencies>
 	<organization>
