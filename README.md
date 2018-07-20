@@ -117,7 +117,7 @@ if (Device.isAndroid()) {
 
 ### Logging
 
-Katalon Studio logs output from `println()` to the console, but it is often difficult to parse out your particular statement from the logs already being created by appium and Katalon, with no way to control the detail of output going to those logs. 
+Katalon Studio logs output from `println()` to the console, but it is often difficult to parse out your particular statement from the logs already being created by Appium and Katalon, with INFO and DEBUG being the only log level options. 
 
 Katalon Studio also provides a way to write to the Log Viewer tab using [`KeywordLogger`](http://www.sanspantalones.com/2018/02/14/output-status-messages-and-test-information-by-writing-to-the-log-file-viewer-in-katalon-studio/). However, the logged statements are mixed in with the test results in this case. 
 
