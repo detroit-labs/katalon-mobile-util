@@ -44,7 +44,11 @@ public class Finder {
 
 	public static TestObject findSegmentedControl(String name) {
 		return findObject("Segmented Controls", name);
-	}	
+	}
+	
+	public static TestObject findSwitch(String name) {
+		return findObject("Switches", name);
+	}		
 	
 	public static TestObject findTab(String name) {
 		return findObject("Tabs", name);

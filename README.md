@@ -203,6 +203,7 @@ TestObject image = Finder.findImage('My Image')
 TestObject label = Finder.findLabel('My Label')
 TestObject link = Finder.findLink('My Link')
 TestObject segmentedControl = Finder.findSegmentedControl('My Segmented Control')
+TestObject switch = Finder.findSwitch('My Switch')
 TestObject tab = Finder.findTab('My Tab')
 TestObject textField = Finder.findTextField('My Text Field')
 ```
