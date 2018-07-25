@@ -18,32 +18,40 @@ public class Finder {
 		androidRepository = repository;
 	}
 
-	public static TestObject findButton(String name) {
-		return findObject("Buttons", name);
-	}
-
 	public static TestObject findAlert(String name) {
 		return findObject("Alerts", name);
 	}
-
-	public static TestObject findTextField(String name) {
-		return findObject("Text Fields", name);
+	
+	public static TestObject findButton(String name) {
+		return findObject("Buttons", name);
 	}
-
-	public static TestObject findTab(String name) {
-		return findObject("Tabs", name);
-	}
-
-	public static TestObject findLabel(String name) {
-		return findObject("Labels", name);
-	}
-
+	
+	public static TestObject findCheckbox(String name) {
+		return findObject("Checkboxes", name);
+	}	
+	
 	public static TestObject findImage(String name) {
 		return findObject("Images", name);
-	}
+	}	
+	
+	public static TestObject findLabel(String name) {
+		return findObject("Labels", name);
+	}	
 	
 	public static TestObject findLink(String name) {
 		return findObject("Links", name);
+	}	
+
+	public static TestObject findSegmentedControl(String name) {
+		return findObject("Segmented Controls", name);
+	}	
+	
+	public static TestObject findTab(String name) {
+		return findObject("Tabs", name);
+	}	
+	
+	public static TestObject findTextField(String name) {
+		return findObject("Text Fields", name);
 	}	
 	
 	public static TestObject findGeneric(String name) {

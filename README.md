@@ -198,9 +198,11 @@ Find a `TestObject` from the Object Repository:
 ```
 TestObject alert = Finder.findAlert('My Alert')
 TestObject button = Finder.findButton('My Button')
+TestObject checkbox = Finder.findCheckbox('My Checkbox')
 TestObject image = Finder.findButton('My Image')
 TestObject label = Finder.findLabel('My Label')
 TestObject link = Finder.findButton('My Link')
+TestObject segmentedControl = Finder.findSegmentedControl('My Segmented Control')
 TestObject tab = Finder.findTab('My Tab')
 TestObject textField = Finder.findTextField('My Text Field')
 ```
