@@ -7,16 +7,15 @@ import com.kms.katalon.core.testobject.TestObject;
 
 public class Finder {
 	
-	private static TestObject findObject(String type, String name) {
-		String deviceOS = Device.getDeviceOS();
-
-		String objectRepo = deviceOS + " Test";
-
-		type = type != null ? type + "/" : "";
-
-		String object = objectRepo + '/' + type + name;
-
-		return findTestObject(object);
+	private static String iOSRepository = "iOS Objects";
+	private static String androidRepository = "Android Objects";
+	
+	public static void setIOSRepository(String repository) {
+		iOSRepository = repository;
+	}
+	
+	public static void setAndroidRepository(String repository) {
+		androidRepository = repository;
 	}
 
 	public static TestObject findButton(String name) {
@@ -39,8 +38,27 @@ public class Finder {
 		return findObject("Labels", name);
 	}
 
+	public static TestObject findImage(String name) {
+		return findObject("Images", name);
+	}
+	
+	public static TestObject findLink(String name) {
+		return findObject("Links", name);
+	}	
+	
 	public static TestObject findGeneric(String name) {
 		return findObject(null, name);
+	}
+	
+	private static TestObject findObject(String type, String name) {
+		
+		String objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
+
+		type = type != null ? type + "/" : "";
+
+		String object = objectRepo + '/' + type + name;
+
+		return findTestObject(object);
 	}
 	
 }

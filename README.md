@@ -3,19 +3,23 @@
 
 **katalon-mobile-util** is a library of utilities to make mobile UI testing in Katalon Studio easier.
 
-## Prerequisites
-
-This library requires [Katalon Studio](https://www.katalon.com/) to be installed.
-
-Building from source requires [Apache Maven](https://maven.apache.org/).
-
-## Manual installation
+## Installation
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
 Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.0.0/katalon-mobile-util-1.0.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 ## Building from source
+
+Although not required, you may build the **katalon-mobile-util** library from source code. The resulting `.jar` will be added to your Katalon Studio test project.
+
+### Prerequisites
+
+This library requires [Katalon Studio](https://www.katalon.com/) to be installed.
+
+Building from source requires [Apache Maven](https://maven.apache.org/).
+
+### Building
 
 The Katalon Studio jar files are not available via Maven Central and are not packaged with the **katalon-mobile-util** library, so we can set up a local maven repository to contain the required files:
 
@@ -78,6 +82,8 @@ This **katalon-mobile-util** library provides convenience functions for interact
 
 Provides information about the platform of the device on which the tests are running. This allows a single set of tests to perform branching logic between iOS and Android without the need to create separate test suites.
 
+#### How to use Device
+
 Add this import statement to your test file:
 
 ```
@@ -134,6 +140,7 @@ The `Logger` provides multiple [levels of logging](http://www.thejoyofcode.com/L
 - `ERROR` - problems that affect the current operation, but not the overall system
 - `FATAL` - events that would force catastrophic system failures 
 
+#### How to use Logger
 
 Add these import statements to your test file:
 
@@ -168,13 +175,17 @@ Logger.fatal("This FATAL message will NOT be logged to the file.")
 ```
 
 
-### TestObject Finder
+### TestObjects
+
+#### Organization
 
 The basic elements of Katalon Studio tests are [TestObjects](https://docs.katalon.com/display/KD/Manage+Test+Object). These objects are stored in the Object Repository. To keep thing consistently organized, **katalon-mobile-util** assumes that the following structure will be used to store `TestObjects`:
 
 ![Object Repository](/../screenshots/img/object_repository.png?raw=true "Object Repository")
 
-Because iOS and Android `TestObject` properties vary slightly, using "iOS Test" and "Android Test" folders allows **katalon-mobile-util** to dynamically switch between the `TestObjects` based on the test device platform. Store the `TestObject` with the same name for each platform, e.g. `Checkout button` and **katalon-mobile-util** will pick the correct object for the platform.
+Because iOS and Android `TestObject` properties vary slightly, using "iOS Objects" and "Android Objects" folders allows **katalon-mobile-util** to dynamically switch between the `TestObjects` based on the test device platform. Store the `TestObject` with the same name for each platform, e.g. `Checkout button` and **katalon-mobile-util** will pick the correct object for the platform.
+
+#### How to use TestObject Finder
 
 Add this import statement to your test file:
 
@@ -185,12 +196,32 @@ import com.detroitlabs.katalonmobileutil.testobject.Finder
 Find a `TestObject` from the Object Repository:
 
 ```
-TestObject tab = Finder.findTab('My Tab')
-TestObject button = Finder.findButton('My Button')
-TestObject label = Finder.findLabel('My Label')
 TestObject alert = Finder.findAlert('My Alert')
+TestObject button = Finder.findButton('My Button')
+TestObject image = Finder.findButton('My Image')
+TestObject label = Finder.findLabel('My Label')
+TestObject link = Finder.findButton('My Link')
+TestObject tab = Finder.findTab('My Tab')
 TestObject textField = Finder.findTextField('My Text Field')
+```
+
+If the `TestObject` doesn't fall into one of those categories, you can save it in the top-level iOS or Android directory and use `findGeneric` to retrieve it: 
+
+```
 TestObject genericObject = Finder.findGeneric('My Uncategorized Generic Object')
+```
+
+Once you have the `TestObject`, you can interact with it per the normal Katalon `MobileBuiltInKeywords`:
+
+```
+MobileBuiltInKeywords.tap(button, timeout)
+```
+
+If you want to store `TestObjects` in a non-default directory, you can override the repository locations:
+
+```
+Finder.setIOSRepository('My Custom iOS Folder')
+Finder.setAndroidRepository('My Custom Android Folder')
 ```
 
 ### TextField
@@ -204,6 +235,8 @@ MobileBuiltInKeywords.setText(textFieldObject, 'Text to set', timeout)
 Android text fields are sometimes auto-wrapped in an `android.widget.RelativeLayout`, where the `RelativeLayout` gets the `resource-id` reference, not the text field itself. Katalon's `MobileBuiltInKeywords.setText()` doesn't work with `RelativeLayout` objects.
 
 **katalon-mobile-util** provides a wrapper to interact with text fields in both iOS or Android; the implementation is determined by the test device platform.
+
+#### How to use TextField
 
 Add this import statement to your test file:
 
@@ -242,6 +275,7 @@ Katalon Studio provides a method for [scrolling](https://docs.katalon.com/displa
 
 **katalon-mobile-util** provides a wrapper to scroll lists using the [Appium TouchAction](http://appium.io/docs/en/writing-running-appium/touch-actions/).
 
+#### How to use Scrolling
 
 Add this import statement to your test file:
 
