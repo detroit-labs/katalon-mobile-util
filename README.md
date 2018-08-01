@@ -338,6 +338,9 @@ Scroll element collection with the `accessibility id` (for iOS) or `resource-id`
 
 [Selenium API Documentation](https://seleniumhq.github.io/selenium/docs/api/java/)
 
+## Contact
+[Chris Trevarthen](mailto:chris.trevarthen+gh@detroitlabs.com) c/o [Detroit Labs](http://detroitlabs.com)
+
 ## License
 
 katalon-mobile-util is available under the Apache License, Version 2.0. See the LICENSE file for more info.
