@@ -227,6 +227,38 @@ Finder.setIOSRepository('My Custom iOS Folder')
 Finder.setAndroidRepository('My Custom Android Folder')
 ```
 
+#### Converting from Selenium WebElements to Katalon TestObjects
+
+The base components of Selenium tests are `RemoteWebElements`, which are extended to `WebElements` by Selenium and `MobileElements` by Appium. The base components for Katalon Studio are `TestObjects`. Sometimes it may be useful to convert from a `MobileElement` that you found with Appium functions, to a `TestObject` for use in Katalon tests so that you can use Katalon functions on it.
+
+Add this import statement to your test file:
+
+```
+import org.openqa.selenium.By
+import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory
+import com.kms.katalon.core.testobject.TestObject
+import com.detroitlabs.katalonmobileutil.testobject.TestObjectConverter
+```
+
+Use an Appium function to get some `MobileElements` matching an xpath:
+
+```
+AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver()
+List<MobileElement> mobileElements = driver.findElements(By.xpath(xpathValue))
+```
+
+Use katalon-mobile-util's `TestObjectConverter` to create `TestObjects` from each of the `MobileElements`:
+
+```
+List<TestObject> testObjects = TestObjectConverter.fromElements(mobileElements)
+```
+
+Or convert a single `MobileElement`:
+
+```
+TestObject testObject = TestObjectConverter.fromElement(mobileElements.get(0))
+```
+
 ### TextField
 
 iOS and Android text fields are represented differently within the structure of a screen. iOS text fields are often directly accessible as `XCUIElementTypeTextField` with an `accessibility id` or (`name` as it is referred to in Katalon Studio `TestObjects`). We can interact with these fields using Katalon's `MobileBuiltInKeywords` class:
