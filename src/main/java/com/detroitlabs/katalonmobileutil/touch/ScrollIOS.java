@@ -3,6 +3,7 @@ package com.detroitlabs.katalonmobileutil.touch;
 import java.util.List;
 
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.RemoteWebElement;
 
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
@@ -18,16 +19,15 @@ public class ScrollIOS {
 		boolean isElementFound = false;
 		while (isElementFound == false) {
 			try {
-				 Logger.debug("Checking for specific element");
+				 Logger.debug("Checking for specific element: " + elementText);
 				// The Xcode accessibility id comes through as "name" in the page document
-				@SuppressWarnings("unchecked")
-				AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();				 
+				AppiumDriver<?> driver = MobileDriverFactory.getDriver();				 
 				driver.findElementByXPath("//XCUIElementTypeStaticText[@name='" + accessibilityId
 						+ "' and @visible ='true' and @label='" + elementText + "']");
 				isElementFound = true;
-				 Logger.debug("Found one!");
+				 Logger.debug("Found an element in the current scroll list.");
 			} catch (WebDriverException ex) {
-				 Logger.debug("Didn't find any matching elements");
+				 Logger.debug("Didn't find any matching elements.");
 				scrollEntireList(accessibilityId);
 			}
 		}
@@ -36,14 +36,15 @@ public class ScrollIOS {
 	
 	private static void scrollEntireList(String accessibilityId) {
 		@SuppressWarnings("unchecked")
-		AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
+		AppiumDriver<?> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
 		// The Xcode accessibility id comes through as "name" in the page document
-		List<MobileElement> listElement = driver.findElementsByXPath(
+		@SuppressWarnings("unchecked")
+		List<RemoteWebElement> listElement = (List<RemoteWebElement>) driver.findElementsByXPath(
 				"//XCUIElementTypeStaticText[@name='" + accessibilityId + "' and @visible ='true']");
-		Logger.debug("Getting list of all elements");
+		Logger.debug("Getting a scroll list of all elements.");
 		TouchAction touchAction = new TouchAction(driver);
-		MobileElement bottomElement = listElement.get(listElement.size() - 1);
-		MobileElement topElement = listElement.get(0);
+		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
+		RemoteWebElement topElement = listElement.get(0);
 		// Press and scroll from the last element in the list all the way to the top
 		 Logger.debug("Scrolling...");
 		touchAction.longPress(bottomElement).moveTo(topElement).release().perform();
