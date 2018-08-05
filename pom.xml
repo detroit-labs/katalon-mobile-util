@@ -5,7 +5,7 @@
 
 	<groupId>com.detroitlabs</groupId>
 	<artifactId>katalon-mobile-util</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 	<packaging>jar</packaging>
 
 	<name>katalon-mobile-util</name>
@@ -18,6 +18,14 @@
 	</properties>
 
 	<build>
+		<resources> 
+			<resource>
+				<directory>src/main/java</directory>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<!-- `mvn install` will copy the built jar to your Katalon project -->
 			<plugin>
