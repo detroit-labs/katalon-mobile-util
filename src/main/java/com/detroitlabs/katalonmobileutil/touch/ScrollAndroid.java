@@ -5,6 +5,7 @@ import java.util.List;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import com.detroitlabs.katalonmobileutil.exception.ListItemsNotFoundException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
@@ -43,31 +44,40 @@ public class ScrollAndroid {
 		return isElementFound;
 	}
 
-	private static void scrollEntireList(String elementId) {
-		@SuppressWarnings("unchecked")
+	private static void scrollEntireList(String resourceId) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
+		
+		String xpath = "//*[" + textViewXpathString + resourceXpathString(resourceId) + "]";
+		
 		@SuppressWarnings("unchecked")
-		List<RemoteWebElement> listElement = (List<RemoteWebElement>) driver
-				.findElementsByXPath("//*[" + textViewXpathString + resourceXpathString(elementId) + "]");
+		List<RemoteWebElement> listElement = (List<RemoteWebElement>) driver.findElementsByXPath(xpath);
+		
 		Logger.debug("Getting a scroll list of all elements.");
-		TouchAction touchAction = new TouchAction(driver);
+		if (listElement.size() <= 0) {
+			// throw a new exception for not being able to find the elements
+			throw(new ListItemsNotFoundException(xpath, resourceId, "resource id"));
+		} 
+		
 		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
 		RemoteWebElement topElement = listElement.get(0);
+		
 		// Press and scroll from the last element in the list all the way to the top
 		Logger.debug("Scrolling...");
+		TouchAction touchAction = new TouchAction(driver);
 		touchAction.longPress(bottomElement).moveTo(topElement).release().perform();
+		
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(5);
 
 	}
 
 	// Can speed things up to narrow down the collection of elements by resource id
-	private static String resourceXpathString(String elementId) {
-		if (elementId == null) {
+	private static String resourceXpathString(String resourceId) {
+		if (resourceId == null) {
 			return "";
 		}
 
-		return " and contains(@resource-id, '" + elementId + "') ";
+		return " and contains(@resource-id, '" + resourceId + "') ";
 	}
 
 }

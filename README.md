@@ -318,16 +318,22 @@ Add this import statement to your test file:
 import com.detroitlabs.katalonmobileutil.touch.Scroll
 ```
 
-Scroll element collection with the `accessibility id` (for iOS) or `resource-id` (for Android) until you get to the given text:
+Scroll list of all `XCUIElementTypeStaticText` (for iOS) or `*TextView` (for Android) elements until you get to the given text:
 
  ```
- Scroll.scrollListToElementWithText('states', 'Michigan')
+ Scroll.scrollListToElementWithText('Michigan')
+ ```
+
+Scroll specific list of elements with the `accessibility id` (for iOS) or `resource-id` (for Android) until you get to the given text. In this case, all of the elements in the collection should have the same ids, e.g. `state_label`:
+
+ ```
+ Scroll.scrollListToElementWithText('state_label', 'Michigan')
  ```
  
- Once scrolling is complete, you can interact with the element:
+ Once scrolling is complete, you can interact with the element, assuming you already have a TestObject named "Michigan label".
  
  ```
- Mobile.tap(Finder.findLabel('Michigan'), timeout)
+ Mobile.tap(Finder.findLabel('Michigan label'), timeout)
  ```
 
 ## Resources

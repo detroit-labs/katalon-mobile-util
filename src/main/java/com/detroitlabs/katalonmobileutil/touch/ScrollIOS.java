@@ -5,12 +5,12 @@ import java.util.List;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import com.detroitlabs.katalonmobileutil.exception.ListItemsNotFoundException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
 public class ScrollIOS {
@@ -35,19 +35,28 @@ public class ScrollIOS {
 	}
 	
 	private static void scrollEntireList(String accessibilityId) {
-		@SuppressWarnings("unchecked")
-		AppiumDriver<?> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
+		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
+		
 		// The Xcode accessibility id comes through as "name" in the page document
+		String xpath = "//XCUIElementTypeStaticText[@name='" + accessibilityId + "' and @visible ='true']";
+		
 		@SuppressWarnings("unchecked")
-		List<RemoteWebElement> listElement = (List<RemoteWebElement>) driver.findElementsByXPath(
-				"//XCUIElementTypeStaticText[@name='" + accessibilityId + "' and @visible ='true']");
+		List<RemoteWebElement> listElement = (List<RemoteWebElement>) driver.findElementsByXPath(xpath);
+		
 		Logger.debug("Getting a scroll list of all elements.");
-		TouchAction touchAction = new TouchAction(driver);
+		if (listElement.size() <= 0) {
+			// throw a new exception for not being able to find the elements
+			throw(new ListItemsNotFoundException(xpath, accessibilityId, "accessibility id"));
+		} 
+			
 		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
-		RemoteWebElement topElement = listElement.get(0);
+		RemoteWebElement topElement = listElement.get(0);	
+		
 		// Press and scroll from the last element in the list all the way to the top
-		 Logger.debug("Scrolling...");
+		Logger.debug("Scrolling...");
+		TouchAction touchAction = new TouchAction(driver);
 		touchAction.longPress(bottomElement).moveTo(topElement).release().perform();
+		
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(5);
 	}	
