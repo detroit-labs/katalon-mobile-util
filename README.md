@@ -259,6 +259,45 @@ Or convert a single `MobileElement`:
 TestObject testObject = TestObjectConverter.fromElement(mobileElements.get(0))
 ```
 
+### Button
+
+The typical flow for interacting with a button is:
+
+1) Find the button from the TestObject Repository
+2) Tap the button, providing a timeout and optional `FailureHandling` behavior in the case that the button doesn't exist.
+
+For convenience, katalon-mobile-util allows you to interact with buttons in one step:
+
+Add this import statement to your test file:
+
+```
+import com.detroitlabs.katalonmobileutil.testobject.Button
+```
+
+In your test, tap the button using the name of the saved TestObject:
+
+```
+Button.tap('OK button')
+```
+
+By default, the timeout is 0 seconds and the test will stop with an error if the button is not found.
+
+To control the behavior further, you can override the defaults, giving all future calls to `Button.tap()` the properties: 
+
+```
+int timeout = 3
+Button.initialize(timeout, FailureHandling.OPTIONAL)
+```
+
+To add more control to an individual button tap, you can provide one or both of the `timeout` and `FailureHandling` arguments:
+
+```
+int timeout = 3
+Button.tap('OK button', timeout)
+Button.tap('OK button', FailureHandling.OPTIONAL)
+Button.tap('OK button', timeout, FailureHandling.OPTIONAL)
+```
+
 ### TextField
 
 iOS and Android text fields are represented differently within the structure of a screen. iOS text fields are often directly accessible as `XCUIElementTypeTextField` with an `accessibility id` or (`name` as it is referred to in Katalon Studio `TestObjects`). We can interact with these fields using Katalon's `MobileBuiltInKeywords` class:
