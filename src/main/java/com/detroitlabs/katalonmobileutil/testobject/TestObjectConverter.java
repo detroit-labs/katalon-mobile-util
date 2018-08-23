@@ -12,10 +12,12 @@ import com.kms.katalon.core.testobject.TestObject;
 
 public class TestObjectConverter {
 
+	// convert a single Selenium/Appium RemoteWebElement to a Katalon TestObject
 	public static TestObject fromElement(RemoteWebElement element) {
 		return fromElement(element, null);
 	}
 	
+	// convert a list of Selenium/Appium RemoteWebElements to a list of Katalon TestObjects
 	public static List<TestObject> fromElements(List<RemoteWebElement> elements) {
 		List<TestObject> testObjects = new ArrayList<TestObject>();
 		for (int i = 0; i < elements.size(); i++) {
@@ -24,7 +26,7 @@ public class TestObjectConverter {
 		return testObjects;
 	}
 	
-	protected static TestObject fromElement(RemoteWebElement element, Integer index) {
+	public static TestObject fromElement(RemoteWebElement element, Integer index) {
 		TestObject testObject = new TestObject();
 		String indexString = index != null ? "[" + index + "]" : "";
 		testObject.addProperty("xpath", ConditionType.EQUALS, getXPathFromElement(element) + indexString);

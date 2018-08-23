@@ -227,6 +227,20 @@ Finder.setIOSRepository('My Custom iOS Folder')
 Finder.setAndroidRepository('My Custom Android Folder')
 ```
 
+#### Finding a Label from a List by Index
+
+In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar labels in the table view to find a specific element.
+
+To find a specific label from a collection of similar labels on the screen, first create a new Label TestObject in the Object Repository. The new Label should have properties for the `type` and `name` for iOS (or `class` and `resource-id` for Android). You should leave off the `label` or `text` properties in order to keep the Label generic to represent the collection of 
+
+Then provide an index for which element in the list you want to find (indexes start at 0):
+
+```
+int index = 3 // first element in the list is at index 0
+TestObject labelAtIndex = Finder.findLabelAtIndex('Generic label element', index) 
+```
+
+
 #### Converting from Selenium WebElements to Katalon TestObjects
 
 The base components of Selenium tests are `RemoteWebElements`, which are extended to `WebElements` by Selenium and `MobileElements` by Appium. The base components for Katalon Studio are `TestObjects`. Sometimes it may be useful to convert from a `MobileElement` that you found with Appium functions, to a `TestObject` for use in Katalon tests so that you can use Katalon functions on it.
