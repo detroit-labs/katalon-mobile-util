@@ -233,10 +233,10 @@ In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can u
 
 To find a specific label from a collection of similar labels on the screen, first create a new Label TestObject in the Object Repository. The new Label should have properties for the `type` and `name` for iOS (or `class` and `resource-id` for Android). You should leave off the `label` or `text` properties in order to keep the Label generic to represent the collection of 
 
-Then provide an index for which element in the list you want to find (indexes start at 0):
+Then provide an index for which element in the list you want to find (indexes start at 1):
 
 ```
-int index = 3 // first element in the list is at index 0
+int index = 3 // first element in the list is at index 1, so this gets the 3rd element
 TestObject labelAtIndex = Finder.findLabelAtIndex('Generic label element', index) 
 ```
 
