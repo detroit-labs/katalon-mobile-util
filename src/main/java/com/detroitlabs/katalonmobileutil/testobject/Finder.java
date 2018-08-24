@@ -71,6 +71,18 @@ public class Finder {
 		return findObject(null, name);
 	}
 	
+	/** 
+	 * Find a Label at a given index from a list of similar Labels on the screen.
+	 * <p>
+	 * There must already exist a TestObject in the "Labels" Object Repository that will serve as a template.
+	 * <p>
+	 * For iOS, the TestObject should have the "type" property of "XCUIElementTypeStaticText" and the "name" property that matches the accessibility id of the collection of labels.
+	 * <p>
+	 * For Android, the TestObject should have a "class" property that ends in "TextView" and a "resource-id" property that contains the resource-id shared by the collection of labels.
+	 * @param testObjectName the name of the Label in the Object Repository which will be used as the template for finding all of the labels with the same class/type and accessibility/resource id.
+	 * @param index the place of the element in the list that you want to return. The first element is at index 1.
+	 * @return the matching Label TestObject
+	 */
 	public static TestObject findLabelAtIndex(String testObjectName, int index) {
 		
 		// TODO: should we match the name of the test object or the accessibility id? maybe 2 separate methods?
