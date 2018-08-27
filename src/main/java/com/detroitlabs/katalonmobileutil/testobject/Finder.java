@@ -114,7 +114,8 @@ public class Finder {
 		try {
 			listElement = (RemoteWebElement) driver.findElementByXPath(xpath);			
 		} catch (WebDriverException ex) {
-			throw(new ListItemsNotFoundException(xpath, resourceId, "accessibility id", index));
+			String resourceType = Device.isIOS() ? "accessibility id" : "resource-id";
+			throw(new ListItemsNotFoundException(xpath, resourceId, resourceType, index));
 		}
 
 		Logger.debug("Found element:" + listElement);
@@ -123,6 +124,61 @@ public class Finder {
 		// return the test object
 		return objectAtIndex;
 	}
+	
+	/** 
+	 * Find a Label with given text from a list of similar Labels on the screen.
+	 * <p>
+	 * There must already exist a TestObject in the "Labels" Object Repository that will serve as a template.
+	 * <p>
+	 * For iOS, the TestObject should have the "type" property of "XCUIElementTypeStaticText" and the "name" property that matches the accessibility id of the collection of labels.
+	 * <p>
+	 * For Android, the TestObject should have a "class" property that ends in "TextView" and a "resource-id" property that contains the resource-id shared by the collection of labels.
+	 * @param testObjectName the name of the Label in the Object Repository which will be used as the template for finding all of the labels with the same class/type and accessibility/resource id.
+	 * @param labelText the text of the label to find. Must match exactly, including upper/lower case matching.
+	 * @return the matching Label TestObject
+	 */
+	public static TestObject findLabelWithText(String testObjectName, String labelText) {
+		
+		// TODO: should we match the name of the test object or the accessibility id? maybe 2 separate methods?
+				
+		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
+		
+		TestObject templateObject = Finder.findLabel(testObjectName);
+		String resourceId = resourceIdFromTestObject(templateObject);
+		
+		String xpath = "";
+		
+		if (Device.isIOS()) {
+			// The Xcode accessibility id comes through as "name" in the page document
+			String resourceIdXPath = "@name = '" + resourceId + "'";
+			String labelXPath = "@label = '" + labelText + "'";
+			xpath = "//XCUIElementTypeStaticText[" + resourceIdXPath + " and " + labelXPath + "]";
+		} else {
+			// Android has multiple classes that count as text views and the "accessibility_id" is resource-id
+			String textViewXpath = "(substring(@class, string-length(@class) - string-length('TextView') + 1) = 'TextView')";
+			// Using "contains" for Android because the resource-id gets appended with package info
+			String resourceIdXpath = "contains(@resource-id, '" + resourceId + "')";
+			String labelXPath = "@text = '" + labelText + "'";
+			xpath = "(//*[" + textViewXpath + " and " + resourceIdXpath + " and " + labelXPath + "])";
+			
+		}
+				
+		RemoteWebElement listElement = null;
+		
+		Logger.debug("Looking for elements with xpath: " + xpath);
+		try {
+			listElement = (RemoteWebElement) driver.findElementByXPath(xpath);			
+		} catch (WebDriverException ex) {
+			String resourceType = Device.isIOS() ? "accessibility id" : "resource-id";
+ 			throw(new ListItemsNotFoundException(xpath, resourceId, resourceType, labelText));
+		}
+
+		Logger.debug("Found element:" + listElement);
+		TestObject objectAtIndex = TestObjectConverter.fromElement(listElement);
+		
+		// return the test object
+		return objectAtIndex;
+	}	
 	
 	private static String resourceIdFromTestObject(TestObject testObject) {
 		String resourceId = null;
