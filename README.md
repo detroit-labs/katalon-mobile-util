@@ -121,60 +121,6 @@ if (Device.isAndroid()) {
 }
 ```
 
-### Logging
-
-Katalon Studio logs output from `println()` to the console, but it is often difficult to parse out your particular statement from the logs already being created by Appium and Katalon, with INFO and DEBUG being the only log level options. 
-
-Katalon Studio also provides a way to write to the Log Viewer tab using [`KeywordLogger`](http://www.sanspantalones.com/2018/02/14/output-status-messages-and-test-information-by-writing-to-the-log-file-viewer-in-katalon-studio/). However, the logged statements are mixed in with the test results in this case. 
-
-**katalon-mobile-util** provides a cleaner way to log your own events to a file of your choosing. 
-
-#### Log Levels
-
-The `Logger` provides multiple [levels of logging](http://www.thejoyofcode.com/Logging_Levels_and_how_to_use_them.aspx) so you can control what goes into your file:
-
-- `OFF` - turn logging off
-- `DEBUG` - diagnostics for troubleshooting
-- `INFO` - general information about how the system is configured or major process steps
-- `WARN` - situations that can be automatically recovered
-- `ERROR` - problems that affect the current operation, but not the overall system
-- `FATAL` - events that would force catastrophic system failures 
-
-#### How to use Logger
-
-Add these import statements to your test file:
-
-```
-import com.detroitlabs.katalonmobileutil.logging.Logger as Logger
-import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel as LogLevel
-```
-
-Initialize the `Logger` with the `LogLevel` for which you want to see output in your file. Setting a particular log level will show all events at that level or higher.
-
-```
-Logger.initialize("/tmp/katalon.log", LogLevel.DEBUG)
-Logger.debug("This DEBUG message will be logged to the file.")
-Logger.info("This INFO message will be logged to the file.")
-Logger.warn("This WARN message will be logged to the file.")
-Logger.error("This ERROR message will be logged to the file.")
-Logger.fatal("This FATAL message will be logged to the file.")
-```
-
-```
-Logger.initialize("/tmp/katalon.log", LogLevel.INFO)
-Logger.debug("This DEBUG message will NOT be logged to the file.")
-```
-
-```
-Logger.initialize("/tmp/katalon.log", LogLevel.OFF)
-Logger.debug("This DEBUG message will NOT be logged to the file.")
-Logger.info("This INFO message will NOT be logged to the file.")
-Logger.warn("This WARN message will NOT be logged to the file.")
-Logger.error("This ERROR message will NOT be logged to the file.")
-Logger.fatal("This FATAL message will NOT be logged to the file.")
-```
-
-
 ### TestObjects
 
 #### Organization
@@ -240,6 +186,17 @@ int index = 3 // first element in the list is at index 1, so this gets the 3rd e
 TestObject labelAtIndex = Finder.findLabelAtIndex('Generic label element', index) 
 ```
 
+#### Finding a Label from a List by the Label Text
+
+In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar labels in the table view to find a specific element.
+
+To find a specific label from a collection of similar labels on the screen, first create a new Label TestObject in the Object Repository. The new Label should have properties for the `type` and `name` for iOS (or `class` and `resource-id` for Android). You should leave off the `label` or `text` properties in order to keep the Label generic to represent the collection of 
+
+Then provide the text for the specific label you want to find:
+
+```
+TestObject labelWithText = Finder.findLabelWithText('Generic label element', 'Label Text') 
+```
 
 #### Converting from Selenium WebElements to Katalon TestObjects
 
@@ -388,6 +345,59 @@ Scroll specific list of elements with the `accessibility id` (for iOS) or `resou
  ```
  Mobile.tap(Finder.findLabel('Michigan label'), timeout)
  ```
+
+### Logging
+
+Katalon Studio logs output from `println()` to the console, but it is often difficult to parse out your particular statement from the logs already being created by Appium and Katalon, with INFO and DEBUG being the only log level options. 
+
+Katalon Studio also provides a way to write to the Log Viewer tab using [`KeywordLogger`](http://www.sanspantalones.com/2018/02/14/output-status-messages-and-test-information-by-writing-to-the-log-file-viewer-in-katalon-studio/). However, the logged statements are mixed in with the test results in this case. 
+
+**katalon-mobile-util** provides a cleaner way to log your own events to a file of your choosing. 
+
+#### Log Levels
+
+The `Logger` provides multiple [levels of logging](http://www.thejoyofcode.com/Logging_Levels_and_how_to_use_them.aspx) so you can control what goes into your file:
+
+- `OFF` - turn logging off
+- `DEBUG` - diagnostics for troubleshooting
+- `INFO` - general information about how the system is configured or major process steps
+- `WARN` - situations that can be automatically recovered
+- `ERROR` - problems that affect the current operation, but not the overall system
+- `FATAL` - events that would force catastrophic system failures 
+
+#### How to use Logger
+
+Add these import statements to your test file:
+
+```
+import com.detroitlabs.katalonmobileutil.logging.Logger as Logger
+import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel as LogLevel
+```
+
+Initialize the `Logger` with the `LogLevel` for which you want to see output in your file. Setting a particular log level will show all events at that level or higher.
+
+```
+Logger.initialize("/tmp/katalon.log", LogLevel.DEBUG)
+Logger.debug("This DEBUG message will be logged to the file.")
+Logger.info("This INFO message will be logged to the file.")
+Logger.warn("This WARN message will be logged to the file.")
+Logger.error("This ERROR message will be logged to the file.")
+Logger.fatal("This FATAL message will be logged to the file.")
+```
+
+```
+Logger.initialize("/tmp/katalon.log", LogLevel.INFO)
+Logger.debug("This DEBUG message will NOT be logged to the file.")
+```
+
+```
+Logger.initialize("/tmp/katalon.log", LogLevel.OFF)
+Logger.debug("This DEBUG message will NOT be logged to the file.")
+Logger.info("This INFO message will NOT be logged to the file.")
+Logger.warn("This WARN message will NOT be logged to the file.")
+Logger.error("This ERROR message will NOT be logged to the file.")
+Logger.fatal("This FATAL message will NOT be logged to the file.")
+```
 
 ## Resources
 

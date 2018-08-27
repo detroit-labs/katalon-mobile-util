@@ -84,29 +84,13 @@ public class Finder {
 	 * @return the matching Label TestObject
 	 */
 	public static TestObject findLabelAtIndex(String testObjectName, int index) {
-		
-		// TODO: should we match the name of the test object or the accessibility id? maybe 2 separate methods?
-				
+						
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 		
 		TestObject templateObject = Finder.findLabel(testObjectName);
 		String resourceId = resourceIdFromTestObject(templateObject);
-		
-		String xpath = "";
-		
-		if (Device.isIOS()) {
-			// The Xcode accessibility id comes through as "name" in the page document
-			xpath = "(//XCUIElementTypeStaticText[@name='" + resourceId + "'])";
-		} else {
-			// Android has multiple classes that count as text views and the "accessibility_id" is resource-id
-			String textViewXpath = "(substring(@class, string-length(@class) - string-length('TextView') + 1) = 'TextView')";
-			// Using "contains" for Android because the resource-id gets appended with package info
-			String resourceIdXpath = "contains(@resource-id, '" + resourceId + "')";
-			xpath = "(//*[" + textViewXpath + " and " + resourceIdXpath + "])";
-			
-		}
-		
-		xpath = xpath + "[" + index + "]";
+				
+		String xpath = "(" + XPathBuilder.xpathForLabel(resourceId) + ")[" + index + "]";
 		
 		RemoteWebElement listElement = null;
 		
@@ -138,30 +122,13 @@ public class Finder {
 	 * @return the matching Label TestObject
 	 */
 	public static TestObject findLabelWithText(String testObjectName, String labelText) {
-		
-		// TODO: should we match the name of the test object or the accessibility id? maybe 2 separate methods?
-				
+						
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 		
 		TestObject templateObject = Finder.findLabel(testObjectName);
 		String resourceId = resourceIdFromTestObject(templateObject);
 		
-		String xpath = "";
-		
-		if (Device.isIOS()) {
-			// The Xcode accessibility id comes through as "name" in the page document
-			String resourceIdXPath = "@name = '" + resourceId + "'";
-			String labelXPath = "@label = '" + labelText + "'";
-			xpath = "//XCUIElementTypeStaticText[" + resourceIdXPath + " and " + labelXPath + "]";
-		} else {
-			// Android has multiple classes that count as text views and the "accessibility_id" is resource-id
-			String textViewXpath = "(substring(@class, string-length(@class) - string-length('TextView') + 1) = 'TextView')";
-			// Using "contains" for Android because the resource-id gets appended with package info
-			String resourceIdXpath = "contains(@resource-id, '" + resourceId + "')";
-			String labelXPath = "@text = '" + labelText + "'";
-			xpath = "(//*[" + textViewXpath + " and " + resourceIdXpath + " and " + labelXPath + "])";
-			
-		}
+		String xpath = XPathBuilder.xpathForLabel(resourceId, labelText);
 				
 		RemoteWebElement listElement = null;
 		
@@ -194,7 +161,7 @@ public class Finder {
 		}
 		
 		return resourceId;
-	}
+	}	
 	
 	private static TestObject findObject(String type, String name) {
 		
@@ -205,6 +172,6 @@ public class Finder {
 		String object = objectRepo + '/' + type + name;
 
 		return findTestObject(object);
-	}
+	}	
 	
 }
