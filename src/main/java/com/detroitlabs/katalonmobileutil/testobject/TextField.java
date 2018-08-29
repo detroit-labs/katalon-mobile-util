@@ -1,11 +1,15 @@
-package com.detroitlabs.katalonmobileutil.textfield;
+package com.detroitlabs.katalonmobileutil.testobject;
 
 import org.openqa.selenium.interactions.Keyboard;
 
 import com.detroitlabs.katalonmobileutil.device.Device;
+import com.detroitlabs.katalonmobileutil.logging.Logger;
+import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel;
+import com.detroitlabs.katalonmobileutil.touch.Scroll;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import com.kms.katalon.core.model.FailureHandling;
+import com.kms.katalon.core.testobject.ConditionType;
 import com.kms.katalon.core.testobject.TestObject;
 
 import io.appium.java_client.AppiumDriver;
@@ -13,11 +17,11 @@ import io.appium.java_client.MobileElement;
 
 public class TextField {
 	
-	public static void clearText(TestObject field, int timeout) {
+	public static void clearText(TestObject field, Integer timeout) {
 		TextField.clearText(field, timeout, null);
 	}
 	
-	public static void clearText(TestObject field, int timeout, TestObject clearButton) {
+	public static void clearText(TestObject field, Integer timeout, TestObject clearButton) {
 		
 		if (Device.isIOS()) {
 			// iOS identifies the text fields directly with accessibilityIds.
@@ -36,7 +40,7 @@ public class TextField {
 		}
 	}
 	
-	public static void typeText(TestObject field, String text, int timeout) {
+	public static void typeText(TestObject field, String text, Integer timeout) {
 				
 		if (Device.isIOS()) {
 			// iOS identifies the text fields directly with accessibilityIds.
@@ -56,6 +60,35 @@ public class TextField {
 			Keyboard keyboard = driver.getKeyboard();
 			keyboard.sendKeys(text);
 			
+		}
+	}
+	
+	/** Choose a value from a drop-down or picker
+	 * 
+	 * @param field Text field TestObject that triggers the drop-down
+	 * @param pickerChoice Value of the picker to select
+	 * @param timeout Timeout (in seconds) for picker-related actions
+	 */
+	public static void selectOption(TestObject field, String pickerChoice, Integer timeout) {
+		
+		MobileBuiltInKeywords.tap(field, timeout);
+
+		if (Device.isIOS()) {
+			// Find the picker wheel and set its text, which spins the wheel
+			TestObject pickerWheel = new TestObject();
+			pickerWheel.addProperty("type", ConditionType.EQUALS, "XCUIElementTypePickerWheel");
+			MobileBuiltInKeywords.setText(pickerWheel, pickerChoice, timeout);
+			
+			// Find the SELECT button on the picker wheel toolbar and tap it, applying the value to the field
+			TestObject selectButton = new TestObject();
+			selectButton.addProperty("type", ConditionType.EQUALS, "XCUIElementTypeButton");
+			selectButton.addProperty("name", ConditionType.EQUALS, "SELECT");
+			MobileBuiltInKeywords.tap(selectButton, timeout);
+		} else {
+			// For Android, the picker is a scrolling list of labels
+			Scroll.scrollListToElementWithText(pickerChoice);
+			TestObject selection = Finder.findLabelWithText(pickerChoice);
+			MobileBuiltInKeywords.tap(selection, timeout);
 		}
 	}
 }

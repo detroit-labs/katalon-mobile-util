@@ -49,7 +49,7 @@ public class ScrollIOS {
 			throw(new ListItemsNotFoundException(xpath, accessibilityId, "accessibility id"));
 		} 
 			
-		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
+		RemoteWebElement bottomElement = listElement.get(listElement.size() - 2);
 		RemoteWebElement topElement = listElement.get(0);	
 		
 		// Press and scroll from the last element in the list all the way to the top

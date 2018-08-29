@@ -286,7 +286,7 @@ Android text fields are sometimes auto-wrapped in an `android.widget.RelativeLay
 Add this import statement to your test file:
 
 ```
-import com.detroitlabs.katalonmobileutil.textfield.TextField
+import com.detroitlabs.katalonmobileutil.testobject.TextField
 ```
 
 If you are testing on an Android device, and the text fields have a clear button, be sure to create a `TestObject` for that button:

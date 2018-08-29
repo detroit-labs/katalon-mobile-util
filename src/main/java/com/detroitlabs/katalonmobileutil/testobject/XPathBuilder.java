@@ -5,7 +5,7 @@ import com.detroitlabs.katalonmobileutil.device.Device;
 public class XPathBuilder {
 
 	// TODO: Make this more generic to build xpath for all types?
-	public static String xpathForLabel(String resourceId) {
+	public static String xpathForLabelWithResourceId(String resourceId) {
 		return xpathForLabel(resourceId, null);
 	}
 	
@@ -23,6 +23,21 @@ public class XPathBuilder {
 
 		return xpath;
 	}
+	
+	public static String xpathForLabelWithText(String labelText) {
+		String xpath = "";
+		
+		if (Device.isIOS()) {
+			xpath = "//XCUIElementTypeStaticText[";
+		} else {
+			xpath = "//*[" + textViewXPath();
+		}
+		
+		xpath = xpath + (labelText != null ? " and " + labelXPath(labelText) : "");
+		xpath = xpath + "]";
+
+		return xpath;
+	}	
 	
 	private static String resourceIdXPath(String resourceId) {
 		if (Device.isIOS()) {

@@ -59,6 +59,8 @@ public class ScrollAndroid {
 		} 
 		
 		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
+		// TODO: Check if the last element is the same as the previous time we scrolled, if so it means we hit the end of the list without finding the element
+		// and should throw an error.
 		RemoteWebElement topElement = listElement.get(0);
 		
 		// Press and scroll from the last element in the list all the way to the top
