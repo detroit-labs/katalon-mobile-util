@@ -3,8 +3,7 @@ package com.detroitlabs.katalonmobileutil.testobject;
 import org.openqa.selenium.interactions.Keyboard;
 
 import com.detroitlabs.katalonmobileutil.device.Device;
-import com.detroitlabs.katalonmobileutil.logging.Logger;
-import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel;
+import com.detroitlabs.katalonmobileutil.exception.NoSuchPickerChoiceException;
 import com.detroitlabs.katalonmobileutil.touch.Scroll;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
@@ -84,6 +83,14 @@ public class TextField {
 			selectButton.addProperty("type", ConditionType.EQUALS, "XCUIElementTypeButton");
 			selectButton.addProperty("name", ConditionType.EQUALS, "SELECT");
 			MobileBuiltInKeywords.tap(selectButton, timeout);
+			
+			// It is possible to try to set the text of a field to something not in the picker list, in which case it fails silently.
+			// We need to verify that the selection was made correctly, or throw an exception.
+			String newTextFieldValue = MobileBuiltInKeywords.getText(field, timeout);
+			if (!pickerChoice.equals(newTextFieldValue)) {
+				throw(new NoSuchPickerChoiceException(pickerChoice));
+			}
+			
 		} else {
 			// For Android, the picker is a scrolling list of labels
 			Scroll.scrollListToElementWithText(pickerChoice);

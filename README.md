@@ -313,6 +313,17 @@ TextField.clearText(streetAddress, timeout)
 TextField.typeText(streetAddress, '123 My Street', timeout)
 ```
 
+#### Using a TextField with a Picker list
+
+Some TextFields don't bring up the keyboard, but allow the user to select values from a predetermined picker or drop-down list instead.
+
+To fill in a TextField by selecting its value from a list, e.g. selecting "Michigan" from a list of states to populate the TextField:
+
+```
+int timeout = 10
+TestObject stateField = Finder.findTextField('State form field')
+TextField.selectOption(stateField, 'Michigan', timeout)
+```
 
 ### Scrolling
 

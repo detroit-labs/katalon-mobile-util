@@ -16,8 +16,9 @@ import io.appium.java_client.TouchAction;
 public class ScrollAndroid {
 
 	// Xpath 1 (used by Selenium) doesn't have ends-with, so this is a substitute
-	// TODO: Use "contains()"?
-	static String textViewXpathString = "(substring(@class, string-length(@class) - string-length('TextView') + 1) = 'TextView')";
+	static String textViewXpathString = "contains(@class, 'TextView')";
+	
+	static RemoteWebElement lastScrolledElement = null;
 
 	// Not all elements have a distinguishable resource-id, so just the text will
 	// have to do
@@ -28,7 +29,8 @@ public class ScrollAndroid {
 	// For Android, elementId equates to the resource-id
 	public static boolean scrollListToElementWithText(String resourceId, String elementText) {
 		boolean isElementFound = false;
-		while (isElementFound == false) {
+		boolean hasScrolledToEndOfList = false;
+		while (isElementFound == false && hasScrolledToEndOfList == false) {
 			try {
 				Logger.debug("Checking for specific element: " + elementText);
 				AppiumDriver<?> driver = MobileDriverFactory.getDriver();
@@ -36,15 +38,18 @@ public class ScrollAndroid {
 						+ " and @text='" + elementText + "']");
 				isElementFound = true;
 				Logger.debug("Found an element in the current scroll list.");
+				// reset the last scrolled element for the next time we do scrolling
+				lastScrolledElement = null;
 			} catch (WebDriverException ex) {
-				Logger.debug("Didn't find any matching elements.");
-				scrollEntireList(resourceId);
+				// In this case, we're using the WebDriverException to trigger the scroll event, so it's ok that it occurs.
+				Logger.debug("Didn't find any matching elements in the visible scroll list.");
+				scrollEntireList(resourceId, elementText);
 			}
 		}
 		return isElementFound;
 	}
 
-	private static void scrollEntireList(String resourceId) {
+	private static void scrollEntireList(String resourceId, String elementText) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 		
 		String xpath = "//*[" + textViewXpathString + resourceXpathString(resourceId) + "]";
@@ -59,8 +64,17 @@ public class ScrollAndroid {
 		} 
 		
 		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
-		// TODO: Check if the last element is the same as the previous time we scrolled, if so it means we hit the end of the list without finding the element
+		// Check if the last element is the same as the previous time we scrolled, if so,
+		// it means we hit the end of the list without finding the element
 		// and should throw an error.
+		if (lastScrolledElement != null && lastScrolledElement.getText().equals(bottomElement.getText())) {
+			Logger.error("Scrolled to the bottom of the list and we didn't find the element.");
+			// reset the last scrolled element for the next time we do scrolling
+			lastScrolledElement = null;
+			throw(new ListItemsNotFoundException(xpath, resourceId, "resource id", elementText));
+		}
+		lastScrolledElement = bottomElement;
+		Logger.debug("New last element: " + lastScrolledElement.getText());
 		RemoteWebElement topElement = listElement.get(0);
 		
 		// Press and scroll from the last element in the list all the way to the top
