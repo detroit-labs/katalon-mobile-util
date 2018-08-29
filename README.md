@@ -7,7 +7,7 @@
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.3.0/katalon-mobile-util-1.3.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.5.0/katalon-mobile-util-1.5.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 ## Building from source
 
@@ -313,6 +313,17 @@ TextField.clearText(streetAddress, timeout)
 TextField.typeText(streetAddress, '123 My Street', timeout)
 ```
 
+#### Using a TextField with a Picker list
+
+Some TextFields don't bring up the keyboard, but allow the user to select values from a predetermined picker or drop-down list instead.
+
+To fill in a TextField by selecting its value from a list, e.g. selecting "Michigan" from a list of states to populate the TextField:
+
+```
+int timeout = 10
+TestObject stateField = Finder.findTextField('State form field')
+TextField.selectOption(stateField, 'Michigan', timeout)
+```
 
 ### Scrolling
 

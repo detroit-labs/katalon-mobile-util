@@ -15,6 +15,8 @@ import io.appium.java_client.TouchAction;
 
 public class ScrollIOS {
 
+	static RemoteWebElement lastScrolledElement = null;
+	
 	public static boolean scrollListToElementWithText(String accessibilityId, String elementText) {
 		boolean isElementFound = false;
 		while (isElementFound == false) {
@@ -25,16 +27,19 @@ public class ScrollIOS {
 				driver.findElementByXPath("//XCUIElementTypeStaticText[@name='" + accessibilityId
 						+ "' and @visible ='true' and @label='" + elementText + "']");
 				isElementFound = true;
-				 Logger.debug("Found an element in the current scroll list.");
+				Logger.debug("Found an element in the current scroll list.");
+				// reset the last scrolled element for the next time we do scrolling
+				lastScrolledElement = null;
 			} catch (WebDriverException ex) {
-				 Logger.debug("Didn't find any matching elements.");
-				scrollEntireList(accessibilityId);
+				// In this case, we're using the WebDriverException to trigger the scroll event, so it's ok that it occurs.
+				Logger.debug("Didn't find any matching elements.");
+				scrollEntireList(accessibilityId, elementText);
 			}
 		}
 		return isElementFound;
 	}
 	
-	private static void scrollEntireList(String accessibilityId) {
+	private static void scrollEntireList(String accessibilityId, String elementText) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 		
 		// The Xcode accessibility id comes through as "name" in the page document
@@ -49,7 +54,19 @@ public class ScrollIOS {
 			throw(new ListItemsNotFoundException(xpath, accessibilityId, "accessibility id"));
 		} 
 			
-		RemoteWebElement bottomElement = listElement.get(listElement.size() - 2);
+		// TODO: Handle offset when looking at header labels with a lot of subitems in between
+		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
+		
+		// Check if the last element is the same as the previous time we scrolled, if so,
+		// it means we hit the end of the list without finding the element
+		// and should throw an error.
+		if (lastScrolledElement != null && lastScrolledElement.getText().equals(bottomElement.getText())) {
+			Logger.error("Scrolled to the bottom of the list and we didn't find the element.");
+			// reset the last scrolled element for the next time we do scrolling
+			lastScrolledElement = null;
+			throw(new ListItemsNotFoundException(xpath, accessibilityId, "accessibility id", elementText));
+		}
+		
 		RemoteWebElement topElement = listElement.get(0);	
 		
 		// Press and scroll from the last element in the list all the way to the top

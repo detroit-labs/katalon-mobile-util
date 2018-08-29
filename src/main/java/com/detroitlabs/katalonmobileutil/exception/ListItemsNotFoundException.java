@@ -21,8 +21,10 @@ public class ListItemsNotFoundException extends NoSuchElementException {
 	}	
 	
 	protected static String formatMessage(String xpath, String resourceId, String resourceType, Integer index, String labelText) {
-		String message = "\nCould not find any list elements matching xpath: " + xpath + 
-				"\nCheck that you have elements with " + resourceType + ": '" + resourceId + "'";
+		String message = "\nCould not find any list elements matching xpath: " + xpath;
+		if (resourceId != null) {
+				message += "\nCheck that you have elements with " + resourceType + ": '" + resourceId + "'";
+		}
 		if (index != null) {
 			message += "\n and that there are at least " + (index + 1) + " elements in the list";
 		}
