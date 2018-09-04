@@ -1,9 +1,14 @@
 package com.detroitlabs.katalonmobileutil.testobject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.interactions.Keyboard;
 
 import com.detroitlabs.katalonmobileutil.device.Device;
 import com.detroitlabs.katalonmobileutil.exception.NoSuchPickerChoiceException;
+import com.detroitlabs.katalonmobileutil.logging.Logger;
+import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel;
 import com.detroitlabs.katalonmobileutil.touch.Scroll;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
@@ -62,40 +67,56 @@ public class TextField {
 		}
 	}
 	
-	/** Choose a value from a drop-down or picker
+	/** Choose a value from a drop-down or picker. 
+	 * Automatically closes the picker once the selection is made.
 	 * 
 	 * @param field Text field TestObject that triggers the drop-down
 	 * @param pickerChoice Value of the picker to select
 	 * @param timeout Timeout (in seconds) for picker-related actions
 	 */
 	public static void selectOption(TestObject field, String pickerChoice, Integer timeout) {
-		
+		List<String> pickerChoices = new ArrayList<String>();
+		pickerChoices.add(pickerChoice);
+		TextField.selectOption(field, pickerChoices, timeout);
+	}	
+	
+	public static void selectOption(TestObject field, List<String> pickerChoices, Integer timeout) {
 		MobileBuiltInKeywords.tap(field, timeout);
 
 		if (Device.isIOS()) {
-			// Find the picker wheel and set its text, which spins the wheel
-			TestObject pickerWheel = new TestObject();
-			pickerWheel.addProperty("type", ConditionType.EQUALS, "XCUIElementTypePickerWheel");
-			MobileBuiltInKeywords.setText(pickerWheel, pickerChoice, timeout);
 			
-			// Find the SELECT button on the picker wheel toolbar and tap it, applying the value to the field
+			// Sometimes there will be multiple pickers side-by-side, e.g. multipart date formats for month, date, year
+			for (int i=0; i < pickerChoices.size(); i++) {
+				// Find the picker wheel and set its text, which spins the wheel
+				TestObject pickerWheel = new TestObject();
+				pickerWheel.addProperty("xpath", ConditionType.EQUALS, "(//XCUIElementTypePickerWheel)[" + (i + 1) + "]");
+				MobileBuiltInKeywords.setText(pickerWheel, pickerChoices.get(i), timeout);
+				Logger.debug("Current pickerWheel value: " + MobileBuiltInKeywords.getText(pickerWheel, timeout));
+			}
+			
+			// Find the SELECT or DONE button on the picker wheel toolbar and tap it, applying the value to the field
 			TestObject selectButton = new TestObject();
-			selectButton.addProperty("type", ConditionType.EQUALS, "XCUIElementTypeButton");
-			selectButton.addProperty("name", ConditionType.EQUALS, "SELECT");
+			// Xpath 1 (used by Selenium) doesn't have matches, so this is a substitute
+			selectButton.addProperty("xpath", ConditionType.EQUALS, "//XCUIElementTypeButton[@name='SELECT' or @name='DONE']");
+			Logger.debug("Tapping the button to close the picker:");
+			Logger.printTestObject(selectButton, LogLevel.DEBUG);
 			MobileBuiltInKeywords.tap(selectButton, timeout);
 			
+			// TODO: Verify that the value selected was actually set. This can be tricky if the text of the picker gets transformed
+			// in code when selected, e.g. October -> 10
 			// It is possible to try to set the text of a field to something not in the picker list, in which case it fails silently.
 			// We need to verify that the selection was made correctly, or throw an exception.
-			String newTextFieldValue = MobileBuiltInKeywords.getText(field, timeout);
-			if (!pickerChoice.equals(newTextFieldValue)) {
-				throw(new NoSuchPickerChoiceException(pickerChoice));
-			}
+//			String newTextFieldValue = MobileBuiltInKeywords.getText(field, timeout);
+//			if (!pickerChoice.equals(newTextFieldValue)) {
+//				throw(new NoSuchPickerChoiceException(pickerChoice));
+//			}
 			
 		} else {
 			// For Android, the picker is a scrolling list of labels
-			Scroll.scrollListToElementWithText(pickerChoice);
-			TestObject selection = Finder.findLabelWithText(pickerChoice);
-			MobileBuiltInKeywords.tap(selection, timeout);
+//			Scroll.scrollListToElementWithText(pickerChoice);
+//			TestObject selection = Finder.findLabelWithText(pickerChoice);
+//			MobileBuiltInKeywords.tap(selection, timeout);
 		}
 	}
+
 }

@@ -6,8 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import com.kms.katalon.core.testobject.TestObject;
 import com.kms.katalon.core.testobject.TestObjectProperty;
+
+import io.appium.java_client.AppiumDriver;
 
 public class Logger {
 
@@ -51,12 +54,26 @@ public class Logger {
 		log(text, LogLevel.FATAL);
 	}
 	
+	/**
+	 * Log the properties of the TestObject
+	 * @param testObject TestObject for logging
+	 * @param level LogLevel at which to do the logging. A LogLevel at or above the Logger's initialized value means that the logging will occur.
+	 */
 	public static void printTestObject(TestObject testObject, LogLevel level) {
 		Logger.log(String.format("Test Object: %s", testObject.getObjectId()), level);
 		List<TestObjectProperty> props = testObject.getProperties();
 		for (TestObjectProperty p : props) {
 			Logger.log(String.format("    %s: %s (active? %s)", p.getName(), p.getValue(), p.isActive()), level);
 		}
+	}
+	
+	/**
+	 * Log the entire XML structure of what is on the screen currently.
+	 * @param level LogLevel at which to do the logging. A LogLevel at or above the Logger's initialized value means that the logging will occur.
+	 */
+	public static void printScreenContents(LogLevel level) {
+		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
+		Logger.log(driver.getPageSource(), level);
 	}
 	
 	public static void log(String text, LogLevel level) {
