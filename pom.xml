@@ -85,12 +85,12 @@
 		<dependency>
 			<groupId>com.kms.katalon</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.0.201805301004</version>
+			<version>1.0.0.201808300639</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
 			<artifactId>mobile</artifactId>
-			<version>1.0.0.201805301004</version>
+			<version>1.0.0.201808300639</version>
 		</dependency>
 	</dependencies>
 	<organization>

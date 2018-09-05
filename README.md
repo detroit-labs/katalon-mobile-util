@@ -34,20 +34,20 @@ mkdir lib
 
 ```
 mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_1.0.0.201805301004.jar" \
+  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_1.0.0.201808300639.jar" \
   -DgroupId=com.kms.katalon \
   -DartifactId=core \
-  -Dversion=1.0.0.201805301004 \
+  -Dversion=1.0.0.201808300639 \
   -Dpackaging=jar \
   -DlocalRepositoryPath=lib
 ```
 
 ```
 mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201805301004.jar" \
+  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201808300639.jar" \
   -DgroupId=com.kms.katalon.core \
   -DartifactId=mobile \
-  -Dversion=1.0.0.201805301004 \
+  -Dversion=1.0.0.201808300639 \
   -Dpackaging=jar \
   -DlocalRepositoryPath=lib
 ```
@@ -55,7 +55,7 @@ mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
 4. Build the package:
 
 ```
-mvn package
+mvn package -U
 ```
 
 The resulting `.jar` file will be created in the **katalon-mobile-util** library's `target` directory.
@@ -69,7 +69,7 @@ The resulting `.jar` file will be created in the **katalon-mobile-util** library
 3. Build and install the package:
 
 ```
-mvn install
+mvn install -U
 ```
 
 4. The **katalon-mobile-util** `.jar` file will be placed in your Katalon Studio test project's `/Drivers` directory.
@@ -87,21 +87,24 @@ Provides information about the platform of the device on which the tests are run
 Add this import statement to your test file:
 
 ```
+import com.detroitlabs.katalonmobileutil.device.App
 import com.detroitlabs.katalonmobileutil.device.Device
 ```
 
-Start the test application on the device, using the device platform to determine which application file to load - will reset the simulator.
+Start the test application on the device. Provide both the iOS and Android files and use the device platform to determine which file to test.  
+Set `removeAppBeforeTest` below to clear the app before running the test. 
 
 ```
-String androidKit = '~/Downloads/mobile-beta.apk'
-String iosKit = '~/Downloads/mobile-beta.app'
-Device.startApp(iosKit, androidKit, true)
-```
+String androidFile = '~/Downloads/mobile-beta.apk'
+String androidAppId = 'com.mycompany.myapp'
+App androidApp = new App(androidFile, androidAppId)
 
-OR, start the test application on the device, using the device platform to determine which application file to load - will NOT reset the simulator between each run.
+String iosFile = '~/Downloads/mobile-beta.app'
+String iosAppId = 'com.mycompany.myapp'
+App iosApp = new App(iosFile, iosAppId)
 
-```
-Device.startApp(iosKit, androidKit)
+boolean removeAppBeforeTest = true // change this to false to keep the app state between tests
+Device.startApp([iosApp, androidApp], removeAppBeforeTest)
 ```
 
 Prints the platform for the test device, `iOS` or `Android`
@@ -119,6 +122,14 @@ if (Device.isIOS()) {
 if (Device.isAndroid()) {
 	println("This is an Android device.")
 }
+```
+
+Stop and clear the app data from the device:  
+NOTE: On iOS, app will not be uninstalled, but its data will be cleared.
+
+```
+boolean uninstallApp = true
+Device.stopApp(uninstallApp)
 ```
 
 ### TestObjects
