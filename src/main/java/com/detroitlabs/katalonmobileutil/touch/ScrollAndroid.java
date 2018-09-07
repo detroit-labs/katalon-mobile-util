@@ -64,9 +64,12 @@ public class ScrollAndroid {
 		} 
 		
 		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
+		
 		// Check if the last element is the same as the previous time we scrolled, if so,
 		// it means we hit the end of the list without finding the element
 		// and should throw an error.
+		Logger.debug("Comparing the previous last element in the list: " + lastScrolledElement + " with text: " + (lastScrolledElement != null ? lastScrolledElement.getText() : "null"));
+		Logger.debug("with the new last element in the list: " + bottomElement + " with text: " + (bottomElement != null ? bottomElement.getText() : "null"));		
 		if (lastScrolledElement != null && lastScrolledElement.getText().equals(bottomElement.getText())) {
 			Logger.error("Scrolled to the bottom of the list and we didn't find the element.");
 			// reset the last scrolled element for the next time we do scrolling
@@ -81,6 +84,9 @@ public class ScrollAndroid {
 		Logger.debug("Scrolling...");
 		TouchAction touchAction = new TouchAction(driver);
 		touchAction.longPress(bottomElement).moveTo(topElement).release().perform();
+		
+		// Update the last scrolled element variable so we can compare it to later
+		lastScrolledElement = bottomElement;
 		
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(5);
