@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Keyboard;
 
 import com.detroitlabs.katalonmobileutil.device.Device;
+import com.detroitlabs.katalonmobileutil.exception.NoSuchPickerChoiceException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel;
 import com.detroitlabs.katalonmobileutil.touch.Scroll;
@@ -70,20 +71,44 @@ public class TextField {
 		}
 	}
 	
-	/** Choose a value from a drop-down or picker. 
-	 * Automatically closes the picker once the selection is made.
+	/** Choose a single value from a drop-down or picker. 
 	 * 
-	 * @param field Text field TestObject that triggers the drop-down
-	 * @param pickerChoice Value of the picker to select
-	 * @param timeout Timeout (in seconds) for picker-related actions
+	 * @param field TextField object which will trigger and receive the input from the picker.
+	 * @param pickerChoice value of the picker to select.
+	 * @param timeout timeout (in seconds) for picker-related actions.
+	 * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
 	 */
-	public static void selectOption(TestObject field, String pickerChoice, Integer timeout) {
+	public static void selectOption(TestObject field, String pickerChoice, Integer timeout) throws NoSuchPickerChoiceException {
 		List<String> pickerChoices = new ArrayList<String>();
 		pickerChoices.add(pickerChoice);
-		TextField.selectOption(field, pickerChoices, timeout);
+		// Assume that the picker choice is also the string that will be used to validate the selection.
+		TextField.selectOption(field, pickerChoices, pickerChoice, timeout);
 	}	
 	
-	public static void selectOption(TestObject field, List<String> pickerChoices, Integer timeout) {
+	/** Choose a single value from a drop-down or picker. Use this in cases where the picker value is transformed before
+	 * showing in the text field. 
+	 * 
+	 * @param field TextField object which will trigger and receive the input from the picker.
+	 * @param pickerChoice value of the picker to select.
+	 * @param expectedFieldValue value used to make sure that the picker choices were made correctly.
+	 * @param timeout timeout (in seconds) for picker-related actions.
+	 * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
+	 */
+	public static void selectOption(TestObject field, String pickerChoice, String expectedFieldValue, Integer timeout) throws NoSuchPickerChoiceException {
+		List<String> pickerChoices = new ArrayList<String>();
+		pickerChoices.add(pickerChoice);
+		TextField.selectOption(field, pickerChoices, expectedFieldValue, timeout);
+	}	
+	
+	/**
+	 * Select multiple values from a multipart picker.
+	 * @param field TextField object which will trigger and receive the input from the picker.
+	 * @param pickerChoices value of the option to select for each part of the picker.
+	 * @param expectedFieldValue value used to make sure that the picker choices were made correctly.
+	 * @param timeout timeout (in seconds) for picker-related actions.
+	 * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
+	 */
+	public static void selectOption(TestObject field, List<String> pickerChoices, String expectedFieldValue, Integer timeout) throws NoSuchPickerChoiceException {
 		
 		// Open the picker by tapping on the field that triggers it
 		MobileBuiltInKeywords.tap(field, timeout);
@@ -102,7 +127,7 @@ public class TextField {
 					try {
 						selectOptionFromAndroidPicker(i, pickerChoice, timeout);
 					} catch (NoSuchElementException ex) {
-						// TODO: How to handle multiple pickers?
+						// TODO: What if there are multiple listsof ?
 						// Not a real picker, just a list of text elements
 						selectOptionFromAndroidTextList(pickerChoice, timeout); 
 					}
@@ -111,19 +136,15 @@ public class TextField {
 			
 		}
 		
-		if (Device.isIOS()) {
-			// Find the SELECT or DONE button on the picker wheel toolbar and tap it, applying the value to the field
-			TextField.tapButtonWithNameIn(Arrays.asList("SELECT", "Select", "DONE", "Done"));
-		}
+		// Find the SELECT, DONE, or OK button on the picker wheel and tap it, applying the value to the field
+		TextField.tapButtonWithText(Arrays.asList("OK", "SELECT", "Select", "DONE", "Done"));
 		
-		// TODO: Verify that the value selected was actually set. This can be tricky if the text of the picker gets transformed
-		// in code when selected, e.g. October -> 10
 		// It is possible to try to set the text of a field to something not in the picker list, in which case it fails silently.
 		// We need to verify that the selection was made correctly, or throw an exception.
-//		String newTextFieldValue = MobileBuiltInKeywords.getText(field, timeout);
-//		if (!pickerChoice.equals(newTextFieldValue)) {
-//			throw(new NoSuchPickerChoiceException(pickerChoice));
-//		}
+		String newTextFieldValue = MobileBuiltInKeywords.getText(field, timeout);
+		if (!expectedFieldValue.equalsIgnoreCase(newTextFieldValue)) {
+			throw(new NoSuchPickerChoiceException(pickerChoices));
+		}
 		
 	}
 	
@@ -134,7 +155,7 @@ public class TextField {
 		// TODO: Check if keyboard is open?
 		if (Device.isIOS()) {
 			// For iOS, look at the buttons and find one that matches "Next", but there can be a few variations
-			TextField.tapButtonWithNameIn(Arrays.asList("NEXT", "Next", ">"));
+			tapButtonWithText(Arrays.asList("NEXT", "Next", ">"));
 		} else {
 			// For Android, we can use the Tab key
 			AndroidDriver<?> driver = (AndroidDriver<?>) MobileDriverFactory.getDriver();
@@ -148,7 +169,7 @@ public class TextField {
 			if (Device.isIOS()) {
 				// The hideKeyboard function often crashes in iOS.
 				// Find the DONE button on the keyboard toolbar and tap it, closing the keyboard
-				TextField.tapButtonWithNameIn(Arrays.asList("DONE", "Done"));
+				tapButtonWithText(Arrays.asList("DONE", "Done"));
 			} else {
 				// Android's hideKeyboard seems more reliable.
 				driver.hideKeyboard();
@@ -159,18 +180,26 @@ public class TextField {
 		
 	}
 	
-	private static void tapButtonWithNameIn(List<String> names) {
+	private static void tapButtonWithText(List<String> names) {
+		if (Device.isIOS()) {
+			tapButtonWithText(names, "XCUIElementTypeButton", "name");
+		} else {
+			tapButtonWithText(names, "android.widget.Button", "text");
+		}
+	}
+	
+	private static void tapButtonWithText(List<String>names, String objectClass, String objectProperty) {
 		TestObject button = new TestObject();
 		// Xpath 1 (used by Selenium) doesn't have matches, so this is a substitute
 		StringBuilder sb = new StringBuilder();
-		sb.append("@name='").append(names.get(0)).append("'");
+		sb.append("@").append(objectProperty).append("='").append(names.get(0)).append("'");
 		for (int i=1; i<names.size(); i++) {
-			sb.append(" or @name='").append(names.get(i)).append("'");
+			sb.append(" or @").append(objectProperty).append("='").append(names.get(i)).append("'");
 		}
-		button.addProperty("xpath", ConditionType.EQUALS, "//XCUIElementTypeButton[" + sb.toString() + "]");
+		button.addProperty("xpath", ConditionType.EQUALS, "//" + objectClass + "[" + sb.toString() + "]");
 		Logger.debug("Tapping the button to close the keyboard or picker:");
 		Logger.printTestObject(button, LogLevel.DEBUG);
-		MobileBuiltInKeywords.tap(button, 0);
+		MobileBuiltInKeywords.tap(button, 0, FailureHandling.OPTIONAL);
 	}
 	
 	private static void selectOptionFromAndroidPicker(int pickerIndex, String pickerChoice, int timeout) throws NoSuchElementException {
@@ -209,7 +238,6 @@ public class TextField {
 		// Find the picker wheel and set its text, which spins the wheel
 		TestObject pickerWheel = new TestObject();
 		pickerWheel.addProperty("xpath", ConditionType.EQUALS, "(//XCUIElementTypePickerWheel)[" + (pickerIndex + 1) + "]");
-//		MobileBuiltInKeywords.setText(pickerWheel, pickerChoice, timeout);
 		MobileBuiltInKeywords.sendKeys(pickerWheel, pickerChoice);
 		Logger.debug("Current pickerWheel value: " + MobileBuiltInKeywords.getText(pickerWheel, timeout));
 		
