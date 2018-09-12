@@ -33,7 +33,7 @@ public class Device {
 	 * Start a mobile application for testing, automatically determined by the device platform.
 	 * @param apps a list of Apps for each platform that will be parsed when starting the app. The app for the current platform will be chosen.
 	 * @param removeAppBefore determines whether app data will be cleared before the app starts.
-	 * @throws AppNotFoundException 
+	 * @throws AppNotFoundException when the provided platform is not recognized.
 	 */
 	public static void startApp(List<App> apps, boolean removeAppBefore) throws AppNotFoundException {
 		App app = null;
