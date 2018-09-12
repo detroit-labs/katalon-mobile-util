@@ -3,6 +3,10 @@
 
 **katalon-mobile-util** is a library of utilities to make mobile UI testing in Katalon Studio easier.
 
+## Javadocs
+
+For detailed usage, view the [Javadocs](https://detroit-labs.github.io/katalon-mobile-util/).
+
 ## Installation
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
@@ -77,6 +81,8 @@ mvn install -U
 ## Usage
 
 This **katalon-mobile-util** library provides convenience functions for interacting with Katalon Studio and Appium features:
+
+For detailed usage, view the [Javadocs](https://detroit-labs.github.io/katalon-mobile-util/).
 
 ### Device
 
