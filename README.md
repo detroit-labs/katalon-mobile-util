@@ -1,3 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [katalon-mobile-util](#katalon-mobile-util)
+  - [Javadocs](#javadocs)
+  - [Installation](#installation)
+  - [Building from source](#building-from-source)
+    - [Prerequisites](#prerequisites)
+    - [Building](#building)
+  - [Installing from source](#installing-from-source)
+  - [Usage](#usage)
+    - [Device](#device)
+      - [How to use Device](#how-to-use-device)
+    - [TestObjects](#testobjects)
+      - [Organization](#organization)
+      - [How to use TestObject Finder](#how-to-use-testobject-finder)
+      - [Finding a Label from a List by Index](#finding-a-label-from-a-list-by-index)
+      - [Finding a Label from a List by the Label Text](#finding-a-label-from-a-list-by-the-label-text)
+      - [Converting from Selenium WebElements to Katalon TestObjects](#converting-from-selenium-webelements-to-katalon-testobjects)
+    - [Button](#button)
+    - [TextField](#textfield)
+      - [How to use TextField](#how-to-use-textfield)
+      - [Using a TextField with a Picker list](#using-a-textfield-with-a-picker-list)
+      - [Keyboard Handling](#keyboard-handling)
+    - [Scrolling](#scrolling)
+      - [How to use Scrolling](#how-to-use-scrolling)
+    - [Logging](#logging)
+      - [Log Levels](#log-levels)
+      - [How to use Logger](#how-to-use-logger)
+  - [Resources](#resources)
+  - [Contact](#contact)
+  - [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # katalon-mobile-util
 [Katalon Studio](https://www.katalon.com/) is an IDE that provides a unified way to test UI for mobile and web. 
 
