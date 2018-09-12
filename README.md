@@ -7,7 +7,7 @@
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.6.1/katalon-mobile-util-1.6.1.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.7.0/katalon-mobile-util-1.7.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 ## Building from source
 
@@ -334,6 +334,28 @@ To fill in a TextField by selecting its value from a list, e.g. selecting "Michi
 int timeout = 10
 TestObject stateField = Finder.findTextField('State form field')
 TextField.selectOption(stateField, 'Michigan', timeout)
+```
+
+To fill in a TextField that is built from multiple values, e.g. a multi-part date, provide a value for each part of the picker. Date picker selections often get transformed when displayed in the form, so we also provide the expected value of the field when the picker selections are made. If the values don't match, the test will fail.
+
+```
+TextField.selectOption(expirationDateField, ['September', '12', '2018'], '9/12/2018', timeout)
+```
+
+#### Keyboard Handling
+
+To move between TextFields in a form and autofocus on the next field.  
+**NOTE:** For iOS, this will look for the "Next" or ">" button on the keyboard toolbar. Android uses the keyboard's tab key.
+
+```
+TextField.nextField()
+```
+
+To close the keyboard.  
+**NOTE:** For iOS, this will look for the "Done", "Select", or "OK" button on the keyboard toolbar. Closing the Android keyboard does not rely on these buttons.
+
+```
+TextField.hideKeyboard()
 ```
 
 ### Scrolling
