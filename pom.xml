@@ -14,16 +14,16 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Change this to point to your project's /Drivers directory -->
-		<project.target.katalon.directory>/MobileTestingSample/Drivers</project.target.katalon.directory>
+		<project.target.katalon.directory>/Users/chris/Katalon Studio/MobileTestingSample/Drivers</project.target.katalon.directory>
 	</properties>
 
 	<build>
 		<resources> 
 			<resource>
 				<directory>src/main/java</directory>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
+				<includes>
+					<include>**/*.java</include>
+				</includes>
 			</resource>
 		</resources>
 		<plugins>
@@ -49,9 +49,20 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-surefire-plugin</artifactId>
+			    <version>2.22.0</version>
+	            <dependencies>
+	                <dependency>
+	                    <groupId>org.junit.platform</groupId>
+	                    <artifactId>junit-platform-surefire-provider</artifactId>
+	                    <version>1.2.0</version>
+	                </dependency>
+	            </dependencies>			    
+			</plugin>			
 		</plugins>
 	</build>
-
 
 	<!-- Used to link in the Katalon libraries as if they were an .m2 repo -->
 	<repositories>
@@ -62,11 +73,18 @@
 	</repositories>
 
 	<dependencies>
+	    <dependency>
+	        <groupId>org.junit.jupiter</groupId>
+	        <artifactId>junit-jupiter-engine</artifactId>
+	        <version>5.3.1</version>
+	        <scope>test</scope>
+	    </dependency>	
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>5.3.1</version>
+		    <scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
 		<dependency>
