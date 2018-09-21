@@ -5,6 +5,38 @@ import java.util.List;
 import com.detroitlabs.katalonmobileutil.device.Device;
 
 public class XPathBuilder {
+	
+	// TODO: Make this more generic to build xpath for all types?
+	public static String xpathForLabelWithResourceId(String resourceId) {
+		return xpathForLabel(resourceId, null);
+	}
+	
+	public static String xpathForLabel(String resourceId, String labelText) {
+		
+		String elementType = Device.isIOS() ? "XCUIElementTypeStaticText" : "TextView";
+		String xpath = createXPath(elementType);
+		xpath = addResourceId(xpath, resourceId);
+		if (labelText != null) {
+			xpath = addLabel(xpath, labelText);
+		}
+		return xpath;
+	}
+	
+	public static String xpathForLabelWithText(String labelText) {
+		
+		String elementType = Device.isIOS() ? "XCUIElementTypeStaticText" : "TextView";
+		String xpath = createXPath(elementType);
+		xpath = addLabel(xpath, labelText);
+		return xpath;
+	}	
+	
+	public static String xpathForCheckboxWithText(String checkboxText) {
+		// iOS checkboxes can be activated from their labels
+		String elementType = Device.isIOS() ? "XCUIElementTypeStaticText" : "CheckBox";
+		String xpath = createXPath(elementType);
+		xpath = addLabel(xpath, checkboxText);
+		return xpath;
+	}
 
 	public static String createXPath(String type) {
 		String xpath = "";
@@ -36,94 +68,70 @@ public class XPathBuilder {
 		xpath = xpath + ")]";
 		
 		return xpath;
-	}
-	
-	// TODO: Make this more generic to build xpath for all types?
-	public static String xpathForLabelWithResourceId(String resourceId) {
-		return xpathForLabel(resourceId, null);
-	}
-	
-	public static String xpathForLabel(String resourceId, String labelText) {
-		String xpath = "";
-		
-		if (Device.isIOS()) {
-			xpath = "//XCUIElementTypeStaticText[" + resourceIdXPath(resourceId);
-		} else {
-			xpath = "//*[" + textViewXPath() + " and " + resourceIdXPath(resourceId);
-		}
-		
-		xpath = xpath + (labelText != null ? " and " + labelXPath(labelText) : "");
-		xpath = xpath + "]";
-
-		return xpath;
-	}
-	
-	public static String xpathForLabelWithText(String labelText) {
-		String xpath = "";
-		
-		if (Device.isIOS()) {
-			xpath = "//XCUIElementTypeStaticText[";
-		} else {
-			xpath = "//*[" + textViewXPath();
-		}
-		
-		xpath = xpath + (labelText != null ? " and " + labelXPath(labelText) : "");
-		xpath = xpath + "]";
-
-		return xpath;
 	}	
 	
-	public static String xpathForCheckboxWithText(String checkboxText) {
-		String xpath = "";
+	public static String addVisible(String xpath) {
+		String newXPath = "";
 		
-		if (Device.isIOS()) {
-			xpath = "//XCUIElementTypeStaticText[";
+		// TODO: Handle an xpath that is an array
+		int endOfXPath = xpath.lastIndexOf(']');
+		
+		// if the xpath doesn't have properties already, then start some
+		if (endOfXPath == -1) {
+			newXPath = xpath + "[";
 		} else {
-			xpath = "//android.widget.CheckBox[";
+			newXPath = xpath.substring(0, endOfXPath) + " and ";
 		}
 		
-		xpath = xpath + (checkboxText != null ? labelXPath(checkboxText) : "");
-		xpath = xpath + "]";
-
-		return xpath;
-	}
-	
-	public static String addVisible(String xpath) {
-		// find end of the xpath string
-		// check if there are any statements in it already (if so, add an "and")
-		// add a visible statement
-		// TODO: Handle an xpath that is an array
-		return null;
+		newXPath = newXPath + "@visible=true]";
+		return newXPath;
 	}
 	
 	public static String addLabel(String xpath, String label) {
-		// find end of xpath string
-		// check if there are any statements in it already (if so, add an "and")
-		// add a label= statement
+		String newXPath = "";
+		
 		// TODO: Handle an xpath that is an array
-		return null;
-	}
-	
-	private static String resourceIdXPath(String resourceId) {
-		if (Device.isIOS()) {
-			// The Xcode accessibility id comes through as "name" in the page document
-			return "@name = '" + resourceId + "'";
+		int endOfXPath = xpath.lastIndexOf(']');
+		
+		// if the xpath doesn't have properties already, then start some
+		if (endOfXPath == -1) {
+			newXPath = xpath + "[";
 		} else {
-			// Using "contains" for Android because the resource-id gets appended with package info
-			return "contains(@resource-id, '" + resourceId + "')";
+			newXPath = xpath.substring(0, endOfXPath) + " and ";
 		}
+		
+		newXPath = newXPath + textXPath(label) + "]";
+		
+		return newXPath;
 	}
-	
-	private static String textViewXPath() {
-		// Android has multiple classes that count as text views
-		return "contains(@class, 'TextView')";
+
+	public static String addResourceId(String xpath, String resourceId) {
+		String newXPath = "";
+		
+		// TODO: Handle an xpath that is an array
+		int endOfXPath = xpath.lastIndexOf(']');
+		
+		// if the xpath doesn't have properties already, then start some
+		if (endOfXPath == -1) {
+			newXPath = xpath + "[";
+		} else {
+			newXPath = xpath.substring(0, endOfXPath) + " and ";
+		}
+				
+		if (Device.isIOS()) {
+			newXPath = newXPath + "@name='" + resourceId + "']";
+		} else {
+			newXPath = newXPath + "contains(@resource-id, '" + resourceId + "')]";
+		}
+		
+		return newXPath;
 	}	
 	
-	private static String labelXPath(String labelText) {
+	private static String textXPath(String labelText) {
 		if (Device.isIOS()) {
-			return "@label = '" + labelText + "'";
+			return "@label='" + labelText + "'";
 		} else {
-			return "@text = '" + labelText + "'";
+			return "@text='" + labelText + "'";
 		}
 	}	
 	
