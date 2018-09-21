@@ -53,13 +53,6 @@
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-surefire-plugin</artifactId>
 			    <version>2.22.0</version>
-	            <dependencies>
-	                <dependency>
-	                    <groupId>org.junit.platform</groupId>
-	                    <artifactId>junit-platform-surefire-provider</artifactId>
-	                    <version>1.2.0</version>
-	                </dependency>
-	            </dependencies>			    
 			</plugin>			
 		</plugins>
 	</build>
@@ -72,27 +65,14 @@
 		</repository>
 	</repositories>
 
-	<dependencies>
-	    <dependency>
-	        <groupId>org.junit.jupiter</groupId>
-	        <artifactId>junit-jupiter-engine</artifactId>
-	        <version>5.3.1</version>
-	        <scope>test</scope>
-	    </dependency>	
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>5.3.1</version>
-		    <scope>test</scope>
-		</dependency>
+	<dependencies>		
 		<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 			<version>2.5.0</version>
 			<type>pom</type>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
@@ -110,6 +90,57 @@
 			<artifactId>mobile</artifactId>
 			<version>1.0.0.201808300639</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.12</version>
+		    <scope>test</scope>
+		</dependency>	
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-core -->
+		<dependency>
+		    <groupId>org.powermock</groupId>
+		    <artifactId>powermock-core</artifactId>
+		    <version>1.7.4</version>
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-all</artifactId>
+		    <version>1.10.19</version>
+		    <scope>test</scope>
+		</dependency>			
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito2 -->
+		<dependency>
+		    <groupId>org.powermock</groupId>
+		    <artifactId>powermock-api-mockito2</artifactId>
+		    <version>1.7.4</version>
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+		<dependency>
+		    <groupId>org.powermock</groupId>
+		    <artifactId>powermock-module-junit4</artifactId>
+		    <version>1.7.4</version>
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4-rule -->
+		<dependency>
+		    <groupId>org.powermock</groupId>
+		    <artifactId>powermock-module-junit4-rule</artifactId>
+		    <version>1.7.4</version>
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-classloading-xstream -->
+		<dependency>
+		    <groupId>org.powermock</groupId>
+		    <artifactId>powermock-classloading-xstream</artifactId>
+		    <version>1.7.4</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		
 	</dependencies>
 	<organization>
 		<name>Detroit Labs</name>
