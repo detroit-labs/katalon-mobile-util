@@ -9,6 +9,7 @@ import com.detroitlabs.katalonmobileutil.exception.ListItemsNotFoundException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
+import com.kms.katalon.core.testobject.TestObject;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
@@ -17,15 +18,25 @@ public class ScrollIOS {
 
 	static RemoteWebElement lastScrolledElement = null;
 	
+	public static boolean scrollListToElementWithText(TestObject testObject, String elementText) {
+		// Build an xpath from the TestObject so we can use it to find all of the similar objects
+		return scrollListToElementWithText("", elementText);
+	}
+	
 	public static boolean scrollListToElementWithText(String accessibilityId, String elementText) {
+		String xpath = "//XCUIElementTypeStaticText[@name='" + accessibilityId
+				+ "' and @visible ='true' and @label='" + elementText + "']";
+		return scrollListToElementWithXPathAndText(xpath, elementText);
+	}
+	
+	private static boolean scrollListToElementWithXPathAndText(String xpath, String elementText) {
 		boolean isElementFound = false;
 		while (isElementFound == false) {
 			try {
 				 Logger.debug("Checking for specific element: " + elementText);
 				// The Xcode accessibility id comes through as "name" in the page document
 				AppiumDriver<?> driver = MobileDriverFactory.getDriver();				 
-				driver.findElementByXPath("//XCUIElementTypeStaticText[@name='" + accessibilityId
-						+ "' and @visible ='true' and @label='" + elementText + "']");
+				driver.findElementByXPath(xpath);
 				isElementFound = true;
 				Logger.debug("Found an element in the current scroll list.");
 				// reset the last scrolled element for the next time we do scrolling
@@ -33,17 +44,17 @@ public class ScrollIOS {
 			} catch (WebDriverException ex) {
 				// In this case, we're using the WebDriverException to trigger the scroll event, so it's ok that it occurs.
 				Logger.debug("Didn't find any matching elements.");
-				scrollEntireList(accessibilityId, elementText);
+				scrollEntireList(xpath, elementText);
 			}
 		}
 		return isElementFound;
 	}
 	
-	private static void scrollEntireList(String accessibilityId, String elementText) {
+	private static void scrollEntireList(String xpath, String elementText) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 		
 		// The Xcode accessibility id comes through as "name" in the page document
-		String xpath = "//XCUIElementTypeStaticText[@name='" + accessibilityId + "' and @visible ='true']";
+//		String xpath = "//XCUIElementTypeStaticText[@name='" + accessibilityId + "' and @visible ='true']";
 		
 		@SuppressWarnings("unchecked")
 		List<RemoteWebElement> listElement = (List<RemoteWebElement>) driver.findElementsByXPath(xpath);
@@ -51,7 +62,7 @@ public class ScrollIOS {
 		Logger.debug("Getting a scroll list of all elements.");
 		if (listElement.size() <= 0) {
 			// throw a new exception for not being able to find the elements
-			throw(new ListItemsNotFoundException(xpath, accessibilityId, "accessibility id"));
+			throw(new ListItemsNotFoundException(xpath, null, "accessibility id"));
 		} 
 			
 		// TODO: Handle offset when looking at header labels with a lot of subitems in between
@@ -66,7 +77,7 @@ public class ScrollIOS {
 			Logger.error("Scrolled to the bottom of the list and we didn't find the element.");
 			// reset the last scrolled element for the next time we do scrolling
 			lastScrolledElement = null;
-			throw(new ListItemsNotFoundException(xpath, accessibilityId, "accessibility id", elementText));
+			throw(new ListItemsNotFoundException(xpath, null, "accessibility id", elementText));
 		}
 		
 		RemoteWebElement topElement = listElement.get(0);	

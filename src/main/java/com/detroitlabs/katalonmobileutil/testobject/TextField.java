@@ -123,14 +123,14 @@ public class TextField {
 				
 			} else {
 						
-				 	// Android
-					try {
-						selectOptionFromAndroidPicker(i, pickerChoice, timeout);
-					} catch (NoSuchElementException ex) {
-						// TODO: What if there are multiple listsof ?
-						// Not a real picker, just a list of text elements
-						selectOptionFromAndroidTextList(pickerChoice, timeout); 
-					}
+			 	// Android
+				try {
+					selectOptionFromAndroidPicker(i, pickerChoice, timeout);
+				} catch (NoSuchElementException ex) {
+					// TODO: What if there are multiple lists ?
+					// Not a real picker, just a list of text elements
+					selectOptionFromAndroidTextList(pickerChoice, timeout); 
+				}
 
 			}
 			
@@ -141,11 +141,41 @@ public class TextField {
 		
 		// It is possible to try to set the text of a field to something not in the picker list, in which case it fails silently.
 		// We need to verify that the selection was made correctly, or throw an exception.
-		String newTextFieldValue = MobileBuiltInKeywords.getText(field, timeout);
+		
+		String newTextFieldValue = getPickerValue(field, timeout);
+		Logger.debug("Verifying that the picker value(s) of: " + pickerChoices + " was set correctly on " + field + " which now has a value of: " + newTextFieldValue);
+		Logger.debug("Picker value set successfully!");
 		if (!expectedFieldValue.equalsIgnoreCase(newTextFieldValue)) {
 			throw(new NoSuchPickerChoiceException(pickerChoices));
 		}
 		
+	}
+	
+	private static String getPickerValue(TestObject field, Integer timeout) {
+		String pickerValue = null;
+		if (Device.isIOS()) {
+			pickerValue = MobileBuiltInKeywords.getText(field, timeout);
+		} else {
+			String type = TestObjectConverter.typeFromTestObject(field);
+			
+			String xpath = XPathBuilder.createXPath(type);
+				
+			String resourceId = TestObjectConverter.resourceIdFromTestObject(field);
+			xpath = XPathBuilder.addResourceId(xpath, resourceId);
+			
+			// Android spinners don't expose their text - we have to dig in to get the TextView 
+			if (type.contains("Spinner")) {
+				xpath = XPathBuilder.addChildWithType(xpath, "TextView");
+			}
+			
+			TestObject spinner = new TestObject();
+			spinner.addProperty("xpath", ConditionType.EQUALS, xpath);
+			
+			pickerValue = MobileBuiltInKeywords.getText(spinner, timeout);
+			
+		}
+		
+		return pickerValue;
 	}
 	
 	/**
@@ -199,7 +229,7 @@ public class TextField {
 		button.addProperty("xpath", ConditionType.EQUALS, "//" + objectClass + "[" + sb.toString() + "]");
 		Logger.debug("Tapping the button to close the keyboard or picker:");
 		Logger.printTestObject(button, LogLevel.DEBUG);
-		MobileBuiltInKeywords.tap(button, 0, FailureHandling.OPTIONAL);
+		MobileBuiltInKeywords.tap(button, 1, FailureHandling.OPTIONAL);
 	}
 	
 	private static void selectOptionFromAndroidPicker(int pickerIndex, String pickerChoice, int timeout) throws NoSuchElementException {

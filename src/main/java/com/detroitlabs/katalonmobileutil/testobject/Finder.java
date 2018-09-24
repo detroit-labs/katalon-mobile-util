@@ -99,7 +99,7 @@ public class Finder {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 
 		TestObject templateObject = Finder.findLabel(testObjectName);
-		String resourceId = resourceIdFromTestObject(templateObject);
+		String resourceId = TestObjectConverter.resourceIdFromTestObject(templateObject);
 
 		String xpath = "(" + XPathBuilder.xpathForLabelWithResourceId(resourceId) + ")[" + index + "]";
 
@@ -143,8 +143,7 @@ public class Finder {
 		try {
 			listElement = (RemoteWebElement) driver.findElementByXPath(xpath);
 		} catch (WebDriverException ex) {
-			String resourceType = Device.isIOS() ? "accessibility id" : "resource-id";
-			throw (new ListItemsNotFoundException(xpath, null, resourceType, labelText));
+			throw (new ListItemsNotFoundException(xpath, labelText));
 		}
 
 		Logger.debug("Found label:" + listElement);
@@ -182,7 +181,7 @@ public class Finder {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 
 		TestObject templateObject = Finder.findLabel(testObjectName);
-		String resourceId = resourceIdFromTestObject(templateObject);
+		String resourceId = TestObjectConverter.resourceIdFromTestObject(templateObject);
 
 		String xpath = XPathBuilder.xpathForLabel(resourceId, labelText);
 
@@ -203,20 +202,37 @@ public class Finder {
 		return objectAtIndex;
 	}
 
-	private static String resourceIdFromTestObject(TestObject testObject) {
-		String resourceId = null;
+	/**
+	 * Find a Checkbox with given text from a list of all checkboxes on the screen.
+	 * <p>
+	 * There is no prerequisite that a similar Checkbox exists in the Object
+	 * Repository.
+	 * 
+	 * @param checkboxText
+	 *            the text of the checkbox to find. Must match exactly, including
+	 *            upper/lower case matching.
+	 * @return the matching Checkbox TestObject
+	 */
+	public static TestObject findCheckboxWithText(String checkboxText) {
 
-		// For iOS, accessiblityId will be in the property "name", for Android it's "resource-id"
-		String propertyName = Device.isIOS() ? "name" : "resource-id";
+		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 
-		for (TestObjectProperty p : testObject.getActiveProperties()) {
-			if (propertyName.equals(p.getName())) {
-				resourceId = p.getValue();
-				break;
-			}
+		String xpath = XPathBuilder.xpathForCheckboxWithText(checkboxText);
+
+		RemoteWebElement listElement = null;
+
+		Logger.debug("Looking for checkboxes with xpath: " + xpath);
+		try {
+			listElement = (RemoteWebElement) driver.findElementByXPath(xpath);
+		} catch (WebDriverException ex) {
+			throw (new ListItemsNotFoundException(xpath, checkboxText));
 		}
 
-		return resourceId;
+		Logger.debug("Found checkbox:" + listElement);
+		TestObject objectAtIndex = TestObjectConverter.fromElement(listElement);
+
+		// return the test object
+		return objectAtIndex;
 	}
 
 	private static TestObject findObject(String type, String name) {

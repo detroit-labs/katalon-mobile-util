@@ -8,6 +8,14 @@ public class ListItemsNotFoundException extends NoSuchElementException {
 
 	private static final long serialVersionUID = 1L;
 
+	public ListItemsNotFoundException(String xpath) {
+		super(formatMessage(xpath, null, null, null, null));
+	}	
+	
+	public ListItemsNotFoundException(String xpath, String labelText) {
+		super(formatMessage(xpath, null, null, null, labelText));
+	}
+	
 	public ListItemsNotFoundException(String xpath, String resourceId, String resourceType) {
 		super(formatMessage(xpath, resourceId, resourceType, null, null));
 	}

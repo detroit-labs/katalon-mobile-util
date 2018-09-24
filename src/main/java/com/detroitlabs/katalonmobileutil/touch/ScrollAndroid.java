@@ -7,6 +7,7 @@ import org.openqa.selenium.remote.RemoteWebElement;
 
 import com.detroitlabs.katalonmobileutil.exception.ListItemsNotFoundException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
+import com.detroitlabs.katalonmobileutil.testobject.XPathBuilder;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 
@@ -14,28 +15,41 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 
 public class ScrollAndroid {
-
-	// Xpath 1 (used by Selenium) doesn't have ends-with, so this is a substitute
-	static String textViewXpathString = "contains(@class, 'TextView')";
 	
 	static RemoteWebElement lastScrolledElement = null;
 
 	// Not all elements have a distinguishable resource-id, so just the text will
-	// have to do
+	// have to do.
+	// WARNING: In Android, buttons are also TextViews, so if a resource-id is not specified, then
+	// a footer button might be considered part of the scroll list, which could prevent scrolling
+	// of the actual list elements. It is always best practice to include a resource-id if possible.
 	public static boolean scrollListToElementWithText(String elementText) {
 		return scrollListToElementWithText(null, elementText);
 	}
-
+	
 	// For Android, elementId equates to the resource-id
 	public static boolean scrollListToElementWithText(String resourceId, String elementText) {
+		String xpath = XPathBuilder.createXPath("TextView");
+		if (resourceId != null) {
+			xpath = XPathBuilder.addResourceId(xpath, resourceId);
+		}
+		return scrollListToElementWithXPath(xpath, elementText);
+	}	
+
+	public static boolean scrollListToCheckboxWithText(String elementText) {
+		String xpath = XPathBuilder.createXPath("CheckBox");
+		return scrollListToElementWithXPath(xpath, elementText);
+	}
+	
+	public static boolean scrollListToElementWithXPath(String xpath, String elementText) {
 		boolean isElementFound = false;
 		boolean hasScrolledToEndOfList = false;
 		while (isElementFound == false && hasScrolledToEndOfList == false) {
 			try {
 				Logger.debug("Checking for specific element: " + elementText);
 				AppiumDriver<?> driver = MobileDriverFactory.getDriver();
-				driver.findElementByXPath("//*[" + textViewXpathString + resourceXpathString(resourceId)
-						+ " and @text='" + elementText + "']");
+				String xpathWithText = XPathBuilder.addLabel(xpath, elementText);
+				driver.findElementByXPath(xpathWithText);
 				isElementFound = true;
 				Logger.debug("Found an element in the current scroll list.");
 				// reset the last scrolled element for the next time we do scrolling
@@ -43,24 +57,23 @@ public class ScrollAndroid {
 			} catch (WebDriverException ex) {
 				// In this case, we're using the WebDriverException to trigger the scroll event, so it's ok that it occurs.
 				Logger.debug("Didn't find any matching elements in the visible scroll list.");
-				scrollEntireList(resourceId, elementText);
+				// Try scrolling the list with the xpath WITHOUT the text
+				scrollEntireListWithXPath(xpath, elementText);
 			}
 		}
 		return isElementFound;
 	}
-
-	private static void scrollEntireList(String resourceId, String elementText) {
+	
+	private static void scrollEntireListWithXPath(String xpath, String elementText) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
-		
-		String xpath = "//*[" + textViewXpathString + resourceXpathString(resourceId) + "]";
-		
+				
 		@SuppressWarnings("unchecked")
 		List<RemoteWebElement> listElement = (List<RemoteWebElement>) driver.findElementsByXPath(xpath);
 		
 		Logger.debug("Getting a scroll list of all elements.");
 		if (listElement.size() <= 0) {
 			// throw a new exception for not being able to find the elements
-			throw(new ListItemsNotFoundException(xpath, resourceId, "resource id"));
+			throw(new ListItemsNotFoundException(xpath));
 		} 
 		
 		RemoteWebElement bottomElement = listElement.get(listElement.size() - 1);
@@ -74,7 +87,7 @@ public class ScrollAndroid {
 			Logger.error("Scrolled to the bottom of the list and we didn't find the element.");
 			// reset the last scrolled element for the next time we do scrolling
 			lastScrolledElement = null;
-			throw(new ListItemsNotFoundException(xpath, resourceId, "resource id", elementText));
+			throw(new ListItemsNotFoundException(xpath, elementText));
 		}
 		lastScrolledElement = bottomElement;
 		Logger.debug("New last element: " + lastScrolledElement.getText());
@@ -91,15 +104,6 @@ public class ScrollAndroid {
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(5);
 
-	}
-
-	// Can speed things up to narrow down the collection of elements by resource id
-	private static String resourceXpathString(String resourceId) {
-		if (resourceId == null) {
-			return "";
-		}
-
-		return " and contains(@resource-id, '" + resourceId + "') ";
 	}
 
 }
