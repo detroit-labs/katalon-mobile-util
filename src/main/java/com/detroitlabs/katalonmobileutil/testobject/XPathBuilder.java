@@ -126,6 +126,17 @@ public class XPathBuilder {
 		
 		return newXPath;
 	}	
+
+	public static String addChildWithType(String xpath, String type) {
+		String newXPath = xpath;
+		if (Device.isIOS()) {
+			newXPath = newXPath + "/*[equals(@type, '" + type + "')]";
+		} else {
+			newXPath = newXPath + "/*[contains(@class, '" + type + "')]";
+		}
+		
+		return newXPath;
+	}	
 	
 	private static String textXPath(String labelText) {
 		if (Device.isIOS()) {

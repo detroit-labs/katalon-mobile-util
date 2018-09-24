@@ -165,5 +165,19 @@ class XPathBuilderTest {
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		assertEquals("//*[contains(@class, 'CheckBox') and @text='My Label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
 	}	
+	
+	@Test
+	@DisplayName("adding a child to an xpath creates an xpath with the child appended")
+	public void addingAChildToAnXPath_returnsAnXPathWithTheChild() {
+
+		// iOS
+		String xpath = "//*[equals(@type, 'XCUIElementTypeOther')]";
+		assertEquals(xpath + "/*[equals(@type, 'XCUIElementTypeStaticText')]", XPathBuilder.addChildWithType(xpath, "XCUIElementTypeStaticText"));
+		
+		// Android
+		PowerMockito.when(Device.isIOS()).thenReturn(false);
+		xpath = "//*[contains(@class, 'Spinner')]";
+		assertEquals(xpath + "/*[contains(@class, 'TextView')]", XPathBuilder.addChildWithType(xpath, "TextView"));
+	}	
 
 }
