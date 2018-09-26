@@ -257,9 +257,9 @@ public class TextField {
 		
 	}
 	
-	private static void selectOptionFromAndroidTextList(String pickerChoice, int timeout) {
+	private static void selectOptionFromAndroidTextList(String pickerChoice, Integer timeout) {
 		// When the "picker" is just a list of labels
-		Scroll.scrollListToElementWithText(pickerChoice);
+		Scroll.scrollListToElementWithText(pickerChoice, timeout);
 		TestObject selection = Finder.findLabelWithText(pickerChoice);
 		MobileBuiltInKeywords.tap(selection, timeout);
 	}
