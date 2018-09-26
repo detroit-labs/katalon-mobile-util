@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.openqa.selenium.remote.RemoteWebElement;
+
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import com.kms.katalon.core.testobject.TestObject;
 import com.kms.katalon.core.testobject.TestObjectProperty;
@@ -74,6 +76,12 @@ public class Logger {
 	public static void printScreenContents(LogLevel level) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 		Logger.log(driver.getPageSource(), level);
+	}
+	
+	public static void printList(List<RemoteWebElement> listElements, LogLevel level) {
+		for (int i=0; i<listElements.size(); i++) {
+			Logger.log(listElements.get(i).getText(), level);
+		}
 	}
 	
 	public static void log(String text, LogLevel level) {

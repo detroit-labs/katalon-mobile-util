@@ -15,14 +15,14 @@ public class Scroll {
 	 *            text to attempt to find in the scrolling list.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToElementWithText(String elementText) {
+	public static boolean scrollListToElementWithText(String elementText, Integer timeout) {
 		if (Device.isIOS()) {
 			// TODO: allow this for iOS?
 			throw new UnsupportedOperationException("Parameters elementId and elementText are required for iOS.");
 		}
 
 		if (Device.isAndroid()) {
-			return ScrollAndroid.scrollListToElementWithText(elementText);
+			return ScrollAndroid.scrollListToElementWithText(elementText, timeout);
 		}
 
 		throw new UnsupportedOperationException("Device type is not supported.");
@@ -38,14 +38,14 @@ public class Scroll {
 	 *            text to attempt to find in the scrolling list.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToCheckboxWithText(String elementText) {
+	public static boolean scrollListToCheckboxWithText(String elementText, Integer timeout) {
 		if (Device.isIOS()) {
 			// TODO: allow this for iOS?
 			throw new UnsupportedOperationException("Parameters elementId and elementText are required for iOS.");
 		}
 
 		if (Device.isAndroid()) {
-			return ScrollAndroid.scrollListToCheckboxWithText(elementText);
+			return ScrollAndroid.scrollListToCheckboxWithText(elementText, timeout);
 		}
 
 		throw new UnsupportedOperationException("Device type is not supported.");
@@ -58,13 +58,13 @@ public class Scroll {
 	 * @param elementText text to attempt to find in the scrolling list.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToElementWithText(String elementId, String elementText) {
+	public static boolean scrollListToElementWithText(String elementId, String elementText, Integer timeout) {
 		if (Device.isIOS()) {
 			return ScrollIOS.scrollListToElementWithText(elementId, elementText);
 		} 
 		
 		if (Device.isAndroid()) {
-			return ScrollAndroid.scrollListToElementWithText(elementId, elementText);
+			return ScrollAndroid.scrollListToElementWithText(elementId, elementText, timeout);
 		}
 		
 		throw new UnsupportedOperationException("Device type is not supported.");
@@ -77,12 +77,13 @@ public class Scroll {
 	 * @param elementText text to attempt to find in the scrolling list.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToElementWithText(TestObject testObject, String elementText) {
+	public static boolean scrollListToElementWithText(TestObject testObject, String elementText, Integer timeout) {
 		if (Device.isIOS()) {
 			return ScrollIOS.scrollListToElementWithText(testObject, elementText);
 		} 
 		
 		if (Device.isAndroid()) {
+			// TODO: reactivate
 //			return ScrollAndroid.scrollListToElementWithText(testObject, elementText);
 			return false;
 		}
