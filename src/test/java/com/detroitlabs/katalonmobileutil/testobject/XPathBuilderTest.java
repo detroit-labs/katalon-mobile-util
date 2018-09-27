@@ -82,12 +82,12 @@ class XPathBuilderTest {
 
 		// iOS
 		String xpath = "//*[equals(@type, 'XCUITypeButton')]";
-		assertEquals("//*[equals(@type, 'XCUITypeButton') and @label='My Label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//*[equals(@type, 'XCUITypeButton') and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		xpath = "//*[contains(@class, 'TextView')]";
-		assertEquals("//*[contains(@class, 'TextView') and @text='My Label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
 	}
 	
 	@Test
@@ -96,12 +96,12 @@ class XPathBuilderTest {
 
 		// iOS
 		String xpath = "//XCUITypeButton";
-		assertEquals("//XCUITypeButton[@label='My Label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//XCUITypeButton[translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		xpath = "//TextView";
-		assertEquals("//TextView[@text='My Label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//TextView[translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
 	}
 	
 	@Test
@@ -135,11 +135,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForALabel_returnsAnXPathWithALabel() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and @name='my_label' and @label='My Label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
+		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and @name='my_label' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'TextView') and contains(@resource-id, 'my_label') and @text='My Label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and contains(@resource-id, 'my_label') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
 	}
 	
 	@Test
@@ -147,11 +147,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForALabel_returnsAnXPathWithText() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and @label='My Label']", XPathBuilder.xpathForLabelWithText("My Label"));
+		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabelWithText("My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'TextView') and @text='My Label']", XPathBuilder.xpathForLabelWithText("My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabelWithText("My Label"));
 	}
 	
 	@Test
@@ -159,11 +159,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForACheckbox_returnsAnXPathWithText() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and @label='My Label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
+		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'CheckBox') and @text='My Label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
+		assertEquals("//*[contains(@class, 'CheckBox') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
 	}	
 	
 	@Test

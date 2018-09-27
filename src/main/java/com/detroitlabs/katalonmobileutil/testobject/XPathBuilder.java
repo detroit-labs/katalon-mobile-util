@@ -5,6 +5,9 @@ import java.util.List;
 import com.detroitlabs.katalonmobileutil.device.Device;
 
 public class XPathBuilder {
+
+	private static final String upperCase = "'ABCDEFGHIJKLMNOPQRSTUVWXYZ'";
+	private static final String lowerCase = "'abcdefghijklmnopqrstuvwxyz'";
 	
 	// TODO: Make this more generic to build xpath for all types?
 	public static String xpathForLabelWithResourceId(String resourceId) {
@@ -139,10 +142,11 @@ public class XPathBuilder {
 	}	
 	
 	private static String textXPath(String labelText) {
+		// xpath 1 doesn't have a way to ignore case, so we need to force-lowercase both strings
 		if (Device.isIOS()) {
-			return "@label='" + labelText + "'";
+			return "translate(@label, " + upperCase + ", " + lowerCase + ") = '" + labelText.toLowerCase() + "'";
 		} else {
-			return "@text='" + labelText + "'";
+			return "translate(@text, " + upperCase + ", " + lowerCase + ") = '" + labelText.toLowerCase() + "'";
 		}
 	}	
 	
