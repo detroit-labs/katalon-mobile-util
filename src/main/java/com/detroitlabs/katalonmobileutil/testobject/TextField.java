@@ -247,10 +247,13 @@ public class TextField {
 		picker.addProperty("xpath", ConditionType.EQUALS, pickerXPath);
 		
 		// Need to activate the keyboard first
-		MobileBuiltInKeywords.tap(picker, timeout);
+		MobileBuiltInKeywords.tapAndHold(picker, timeout / 1000, timeout);
 		
 		// Setting the text will spin the picker
-		MobileBuiltInKeywords.setText(picker, pickerChoice, timeout);
+		// In order to work consistently, we must set the value twice, once with the keyboard and once directly on the field.
+		driver.getKeyboard().sendKeys(pickerChoice);
+		MobileElement p = (MobileElement) driver.findElementByXPath(pickerXPath);
+		p.setValue(pickerChoice);
 		
 		// In order for the picker change to take effect, need to apply it to the field
 		driver.pressKeyCode(AndroidKeyCode.ENTER);
