@@ -47,7 +47,7 @@ For detailed usage, view the [Javadocs](https://detroit-labs.github.io/katalon-m
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.7.0/katalon-mobile-util-1.7.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.8.0/katalon-mobile-util-1.8.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 ## Building from source
 
@@ -251,6 +251,14 @@ Then provide the text for the specific label you want to find:
 TestObject labelWithText = Finder.findLabelWithText('Generic label element', 'Label Text') 
 ```
 
+#### Finding a Checkbox in a List by the Checkbox Text
+
+In Android, `CheckBoxes` do not necessarily have a `resource-id` and unlike in iOS, the label and checkbox are not separate. To find a Checkbox on screen based on its text, in either iOS or Android:
+
+```
+TestObject checkbox = Finder.findCheckboxWithText('Checkbox Text') 
+```
+
 #### Converting from Selenium WebElements to Katalon TestObjects
 
 The base components of Selenium tests are `RemoteWebElements`, which are extended to `WebElements` by Selenium and `MobileElements` by Appium. The base components for Katalon Studio are `TestObjects`. Sometimes it may be useful to convert from a `MobileElement` that you found with Appium functions, to a `TestObject` for use in Katalon tests so that you can use Katalon functions on it.
@@ -417,13 +425,16 @@ import com.detroitlabs.katalonmobileutil.touch.Scroll
 Scroll list of all `XCUIElementTypeStaticText` (for iOS) or `*TextView` (for Android) elements until you get to the given text:
 
  ```
- Scroll.scrollListToElementWithText('Michigan')
+ int timeout = 1
+ Scroll.scrollListToElementWithText('Michigan', timeout)
  ```
+
+Where `timeout` is the delay between "swipes" when scrolling.
 
 Scroll specific list of elements with the `accessibility id` (for iOS) or `resource-id` (for Android) until you get to the given text. In this case, all of the elements in the collection should have the same ids, e.g. `state_label`:
 
  ```
- Scroll.scrollListToElementWithText('state_label', 'Michigan')
+ Scroll.scrollListToElementWithText('state_label', 'Michigan', timeout)
  ```
  
  Once scrolling is complete, you can interact with the element, assuming you already have a TestObject named "Michigan label".
@@ -431,6 +442,14 @@ Scroll specific list of elements with the `accessibility id` (for iOS) or `resou
  ```
  Mobile.tap(Finder.findLabel('Michigan label'), timeout)
  ```
+ 
+(Android Only) Scroll a list of `CheckBoxes`.  
+
+```
+Scroll.scrollListToCheckboxWithText('My Option 1', timeout)
+```
+
+NOTE: For scrolling a list of iOS Checkboxes, simply use `Scroll.scrollListToElementWithText('My Option 1', timeout)` from above because they have associated `XCUIElementTypeStaticText` elements.
 
 ### Logging
 
