@@ -18,11 +18,6 @@ public class ScrollIOS {
 
 	static String lastScrolledElement = null;
 	
-	public static boolean scrollListToElementWithText(TestObject testObject, String elementText) {
-		// Build an xpath from the TestObject so we can use it to find all of the similar objects
-		return scrollListToElementWithText("", elementText);
-	}
-	
 	public static boolean scrollListToElementWithText(String accessibilityId, String elementText) {
 		String xpath = "//XCUIElementTypeStaticText[@name='" + accessibilityId
 				+ "' and @visible ='true' and @label='" + elementText + "']";

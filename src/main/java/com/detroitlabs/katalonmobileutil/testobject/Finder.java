@@ -10,7 +10,6 @@ import com.detroitlabs.katalonmobileutil.exception.ListItemsNotFoundException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import com.kms.katalon.core.testobject.TestObject;
-import com.kms.katalon.core.testobject.TestObjectProperty;
 
 import io.appium.java_client.AppiumDriver;
 

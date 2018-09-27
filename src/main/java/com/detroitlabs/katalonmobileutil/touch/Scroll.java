@@ -69,26 +69,5 @@ public class Scroll {
 		
 		throw new UnsupportedOperationException("Device type is not supported.");
 	}
-
-	/**
-	 * Scrolls through a list of a specific collection of elements on the screen, attempting to find the requested text.
-	 * Throws an exception if the text is not found. 
-	 * @param testObject template TestObject to use to find a collection of similar elements. Will use the class/type and accessibility/resource id if available.
-	 * @param elementText text to attempt to find in the scrolling list.
-	 * @return true if the text was found.
-	 */
-	public static boolean scrollListToElementWithText(TestObject testObject, String elementText, Integer timeout) {
-		if (Device.isIOS()) {
-			return ScrollIOS.scrollListToElementWithText(testObject, elementText);
-		} 
-		
-		if (Device.isAndroid()) {
-			// TODO: reactivate
-//			return ScrollAndroid.scrollListToElementWithText(testObject, elementText);
-			return false;
-		}
-		
-		throw new UnsupportedOperationException("Device type is not supported.");
-	}
 	
 }
