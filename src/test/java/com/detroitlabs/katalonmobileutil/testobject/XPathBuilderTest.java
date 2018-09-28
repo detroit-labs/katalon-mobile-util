@@ -35,7 +35,7 @@ class XPathBuilderTest {
 	public void creatingXPathWithSingleClass_returnsXPathWithClass() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUITypeButton')]", XPathBuilder.createXPath("XCUITypeButton"));
+		assertEquals("//*[@type='XCUITypeButton']", XPathBuilder.createXPath("XCUITypeButton"));
 
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
@@ -48,7 +48,7 @@ class XPathBuilderTest {
 
 		// iOS
 		List<String> types = Arrays.asList("XCUITypeButton", "XCUITypeCheckbox");
-		assertEquals("//*[(equals(@type, 'XCUITypeButton') or equals(@type, 'XCUITypeCheckbox'))]",
+		assertEquals("//*[(@type='XCUITypeButton' or @type='XCUITypeCheckbox')]",
 				XPathBuilder.createXPath(types));
 
 		// Android
@@ -62,8 +62,8 @@ class XPathBuilderTest {
 	@DisplayName("when xpath already includes properties adding a visible property updates the xpath to include the 'visible' property")
 	public void whenXPathAlreadyIncludesProperties_addingVisibleProperty_updatesXPathWithVisible() {
 
-		String xpath = "//*[equals(@type, 'XCUITypeButton')]";
-		assertEquals("//*[equals(@type, 'XCUITypeButton') and @visible=true]", XPathBuilder.addVisible(xpath));
+		String xpath = "//*[@type='XCUITypeButton']";
+		assertEquals("//*[@type='XCUITypeButton' and @visible='true']", XPathBuilder.addVisible(xpath));
 
 	}
 	
@@ -72,7 +72,7 @@ class XPathBuilderTest {
 	public void whenXPathDoesNotIncludeProperties_addingVisibleProperty_updatesXPathWithVisible() {
 
 		String xpath = "//XCUITypeButton";
-		assertEquals("//XCUITypeButton[@visible=true]", XPathBuilder.addVisible(xpath));
+		assertEquals("//XCUITypeButton[@visible='true']", XPathBuilder.addVisible(xpath));
 
 	}
 	
@@ -81,13 +81,13 @@ class XPathBuilderTest {
 	public void whenXPathAlreadyIncludesProperties_addingLabelProperty_updatesXPathWithLabel() {
 
 		// iOS
-		String xpath = "//*[equals(@type, 'XCUITypeButton')]";
-		assertEquals("//*[equals(@type, 'XCUITypeButton') and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		String xpath = "//*[@type='XCUITypeButton']";
+		assertEquals("//*[@type='XCUITypeButton' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		xpath = "//*[contains(@class, 'TextView')]";
-		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
 	}
 	
 	@Test
@@ -96,12 +96,12 @@ class XPathBuilderTest {
 
 		// iOS
 		String xpath = "//XCUITypeButton";
-		assertEquals("//XCUITypeButton[translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//XCUITypeButton[translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		xpath = "//TextView";
-		assertEquals("//TextView[translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//TextView[translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
 	}
 	
 	@Test
@@ -109,8 +109,8 @@ class XPathBuilderTest {
 	public void whenXPathAlreadyIncludesProperties_addingResourceIdProperty_updatesXPathWithResourceId() {
 
 		// iOS
-		String xpath = "//*[equals(@type, 'XCUITypeButton')]";
-		assertEquals("//*[equals(@type, 'XCUITypeButton') and @name='my_button']", XPathBuilder.addResourceId(xpath, "my_button"));
+		String xpath = "//*[@type='XCUITypeButton']";
+		assertEquals("//*[@type='XCUITypeButton' and @name='my_button']", XPathBuilder.addResourceId(xpath, "my_button"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
@@ -123,7 +123,7 @@ class XPathBuilderTest {
 	public void creatingAnXPathForALabelWithResourceId_returnsAnXPathWithALabel() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and @name='my_label']", XPathBuilder.xpathForLabelWithResourceId("my_label"));
+		assertEquals("//*[@type='XCUIElementTypeStaticText' and @name='my_label']", XPathBuilder.xpathForLabelWithResourceId("my_label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
@@ -135,11 +135,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForALabel_returnsAnXPathWithALabel() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and @name='my_label' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
+		assertEquals("//*[@type='XCUIElementTypeStaticText' and @name='my_label' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'TextView') and contains(@resource-id, 'my_label') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and contains(@resource-id, 'my_label') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
 	}
 	
 	@Test
@@ -147,11 +147,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForALabel_returnsAnXPathWithText() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabelWithText("My Label"));
+		assertEquals("//*[@type='XCUIElementTypeStaticText' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabelWithText("My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForLabelWithText("My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabelWithText("My Label"));
 	}
 	
 	@Test
@@ -159,11 +159,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForACheckbox_returnsAnXPathWithText() {
 
 		// iOS
-		assertEquals("//*[equals(@type, 'XCUIElementTypeStaticText') and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
+		assertEquals("//*[@type='XCUIElementTypeStaticText' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'CheckBox') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
+		assertEquals("//*[contains(@class, 'CheckBox') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
 	}	
 	
 	@Test
@@ -171,8 +171,8 @@ class XPathBuilderTest {
 	public void addingAChildToAnXPath_returnsAnXPathWithTheChild() {
 
 		// iOS
-		String xpath = "//*[equals(@type, 'XCUIElementTypeOther')]";
-		assertEquals(xpath + "/*[equals(@type, 'XCUIElementTypeStaticText')]", XPathBuilder.addChildWithType(xpath, "XCUIElementTypeStaticText"));
+		String xpath = "//*[@type='XCUIElementTypeOther']";
+		assertEquals(xpath + "/*[@type='XCUIElementTypeStaticText']", XPathBuilder.addChildWithType(xpath, "XCUIElementTypeStaticText"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);

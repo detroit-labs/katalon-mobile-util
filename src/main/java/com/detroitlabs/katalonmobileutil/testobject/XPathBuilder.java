@@ -44,7 +44,7 @@ public class XPathBuilder {
 	public static String createXPath(String type) {
 		String xpath = "";
 		if (Device.isIOS()) {
-			xpath = "//*[equals(@type, '" + type + "')]";
+			xpath = "//*[@type='" + type + "']";
 		} else {
 			xpath = "//*[contains(@class, '" + type + "')]";
 		}
@@ -57,7 +57,7 @@ public class XPathBuilder {
 		for (int i=0; i<types.size(); i++) {
 			
 			if (Device.isIOS()) {
-				xpath = xpath + "equals(@type, '" + types.get(i) + "')";
+				xpath = xpath + "@type='" + types.get(i) + "'";
 			} else {
 				xpath = xpath + "contains(@class, '" + types.get(i) + "')";
 			}
@@ -86,7 +86,7 @@ public class XPathBuilder {
 			newXPath = xpath.substring(0, endOfXPath) + " and ";
 		}
 		
-		newXPath = newXPath + "@visible=true]";
+		newXPath = newXPath + "@visible='true']";
 		return newXPath;
 	}
 	
@@ -133,7 +133,7 @@ public class XPathBuilder {
 	public static String addChildWithType(String xpath, String type) {
 		String newXPath = xpath;
 		if (Device.isIOS()) {
-			newXPath = newXPath + "/*[equals(@type, '" + type + "')]";
+			newXPath = newXPath + "/*[@type='" + type + "']";
 		} else {
 			newXPath = newXPath + "/*[contains(@class, '" + type + "')]";
 		}
@@ -144,9 +144,9 @@ public class XPathBuilder {
 	private static String textXPath(String labelText) {
 		// xpath 1 doesn't have a way to ignore case, so we need to force-lowercase both strings
 		if (Device.isIOS()) {
-			return "translate(@label, " + upperCase + ", " + lowerCase + ") = '" + labelText.toLowerCase() + "'";
+			return "translate(@label, " + upperCase + ", " + lowerCase + ")='" + labelText.toLowerCase() + "'";
 		} else {
-			return "translate(@text, " + upperCase + ", " + lowerCase + ") = '" + labelText.toLowerCase() + "'";
+			return "translate(@text, " + upperCase + ", " + lowerCase + ")='" + labelText.toLowerCase() + "'";
 		}
 	}	
 	
