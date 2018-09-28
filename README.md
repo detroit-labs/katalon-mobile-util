@@ -47,7 +47,7 @@ For detailed usage, view the [Javadocs](https://detroit-labs.github.io/katalon-m
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.8.1/katalon-mobile-util-1.8.1.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.8.2/katalon-mobile-util-1.8.2.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 ## Building from source
 
@@ -443,13 +443,11 @@ Scroll specific list of elements with the `accessibility id` (for iOS) or `resou
  Mobile.tap(Finder.findLabel('Michigan label'), timeout)
  ```
  
-(Android Only) Scroll a list of `CheckBoxes`.  
+Scroll a list of `CheckBoxes`.  
 
 ```
 Scroll.scrollListToCheckboxWithText('My Option 1', timeout)
 ```
-
-NOTE: For scrolling a list of iOS Checkboxes, simply use `Scroll.scrollListToElementWithText('My Option 1', timeout)` from above because they have associated `XCUIElementTypeStaticText` elements.
 
 ### Logging
 
