@@ -144,9 +144,9 @@ public class XPathBuilder {
 	private static String textXPath(String labelText) {
 		// xpath 1 doesn't have a way to ignore case, so we need to force-lowercase both strings
 		if (Device.isIOS()) {
-			return "translate(@label, " + upperCase + ", " + lowerCase + ")='" + labelText.toLowerCase() + "'";
+			return "starts-with(normalize-space(translate(@label, " + upperCase + ", " + lowerCase + ")), \"" + labelText.toLowerCase() + "\")";
 		} else {
-			return "translate(@text, " + upperCase + ", " + lowerCase + ")='" + labelText.toLowerCase() + "'";
+			return "starts-with(normalize-space(translate(@text, " + upperCase + ", " + lowerCase + ")), \"" + labelText.toLowerCase() + "\")";
 		}
 	}	
 	

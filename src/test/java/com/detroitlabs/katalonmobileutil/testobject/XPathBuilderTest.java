@@ -82,12 +82,12 @@ class XPathBuilderTest {
 
 		// iOS
 		String xpath = "//*[@type='XCUITypeButton']";
-		assertEquals("//*[@type='XCUITypeButton' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//*[@type='XCUITypeButton' and starts-with(normalize-space(translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.addLabel(xpath, "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		xpath = "//*[contains(@class, 'TextView')]";
-		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and starts-with(normalize-space(translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.addLabel(xpath, "My Label"));
 	}
 	
 	@Test
@@ -96,12 +96,12 @@ class XPathBuilderTest {
 
 		// iOS
 		String xpath = "//XCUITypeButton";
-		assertEquals("//XCUITypeButton[translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//XCUITypeButton[starts-with(normalize-space(translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.addLabel(xpath, "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		xpath = "//TextView";
-		assertEquals("//TextView[translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.addLabel(xpath, "My Label"));
+		assertEquals("//TextView[starts-with(normalize-space(translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.addLabel(xpath, "My Label"));
 	}
 	
 	@Test
@@ -135,11 +135,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForALabel_returnsAnXPathWithALabel() {
 
 		// iOS
-		assertEquals("//*[@type='XCUIElementTypeStaticText' and @name='my_label' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
+		assertEquals("//*[@type='XCUIElementTypeStaticText' and @name='my_label' and starts-with(normalize-space(translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.xpathForLabel("my_label", "My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'TextView') and contains(@resource-id, 'my_label') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabel("my_label", "My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and contains(@resource-id, 'my_label') and starts-with(normalize-space(translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.xpathForLabel("my_label", "My Label"));
 	}
 	
 	@Test
@@ -147,11 +147,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForALabel_returnsAnXPathWithText() {
 
 		// iOS
-		assertEquals("//*[@type='XCUIElementTypeStaticText' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabelWithText("My Label"));
+		assertEquals("//*[@type='XCUIElementTypeStaticText' and starts-with(normalize-space(translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.xpathForLabelWithText("My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'TextView') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForLabelWithText("My Label"));
+		assertEquals("//*[contains(@class, 'TextView') and starts-with(normalize-space(translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.xpathForLabelWithText("My Label"));
 	}
 	
 	@Test
@@ -159,11 +159,11 @@ class XPathBuilderTest {
 	public void creatingAnXPathForACheckbox_returnsAnXPathWithText() {
 
 		// iOS
-		assertEquals("//*[@type='XCUIElementTypeStaticText' and translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
+		assertEquals("//*[@type='XCUIElementTypeStaticText' and starts-with(normalize-space(translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.xpathForCheckboxWithText("My Label"));
 		
 		// Android
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
-		assertEquals("//*[contains(@class, 'CheckBox') and translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='my label']", XPathBuilder.xpathForCheckboxWithText("My Label"));
+		assertEquals("//*[contains(@class, 'CheckBox') and starts-with(normalize-space(translate(@text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')), \"my label\")]", XPathBuilder.xpathForCheckboxWithText("My Label"));
 	}	
 	
 	@Test
