@@ -32,7 +32,13 @@ public class Logger {
 		baseLevel = level;
 	}
 	
-	protected void finalize() {
+	public static void close() {
+		String endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		writer.println(String.format("Closing log: %s", endDate ));
+		writer.flush();
+	}
+	
+	protected void finalize() {	
 		writer.close();
 	}
 	
