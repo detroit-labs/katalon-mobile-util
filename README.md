@@ -74,20 +74,20 @@ mkdir lib
 
 ```
 mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_1.0.0.201808300639.jar" \
+  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_1.0.0.201811290916.jar" \
   -DgroupId=com.kms.katalon \
   -DartifactId=core \
-  -Dversion=1.0.0.201808300639 \
+  -Dversion=1.0.0.201811290916 \
   -Dpackaging=jar \
   -DlocalRepositoryPath=lib
 ```
 
 ```
 mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201808300639.jar" \
+  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201811290916.jar" \
   -DgroupId=com.kms.katalon.core \
   -DartifactId=mobile \
-  -Dversion=1.0.0.201808300639 \
+  -Dversion=1.0.0.201811290916 \
   -Dpackaging=jar \
   -DlocalRepositoryPath=lib
 ```

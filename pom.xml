@@ -83,12 +83,12 @@
 		<dependency>
 			<groupId>com.kms.katalon</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.0.201810090340</version>
+			<version>1.0.0.201811290916</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
 			<artifactId>mobile</artifactId>
-			<version>1.0.0.201810090340</version>
+			<version>1.0.0.201811290916</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
