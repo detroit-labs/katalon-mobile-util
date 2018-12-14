@@ -48,6 +48,26 @@ public class TextField {
 		}
 	}
 	
+	/** Type text at the current cursor position. Requires that a TextField is already active and the keyboard is visible.
+	 * 
+	 * @param text text to type into the field.
+	 */
+	public static void typeText(String text) {
+			
+		// Using the keyboard API, send all of the keys (luckily, this doesn't need to be done one at a time).
+		@SuppressWarnings("unchecked")
+		AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
+		Keyboard keyboard = driver.getKeyboard();
+		keyboard.sendKeys(text);
+		
+	}	
+	
+	/** Type text in a specific TextField.
+	 * 
+	 * @param field TextField object to receive the text input.
+	 * @param text text to type into the field.
+	 * @param timeout timeout (in seconds) for TextField-related actions.
+	 */
 	public static void typeText(TestObject field, String text, Integer timeout) {
 				
 		if (Device.isIOS()) {
@@ -62,11 +82,7 @@ public class TextField {
 			// First tap the field to activate it, bringing up the keyboard
 			MobileBuiltInKeywords.tap(field, timeout);
 			
-			// Using the keyboard API, send all of the keys (luckily, this doesn't need to be done one at a time).
-			@SuppressWarnings("unchecked")
-			AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
-			Keyboard keyboard = driver.getKeyboard();
-			keyboard.sendKeys(text);
+			TextField.typeText(text);
 			
 		}
 	}

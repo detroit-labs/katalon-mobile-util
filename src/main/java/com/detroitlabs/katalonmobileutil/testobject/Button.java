@@ -15,24 +15,43 @@ public class Button {
 	}
 	
 	public static void tap(String name) {
-		int timeoutInSeconds = defaultTimeout != null ? defaultTimeout : 0;
-		FailureHandling failureHandling = defaultFailureHandling != null ? defaultFailureHandling : FailureHandling.STOP_ON_FAILURE;
-		Button.tap(name, timeoutInSeconds, failureHandling);
+		TestObject button = Finder.findButton(name);
+		Button.tap(button);
 	}
 	
 	public static void tap(String name, int timeoutInSeconds) {
-		FailureHandling failureHandling = defaultFailureHandling != null ? defaultFailureHandling : FailureHandling.STOP_ON_FAILURE;
-		Button.tap(name, timeoutInSeconds, failureHandling);
+		TestObject button = Finder.findButton(name);
+		Button.tap(button, timeoutInSeconds);
 	}
 	
 	public static void tap(String name, FailureHandling failureHandling) {
-		int timeoutInSeconds = defaultTimeout != null ? defaultTimeout : 0;
-		Button.tap(name, timeoutInSeconds, failureHandling);
+		TestObject button = Finder.findButton(name);
+		Button.tap(button, failureHandling);
 	}	
 	
 	public static void tap(String name, int timeoutInSeconds, FailureHandling failureHandling) {
 		TestObject button = Finder.findButton(name);
-		MobileBuiltInKeywords.tap(button, timeoutInSeconds, failureHandling);
+		Button.tap(button, timeoutInSeconds, failureHandling);
 	}
+	
+	public static void tap(TestObject button) {
+		int timeoutInSeconds = defaultTimeout != null ? defaultTimeout : 0;
+		FailureHandling failureHandling = defaultFailureHandling != null ? defaultFailureHandling : FailureHandling.STOP_ON_FAILURE;
+		Button.tap(button, timeoutInSeconds, failureHandling);
+	}
+	
+	public static void tap(TestObject button, int timeoutInSeconds) {
+		FailureHandling failureHandling = defaultFailureHandling != null ? defaultFailureHandling : FailureHandling.STOP_ON_FAILURE;
+		Button.tap(button, timeoutInSeconds, failureHandling);
+	}
+	
+	public static void tap(TestObject button, FailureHandling failureHandling) {
+		int timeoutInSeconds = defaultTimeout != null ? defaultTimeout : 0;
+		Button.tap(button, timeoutInSeconds, failureHandling);
+	}	
+	
+	public static void tap(TestObject button, int timeoutInSeconds, FailureHandling failureHandling) {
+		MobileBuiltInKeywords.tap(button, timeoutInSeconds, failureHandling);
+	}	
 	
 }
