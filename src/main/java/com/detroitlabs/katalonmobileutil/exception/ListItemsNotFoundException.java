@@ -3,6 +3,7 @@ package com.detroitlabs.katalonmobileutil.exception;
 import java.util.NoSuchElementException;
 
 import com.detroitlabs.katalonmobileutil.logging.Logger;
+import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel;
 
 public class ListItemsNotFoundException extends NoSuchElementException {
 
@@ -40,6 +41,7 @@ public class ListItemsNotFoundException extends NoSuchElementException {
 			message += "\n and that exactly one label has the text: '" + labelText + "'" ;
 		}		
 		Logger.error(message);
+		Logger.printScreenContents(LogLevel.ERROR);
 		return message;
 	}
 }
