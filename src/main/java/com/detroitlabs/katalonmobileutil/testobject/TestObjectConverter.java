@@ -14,12 +14,20 @@ import com.kms.katalon.core.testobject.TestObjectProperty;
 
 public class TestObjectConverter {
 
-	// convert a single Selenium/Appium RemoteWebElement to a Katalon TestObject
+	/**
+	 * Convert a single Selenium/Appium RemoteWebElement to a Katalon TestObject
+	 * @param element RemoteWebElement to be converted
+	 * @return Katalon TestObject
+	 */
 	public static TestObject fromElement(RemoteWebElement element) {
 		return fromElement(element, null);
 	}
 	
-	// convert a list of Selenium/Appium RemoteWebElements to a list of Katalon TestObjects
+	/**
+	 * Convert a list of Selenium/Appium RemoteWebElements to a list of Katalon TestObjects
+	 * @param elements List of RemoteWebElements to be converted
+	 * @return List of Katalon TestObjects
+	 */
 	public static List<TestObject> fromElements(List<RemoteWebElement> elements) {
 		List<TestObject> testObjects = new ArrayList<TestObject>();
 		for (int i = 0; i < elements.size(); i++) {
@@ -28,6 +36,13 @@ public class TestObjectConverter {
 		return testObjects;
 	}
 	
+	/**
+	 * Convert a Selenium/Appium RemoteWebElement (which could end up being a collection of matching elements) to a Katalon TestObject
+	 * @param element RemoteWebElement to be converted
+	 * @param index Array index of the particular RemoteWebElement to convert to a TestObject. In the case where there will only be one
+	 *              RemoteWebElement found, pass null.
+	 * @return Katalon TestObject
+	 */
 	public static TestObject fromElement(RemoteWebElement element, Integer index) {
 		TestObject testObject = new TestObject();
 		String indexString = index != null ? "[" + index + "]" : "";
@@ -38,7 +53,8 @@ public class TestObjectConverter {
 	}
 
 	/**
-	 * Finds the resource id from a given TestObject.
+	 * Finds the resource id from a given TestObject. 
+	 * Can be used with a generic TestObject to avoid hard coding resource ids in tests.
 	 * @param testObject source TestObject with the accessibility or resource id
 	 * @return accessibility id (iOS) or resource id (Android) of the TestObject
 	 */
@@ -60,6 +76,7 @@ public class TestObjectConverter {
 	
 	/**
 	 * Finds the type or class from a given TestObject.
+	 * Can be used with a generic TestObject to avoid hard coding classes/types in tests.
 	 * @param testObject source TestObject with the class or type
 	 * @return type (iOS) or class (Android) of the TestObject
 	 */
