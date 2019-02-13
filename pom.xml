@@ -76,19 +76,19 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>5.0.4</version>
+			<version>6.1.0</version>
 		</dependency>
 		<!-- Katalon jars are not included in maven repositories and need to be copied to the ${basedir}/lib --> 
 		<!-- See http://mark.koli.ch/maven-add-local-jar-dependency-to-classpath -->
 		<dependency>
 			<groupId>com.kms.katalon</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.0.201811290916</version>
+			<version>1.0.0.201901020244</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
 			<artifactId>mobile</artifactId>
-			<version>1.0.0.201811290916</version>
+			<version>1.0.0.201901020244</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
