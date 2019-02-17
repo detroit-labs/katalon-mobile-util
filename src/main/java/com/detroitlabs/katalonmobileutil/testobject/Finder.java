@@ -9,6 +9,7 @@ import com.detroitlabs.katalonmobileutil.device.Device;
 import com.detroitlabs.katalonmobileutil.exception.ListItemsNotFoundException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
+import com.kms.katalon.core.model.FailureHandling;
 import com.kms.katalon.core.testobject.TestObject;
 
 import io.appium.java_client.AppiumDriver;
@@ -174,8 +175,42 @@ public class Finder {
 	 *            the text of the label to find. Must match exactly, including
 	 *            upper/lower case matching.
 	 * @return the matching Label TestObject
+	 * @throws ListItemNotFoundException if the label isn't found.
 	 */
-	public static TestObject findLabelWithText(String testObjectName, String labelText) {
+	public static TestObject findLabelWithText(String testObjectName, String labelText) throws ListItemsNotFoundException {
+
+		return Finder.findLabelWithText(testObjectName, labelText, FailureHandling.STOP_ON_FAILURE);
+		
+	}	
+	
+	/**
+	 * Find a Label with given text from a list of similar Labels on the screen.
+	 * <p>
+	 * There must already exist a TestObject in the "Labels" Object Repository that
+	 * will serve as a template.
+	 * <p>
+	 * For iOS, the TestObject should have the "type" property of
+	 * "XCUIElementTypeStaticText" and the "name" property that matches the
+	 * accessibility id of the collection of labels.
+	 * <p>
+	 * For Android, the TestObject should have a "class" property that ends in
+	 * "TextView" and a "resource-id" property that contains the resource-id shared
+	 * by the collection of labels.
+	 * 
+	 * @param testObjectName
+	 *            the name of the Label in the Object Repository which will be used
+	 *            as the template for finding all of the labels with the same
+	 *            class/type and accessibility/resource id.
+	 * @param labelText
+	 *            the text of the label to find. Must match exactly, including
+	 *            upper/lower case matching.
+	 * @param failureHandling
+	 * 			  how the test flow should be handled in the event that the label can't be found.
+	 * @return the matching Label TestObject
+	 * @throws ListItemNotFoundException if the label isn't found, unless the failureHandling is
+	 *            CONTINUE_ON_FAILURE or OPTIONAL.
+	 */
+	public static TestObject findLabelWithText(String testObjectName, String labelText, FailureHandling failureHandling) throws ListItemsNotFoundException {
 
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 
@@ -190,8 +225,14 @@ public class Finder {
 		try {
 			listElement = (RemoteWebElement) driver.findElementByXPath(xpath);
 		} catch (WebDriverException ex) {
-			String resourceType = Device.isIOS() ? "accessibility id" : "resource-id";
-			throw (new ListItemsNotFoundException(xpath, resourceId, resourceType, labelText));
+			switch (failureHandling) {
+				case OPTIONAL:
+				case CONTINUE_ON_FAILURE:
+					return null;
+				default:
+					String resourceType = Device.isIOS() ? "accessibility id" : "resource-id";
+					throw (new ListItemsNotFoundException(xpath, resourceId, resourceType, labelText));	
+			}
 		}
 
 		Logger.debug("Found label:" + listElement);
