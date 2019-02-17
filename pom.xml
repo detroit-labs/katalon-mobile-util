@@ -76,7 +76,7 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>6.1.0</version>
+			<version>5.0.4</version>
 		</dependency>
 		<!-- Katalon jars are not included in maven repositories and need to be copied to the ${basedir}/lib --> 
 		<!-- See http://mark.koli.ch/maven-add-local-jar-dependency-to-classpath -->
