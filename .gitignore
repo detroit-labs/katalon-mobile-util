@@ -3,3 +3,7 @@
 target/**
 lib/**
 /target/
+
+# IntelliJ
+.idea/
+katalon-mobile-util.iml

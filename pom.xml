@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Change this to point to your project's /Drivers directory -->
-		<project.target.katalon.directory>/Drivers</project.target.katalon.directory>
+		<project.target.katalon.directory>/Users/chris/DetroitLabs/jimmy-johns-ui-tests/Drivers</project.target.katalon.directory>
 	</properties>
 
 	<build>
@@ -27,6 +27,15 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
 			<!-- `mvn install` will copy the built jar to your Katalon project -->
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
