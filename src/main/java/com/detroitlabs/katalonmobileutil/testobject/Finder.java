@@ -18,6 +18,7 @@ public class Finder {
 
 	private static String iOSRepository = "iOS Objects";
 	private static String androidRepository = "Android Objects";
+	private static String webRepository = "Web Objects";
 
 	public static void setIOSRepository(String repository) {
 		iOSRepository = repository;
@@ -25,6 +26,10 @@ public class Finder {
 
 	public static void setAndroidRepository(String repository) {
 		androidRepository = repository;
+	}
+
+	public static void setWebRepository(String repository) {
+		webRepository = repository;
 	}
 
 	public static TestObject findAlert(String name) {
@@ -37,6 +42,10 @@ public class Finder {
 
 	public static TestObject findCheckbox(String name) {
 		return findObject("Checkboxes", name);
+	}
+
+	public static TestObject findContainer(String name) {
+		return findObject("Containers", name);
 	}
 
 	public static TestObject findImage(String name) {
@@ -277,7 +286,13 @@ public class Finder {
 
 	private static TestObject findObject(String type, String name) {
 
-		String objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
+		String objectRepo = "";
+		if (Device.isWeb()) {
+			objectRepo = webRepository;
+		}
+		else {
+			objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
+		}
 
 		type = type != null ? type + "/" : "";
 

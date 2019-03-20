@@ -22,6 +22,10 @@ public class Device {
 	public static boolean isAndroid() {
 		return "android".equals(getDeviceOS().toLowerCase());	
 	}
+
+	public static boolean isWeb() {
+		return "web".equals(getDeviceOS().toLowerCase());
+	}
 	
 	public static String getDeviceOS() {
 		ExecutionProperties props = new ExecutionProperties(RunConfiguration.getExecutionProperties());
@@ -125,6 +129,9 @@ public class Device {
 			Map<String, Object> drivers = (Map<String, Object>)(this.properties.get("drivers"));
 			Map<String, Object> system = (Map<String, Object>)(drivers.get("system"));
 			Map<String, String> mobile = (Map<String, String>)(system.get("Mobile"));
+			if (mobile == null && system.get("WebUI") != null) {
+				return "Web";
+			}
 			String deviceOS = mobile.get("deviceOS");
 			return deviceOS;
 		}

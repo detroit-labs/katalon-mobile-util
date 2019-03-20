@@ -1,6 +1,8 @@
 package com.detroitlabs.katalonmobileutil.testobject;
 
+import com.detroitlabs.katalonmobileutil.device.Device;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
+import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 import com.kms.katalon.core.model.FailureHandling;
 import com.kms.katalon.core.testobject.TestObject;
 
@@ -51,7 +53,12 @@ public class Button {
 	}	
 	
 	public static void tap(TestObject button, int timeoutInSeconds, FailureHandling failureHandling) {
-		MobileBuiltInKeywords.tap(button, timeoutInSeconds, failureHandling);
+		if (Device.isWeb()) {
+			WebUiBuiltInKeywords.click(button, failureHandling);
+		}
+		else {
+			MobileBuiltInKeywords.tap(button, timeoutInSeconds, failureHandling);
+		}
 	}	
 	
 }

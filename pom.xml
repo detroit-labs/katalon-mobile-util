@@ -99,6 +99,11 @@
 			<artifactId>mobile</artifactId>
 			<version>1.0.0.201901020244</version>
 		</dependency>
+		<dependency>
+			<groupId>com.kms.katalon.core</groupId>
+			<artifactId>webui</artifactId>
+			<version>1.0.0.201901020244</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 		    <groupId>junit</groupId>

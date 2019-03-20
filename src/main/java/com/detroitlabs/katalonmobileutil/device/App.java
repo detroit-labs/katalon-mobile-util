@@ -5,7 +5,7 @@ import com.detroitlabs.katalonmobileutil.exception.PlatformNotFoundException;
 public class App {
 
 	public enum Platform {
-		IOS, ANDROID
+		IOS, ANDROID, WEB
 	}
 
 	public String filePath;
