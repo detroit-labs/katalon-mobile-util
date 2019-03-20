@@ -45,6 +45,7 @@ public abstract class MobileTextField extends MobileComponent implements TextFie
     public abstract String getPickerValue(Integer timeout);
 	public abstract void tapButtonWithText(List<String> names);
 
+	@Override
 	public void clearText() {
 		clearText(Component.defaultTimeout);
 	}
@@ -57,6 +58,7 @@ public abstract class MobileTextField extends MobileComponent implements TextFie
 	 * 
 	 * @param text text to type into the field.
 	 */
+	@Override
 	public void typeText(String text) {
 			
 		// Using the keyboard API, send all of the keys (luckily, this doesn't need to be done one at a time).

@@ -87,13 +87,6 @@ public class AndroidTextField extends MobileTextField {
         }
     }
 
-    private void selectOptionFromTextList(String pickerChoice, Integer timeout) {
-		// When the "picker" is just a list of labels
-		Scroll.scrollListToElementWithText(pickerChoice, timeout);
-		TestObject selection = Finder.findLabelWithText(pickerChoice);
-		MobileBuiltInKeywords.tap(selection, timeout);
-	}
-
     @Override
     public String getPickerValue(Integer timeout) {
         String type = TestObjectConverter.typeFromTestObject(testObject);
@@ -136,4 +129,11 @@ public class AndroidTextField extends MobileTextField {
     public void tapButtonWithText(List<String> names) {
         tapButtonWithText(names, "android.widget.Button", "text");
     }
+
+    private void selectOptionFromTextList(String pickerChoice, Integer timeout) {
+		// When the "picker" is just a list of labels
+		Scroll.scrollListToElementWithText(pickerChoice, timeout);
+		TestObject selection = Finder.findLabelWithText(pickerChoice);
+		MobileBuiltInKeywords.tap(selection, timeout);
+	}
 }
