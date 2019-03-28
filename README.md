@@ -94,6 +94,16 @@ mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
   -DlocalRepositoryPath=lib
 ```
 
+```
+mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
+  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.webui_1.0.0.201811290916.jar" \
+  -DgroupId=com.kms.katalon.core \
+  -DartifactId=webui \
+  -Dversion=1.0.0.201811290916 \
+  -Dpackaging=jar \
+  -DlocalRepositoryPath=lib
+```
+
 4. Build the package:
 
 ```
