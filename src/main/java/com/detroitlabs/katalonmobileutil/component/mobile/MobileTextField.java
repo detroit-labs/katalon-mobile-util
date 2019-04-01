@@ -45,6 +45,14 @@ public abstract class MobileTextField extends MobileComponent implements TextFie
     public abstract String getPickerValue(Integer timeout);
 	public abstract void tapButtonWithText(List<String> names);
 
+	public static void typeTextOnKeyboard(String text) {
+		// Using the keyboard API, send all of the keys (luckily, this doesn't need to be done one at a time).
+		@SuppressWarnings("unchecked")
+		AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
+		Keyboard keyboard = driver.getKeyboard();
+		keyboard.sendKeys(text);
+	}
+
 	@Override
 	public void clearText() {
 		clearText(Component.defaultTimeout);
@@ -60,14 +68,8 @@ public abstract class MobileTextField extends MobileComponent implements TextFie
 	 */
 	@Override
 	public void typeText(String text) {
-			
-		// Using the keyboard API, send all of the keys (luckily, this doesn't need to be done one at a time).
-		@SuppressWarnings("unchecked")
-		AppiumDriver<MobileElement> driver = (AppiumDriver<MobileElement>) MobileDriverFactory.getDriver();
-		Keyboard keyboard = driver.getKeyboard();
-		keyboard.sendKeys(text);
-		
-	}	
+		typeText(text, defaultTimeout);
+	}
 	
 	/** Choose a single value from a drop-down or picker. 
 	 * 

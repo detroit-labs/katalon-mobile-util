@@ -52,7 +52,7 @@ public class AndroidTextField extends MobileTextField {
         // First tap the field to activate it, bringing up the keyboard
         MobileBuiltInKeywords.tap(testObject, timeout);
         
-        typeText(text);
+        typeTextOnKeyboard(text);
     }
 
     @Override

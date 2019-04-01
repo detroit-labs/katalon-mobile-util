@@ -14,7 +14,7 @@ public class WebTextField extends WebComponent implements TextField {
         super(textField);
 	}
 
-	public void typeText(String text) {
+	public void typeText(String text, Integer timeout) {
         WebUiBuiltInKeywords.sendKeys(testObject, text);
     }
 
