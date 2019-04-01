@@ -45,6 +45,20 @@ public abstract class MobileTextField extends MobileComponent implements TextFie
     public abstract String getPickerValue(Integer timeout);
 	public abstract void tapButtonWithText(List<String> names);
 
+	public static void tapButtonWithText(List<String>names, String objectClass, String objectProperty) {
+		TestObject button = new TestObject();
+		// Xpath 1 (used by Selenium) doesn't have matches, so this is a substitute
+		StringBuilder sb = new StringBuilder();
+		sb.append("@").append(objectProperty).append("='").append(names.get(0)).append("'");
+		for (int i=1; i<names.size(); i++) {
+			sb.append(" or @").append(objectProperty).append("='").append(names.get(i)).append("'");
+		}
+		button.addProperty("xpath", ConditionType.EQUALS, "//" + objectClass + "[" + sb.toString() + "]");
+		Logger.debug("Tapping the button to close the keyboard or picker:");
+		Logger.printTestObject(button, LogLevel.DEBUG);
+		MobileBuiltInKeywords.tap(button, 1, FailureHandling.OPTIONAL);
+	}
+
 	public static void typeTextOnKeyboard(String text) {
 		// Using the keyboard API, send all of the keys (luckily, this doesn't need to be done one at a time).
 		@SuppressWarnings("unchecked")
@@ -128,19 +142,5 @@ public abstract class MobileTextField extends MobileComponent implements TextFie
 			throw(new NoSuchPickerChoiceException(pickerChoices));
 		}
 		
-	}
-	
-	public static void tapButtonWithText(List<String>names, String objectClass, String objectProperty) {
-		TestObject button = new TestObject();
-		// Xpath 1 (used by Selenium) doesn't have matches, so this is a substitute
-		StringBuilder sb = new StringBuilder();
-		sb.append("@").append(objectProperty).append("='").append(names.get(0)).append("'");
-		for (int i=1; i<names.size(); i++) {
-			sb.append(" or @").append(objectProperty).append("='").append(names.get(i)).append("'");
-		}
-		button.addProperty("xpath", ConditionType.EQUALS, "//" + objectClass + "[" + sb.toString() + "]");
-		Logger.debug("Tapping the button to close the keyboard or picker:");
-		Logger.printTestObject(button, LogLevel.DEBUG);
-		MobileBuiltInKeywords.tap(button, 1, FailureHandling.OPTIONAL);
 	}
 }
