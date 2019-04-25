@@ -40,6 +40,7 @@ public abstract class MobileTextField extends MobileComponent implements TextFie
 	 * Moves the keyboard focus to the next field in the form
 	 */
     public abstract void nextField();
+    public abstract void hideKeyboard();
     public abstract void selectOptionFromPicker(int pickerIndex, String pickerChoice, int timeout);
     public abstract String getPickerValue(Integer timeout);
 	public abstract void tapButtonWithText(List<String> names);

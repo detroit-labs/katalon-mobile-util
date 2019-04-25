@@ -14,12 +14,10 @@ public class WebTextField extends WebComponent implements TextField {
         super(textField);
 	}
 
-    @Override
 	public void typeText(String text, Integer timeout) {
         WebUiBuiltInKeywords.sendKeys(testObject, text);
     }
 
-    @Override
     public void clearText() {
         clearText(defaultFailureHandling);
     }
@@ -27,11 +25,4 @@ public class WebTextField extends WebComponent implements TextField {
     public void clearText(FailureHandling failureHandling) {
         WebUiBuiltInKeywords.clearText(testObject, failureHandling);
     }
-
-    @Override
-    public void hideKeyboard() {
-        // No need to do anything in web.
-    }
-
-    
 }
