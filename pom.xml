@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>katalon-mobile-util</name>
-	<url>http://detroitlabs.com</url>
+	<url>https://github.com/detroit-labs/katalon-mobile-util</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -155,6 +155,6 @@
 	</dependencies>
 	<organization>
 		<name>Detroit Labs</name>
-		<url>http://detroitlabs.com</url>
+		<url>https://www.detroitlabs.com/</url>
 	</organization>
 </project>
