@@ -5,16 +5,18 @@
 
 	<groupId>com.detroitlabs</groupId>
 	<artifactId>katalon-mobile-util</artifactId>
-	<version>1.10.0-SNAPSHOT</version>
+	<version>1.10.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>katalon-mobile-util</name>
-	<url>http://detroitlabs.com</url>
+	<url>https://github.com/detroit-labs/katalon-mobile-util</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Change this to point to your project's /Drivers directory -->
-		<project.target.katalon.directory>/Users/chris/DetroitLabs/jimmy-johns-ui-tests/Drivers</project.target.katalon.directory>
+		<project.target.katalon.directory>/My-Project/Drivers</project.target.katalon.directory>
+		<!-- Change this to your Katalon Studio plugins version -->
+		<project.target.katalon.version>1.0.0.201905011535</project.target.katalon.version>
 	</properties>
 
 	<build>
@@ -92,12 +94,12 @@
 		<dependency>
 			<groupId>com.kms.katalon</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.0.201901020244</version>
+			<version>${project.target.katalon.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
 			<artifactId>mobile</artifactId>
-			<version>1.0.0.201901020244</version>
+			<version>${project.target.katalon.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
@@ -158,6 +160,6 @@
 	</dependencies>
 	<organization>
 		<name>Detroit Labs</name>
-		<url>http://detroitlabs.com</url>
+		<url>https://www.detroitlabs.com/</url>
 	</organization>
 </project>
