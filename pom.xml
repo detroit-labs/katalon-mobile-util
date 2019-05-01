@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
 			<artifactId>webui</artifactId>
-			<version>1.0.0.201901020244</version>
+			<version>${project.target.katalon.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
