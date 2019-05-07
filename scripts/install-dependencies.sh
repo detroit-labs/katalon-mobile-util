@@ -3,7 +3,7 @@
 # Run this script from the base katalon-mobile-util directory.
 mkdir lib
 
-version="1.0.0.201810090340"
+version="1.0.0.201905011535"
 
 mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
   -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_${version}.jar" \
