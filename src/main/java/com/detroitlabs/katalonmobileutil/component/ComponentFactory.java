@@ -22,6 +22,7 @@ public abstract class ComponentFactory {
     /**
      * Create a ComponentFactory instance for the correct platform
      * based on the currently loaded driver in Katalon Studio.
+     * @return A ComponentFactory for the platform being tested.
      */
     public static ComponentFactory getComponentFactory() {
         if (Device.isWeb()) {
@@ -111,6 +112,7 @@ public abstract class ComponentFactory {
      * Get a TwoStatePressableComponent by name.
      * 
      * @param name The TestObject's name in the Object Repository.
+     * @param altStateName The secondary TestObject's name in the Object Repository.
      * @return A TwoStatePressableComponent from Object Repository/(Web/IOS/Android) Objects/Switches.
      */
     public abstract TwoStatePressableComponent createSwitch(String name, String altStateName);
