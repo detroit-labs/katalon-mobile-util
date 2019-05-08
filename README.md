@@ -17,6 +17,7 @@
       - [How to use TestObject Finder](#how-to-use-testobject-finder)
       - [Finding a Label from a List by Index](#finding-a-label-from-a-list-by-index)
       - [Finding a Label from a List by the Label Text](#finding-a-label-from-a-list-by-the-label-text)
+      - [Finding a Checkbox in a List by the Checkbox Text](#finding-a-checkbox-in-a-list-by-the-checkbox-text)
       - [Converting from Selenium WebElements to Katalon TestObjects](#converting-from-selenium-webelements-to-katalon-testobjects)
     - [Button](#button)
     - [TextField](#textfield)
