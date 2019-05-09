@@ -5,7 +5,7 @@
 
 	<groupId>com.detroitlabs</groupId>
 	<artifactId>katalon-mobile-util</artifactId>
-	<version>1.10.1-SNAPSHOT</version>
+	<version>1.11.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>katalon-mobile-util</name>
@@ -99,6 +99,11 @@
 		<dependency>
 			<groupId>com.kms.katalon.core</groupId>
 			<artifactId>mobile</artifactId>
+			<version>${project.target.katalon.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kms.katalon.core</groupId>
+			<artifactId>webui</artifactId>
 			<version>${project.target.katalon.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->

@@ -1,3 +1,8 @@
+com.detroitlabs.katalonmobileutil.component
+com.detroitlabs.katalonmobileutil.component.mobile
+com.detroitlabs.katalonmobileutil.component.mobile.android
+com.detroitlabs.katalonmobileutil.component.mobile.ios
+com.detroitlabs.katalonmobileutil.component.web
 com.detroitlabs.katalonmobileutil.device
 com.detroitlabs.katalonmobileutil.exception
 com.detroitlabs.katalonmobileutil.logging

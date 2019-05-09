@@ -17,6 +17,7 @@ import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import com.kms.katalon.core.model.FailureHandling;
 import com.kms.katalon.core.testobject.ConditionType;
 import com.kms.katalon.core.testobject.TestObject;
+import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -30,8 +31,11 @@ public class TextField {
 	}
 	
 	public static void clearText(TestObject field, Integer timeout, TestObject clearButton) {
-		
-		if (Device.isIOS()) {
+
+		if (Device.isWeb()) {
+			WebUiBuiltInKeywords.clearText(field);
+		}
+		else if (Device.isIOS()) {
 			// iOS identifies the text fields directly with accessibilityIds.
 			// The iOS text field can be cleared directly.
 			MobileBuiltInKeywords.clearText(field, timeout);
@@ -70,7 +74,10 @@ public class TextField {
 	 */
 	public static void typeText(TestObject field, String text, Integer timeout) {
 				
-		if (Device.isIOS()) {
+		if (Device.isWeb()) {
+			WebUiBuiltInKeywords.sendKeys(field, text);
+		}
+		else if (Device.isIOS()) {
 			// iOS identifies the text fields directly with accessibilityIds.
 			// Text can be set directly on the iOS field.
 			MobileBuiltInKeywords.setText(field, text, timeout);

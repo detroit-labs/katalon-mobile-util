@@ -17,6 +17,7 @@
       - [How to use TestObject Finder](#how-to-use-testobject-finder)
       - [Finding a Label from a List by Index](#finding-a-label-from-a-list-by-index)
       - [Finding a Label from a List by the Label Text](#finding-a-label-from-a-list-by-the-label-text)
+      - [Finding a Checkbox in a List by the Checkbox Text](#finding-a-checkbox-in-a-list-by-the-checkbox-text)
       - [Converting from Selenium WebElements to Katalon TestObjects](#converting-from-selenium-webelements-to-katalon-testobjects)
     - [Button](#button)
     - [TextField](#textfield)
@@ -89,6 +90,16 @@ mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
   -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201811290916.jar" \
   -DgroupId=com.kms.katalon.core \
   -DartifactId=mobile \
+  -Dversion=1.0.0.201811290916 \
+  -Dpackaging=jar \
+  -DlocalRepositoryPath=lib
+```
+
+```
+mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
+  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.webui_1.0.0.201811290916.jar" \
+  -DgroupId=com.kms.katalon.core \
+  -DartifactId=webui \
   -Dversion=1.0.0.201811290916 \
   -Dpackaging=jar \
   -DlocalRepositoryPath=lib

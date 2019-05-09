@@ -18,6 +18,7 @@ public class Finder {
 
 	private static String iOSRepository = "iOS Objects";
 	private static String androidRepository = "Android Objects";
+	private static String webRepository = "Web Objects";
 
 	public static void setIOSRepository(String repository) {
 		iOSRepository = repository;
@@ -25,6 +26,10 @@ public class Finder {
 
 	public static void setAndroidRepository(String repository) {
 		androidRepository = repository;
+	}
+
+	public static void setWebRepository(String repository) {
+		webRepository = repository;
 	}
 
 	public static TestObject findAlert(String name) {
@@ -37,6 +42,10 @@ public class Finder {
 
 	public static TestObject findCheckbox(String name) {
 		return findObject("Checkboxes", name);
+	}
+
+	public static TestObject findContainer(String name) {
+		return findObject("Containers", name);
 	}
 
 	public static TestObject findImage(String name) {
@@ -175,7 +184,7 @@ public class Finder {
 	 *            the text of the label to find. Must match exactly, including
 	 *            upper/lower case matching.
 	 * @return the matching Label TestObject
-	 * @throws ListItemNotFoundException if the label isn't found.
+	 * @throws ListItemsNotFoundException if the label isn't found.
 	 */
 	public static TestObject findLabelWithText(String testObjectName, String labelText) throws ListItemsNotFoundException {
 
@@ -207,7 +216,7 @@ public class Finder {
 	 * @param failureHandling
 	 * 			  how the test flow should be handled in the event that the label can't be found.
 	 * @return the matching Label TestObject
-	 * @throws ListItemNotFoundException if the label isn't found, unless the failureHandling is
+	 * @throws ListItemsNotFoundException if the label isn't found, unless the failureHandling is
 	 *            CONTINUE_ON_FAILURE or OPTIONAL.
 	 */
 	public static TestObject findLabelWithText(String testObjectName, String labelText, FailureHandling failureHandling) throws ListItemsNotFoundException {
@@ -277,7 +286,13 @@ public class Finder {
 
 	private static TestObject findObject(String type, String name) {
 
-		String objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
+		String objectRepo = "";
+		if (Device.isWeb()) {
+			objectRepo = webRepository;
+		}
+		else {
+			objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
+		}
 
 		type = type != null ? type + "/" : "";
 
