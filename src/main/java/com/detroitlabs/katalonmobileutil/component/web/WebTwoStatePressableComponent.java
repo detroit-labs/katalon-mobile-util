@@ -11,11 +11,12 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 public class WebTwoStatePressableComponent extends WebPressableComponent implements TwoStatePressableComponent {
     protected TestObject altTestObject;
 
-	public WebTwoStatePressableComponent(TestObject toSwitch, TestObject altState) {
+    public WebTwoStatePressableComponent(TestObject toSwitch, TestObject altState) {
         super(toSwitch);
         altTestObject = altState;
     }
-    
+
+    @Override
     public void pressAlternate(int timeoutInSeconds, FailureHandling failureHandling) {
         WebUiBuiltInKeywords.click(testObject, failureHandling);
     }

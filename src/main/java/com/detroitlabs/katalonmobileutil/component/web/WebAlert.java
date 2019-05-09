@@ -20,11 +20,11 @@ public class WebAlert extends WebComponent {
     public void dismiss() {
         dismiss(defaultTimeout, defaultFailureHandling);
     }
-    
+
     public void dismiss(int timeoutInSeconds) {
         dismiss(timeoutInSeconds, defaultFailureHandling);
     }
-    
+
     public void dismiss(FailureHandling failureHandling) {
         dismiss(defaultTimeout, failureHandling);
     }
@@ -36,11 +36,11 @@ public class WebAlert extends WebComponent {
     public void accept() {
         accept(defaultTimeout, defaultFailureHandling);
     }
-    
+
     public void accept(int timeoutInSeconds) {
         accept(timeoutInSeconds, defaultFailureHandling);
     }
-    
+
     public void accept(FailureHandling failureHandling) {
         accept(defaultTimeout, failureHandling);
     }

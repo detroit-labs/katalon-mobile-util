@@ -9,9 +9,9 @@ public interface PressableComponent {
 
     /**
      * Press the Component.
-     * 
+     *
      * @param timeoutInSeconds The maximum time in seconds to attempt to find the element.
-     * @param failureHandling The handling if the Component cannot be pressed.
+     * @param failureHandling  The handling if the Component cannot be pressed.
      */
     public void press(int timeoutInSeconds, FailureHandling failureHandling);
 
@@ -24,7 +24,7 @@ public interface PressableComponent {
 
     /**
      * Press the Component. Uses the default failure handling from the Component class.
-     * 
+     *
      * @param timeoutInSeconds The maximum time in seconds to attempt to find the element.
      */
     default public void press(int timeoutInSeconds) {
@@ -33,7 +33,7 @@ public interface PressableComponent {
 
     /**
      * Press the Component. Uses the default timeout from the Component class.
-     * 
+     *
      * @param failureHandling The handling if the Component cannot be pressed.
      */
     default public void press(FailureHandling failureHandling) {

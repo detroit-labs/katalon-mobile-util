@@ -22,23 +22,22 @@ public abstract class ComponentFactory {
     /**
      * Create a ComponentFactory instance for the correct platform
      * based on the currently loaded driver in Katalon Studio.
+     *
      * @return A ComponentFactory for the platform being tested.
      */
     public static ComponentFactory getComponentFactory() {
         if (Device.isWeb()) {
             return new WebComponentFactory();
-        }
-        else if (Device.isIOS()) {
+        } else if (Device.isIOS()) {
             return new IOSComponentFactory();
-        }
-        else {
+        } else {
             return new AndroidComponentFactory();
         }
     }
 
     /**
      * Get a TextField Component by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A TextField Component from Object Repository/(Web/IOS/Android) Objects/Text Fields
      */
@@ -46,7 +45,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get an Alert Component by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return An Alert Component from Object Repository/(Web/IOS/Android) Objects/Alerts.
      */
@@ -54,7 +53,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get a PressableComponent by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Buttons.
      */
@@ -62,7 +61,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get a PressableComponent by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Checkboxes.
      */
@@ -70,7 +69,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get a Container Component by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A Container Component from Object Repository/(Web/IOS/Android) Objects/Containers.
      */
@@ -78,7 +77,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get an Image Component by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return An Image Component from Object Repository/(Web/IOS/Android) Objects/Images.
      */
@@ -86,7 +85,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get a Label Component by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A Label Component from Object Repository/(Web/IOS/Android) Objects/Labels.
      */
@@ -94,7 +93,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get a PressableComponent by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Links.
      */
@@ -102,7 +101,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get a SegmentedControl Component by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A SegmentedControl Component from Object Repository/(Web/IOS/Android) Objects/Segmented Controls.
      */
@@ -110,8 +109,8 @@ public abstract class ComponentFactory {
 
     /**
      * Get a TwoStatePressableComponent by name.
-     * 
-     * @param name The TestObject's name in the Object Repository.
+     *
+     * @param name         The TestObject's name in the Object Repository.
      * @param altStateName The secondary TestObject's name in the Object Repository.
      * @return A TwoStatePressableComponent from Object Repository/(Web/IOS/Android) Objects/Switches.
      */
@@ -119,7 +118,7 @@ public abstract class ComponentFactory {
 
     /**
      * Get a PressableComponent by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Tabs.
      */
@@ -127,10 +126,10 @@ public abstract class ComponentFactory {
 
     /**
      * Get a Component by name.
-     * 
+     *
      * @param name The TestObject's name in the Object Repository.
      * @return A Component from Object Repository/(Web/IOS/Android) Objects.
      */
     public abstract Component createGeneric(String name);
-    
+
 }
