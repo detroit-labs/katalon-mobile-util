@@ -1,5 +1,10 @@
 package com.detroitlabs.katalonmobileutil.component;
 
+import com.detroitlabs.katalonmobileutil.component.mobile.android.AndroidComponentFactory;
+import com.detroitlabs.katalonmobileutil.component.mobile.ios.IOSComponentFactory;
+import com.detroitlabs.katalonmobileutil.component.web.WebComponentFactory;
+import com.detroitlabs.katalonmobileutil.device.Device;
+
 /**
  * Creates Components based on the target platform.
  */
@@ -12,6 +17,26 @@ public abstract class ComponentFactory {
 
     protected ComponentFactory(String repository) {
         finder = new Finder(repository);
+    }
+
+    /**
+     * Create a ComponentFactory instance for the correct platform
+     * based on the currently loaded driver in Katalon Studio.
+     *
+     * @return A ComponentFactory for the platform being tested.
+     */
+    @Deprecated
+    public static ComponentFactory getComponentFactory() {
+        // TODO: Remove this because it create a cyclic dependency on the implementation classes. Breaking change.
+        if (Device.isAndroid()) {
+            return new AndroidComponentFactory();
+        }
+        else if (Device.isIOS()) {
+            return new IOSComponentFactory();
+        }
+        else {
+            return new WebComponentFactory();
+        }
     }
 
     /**
