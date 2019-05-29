@@ -9,7 +9,7 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
  * WebSwitch
  */
 public class WebTwoStatePressableComponent extends WebPressableComponent implements TwoStatePressableComponent {
-    protected TestObject altTestObject;
+    protected final TestObject altTestObject;
 
     public WebTwoStatePressableComponent(TestObject toSwitch, TestObject altState) {
         super(toSwitch);
