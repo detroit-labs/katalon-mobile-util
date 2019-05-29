@@ -5,11 +5,11 @@ package com.detroitlabs.katalonmobileutil.component;
  */
 public interface TextField {
 
-    public void typeText(String text, Integer timeout);
+    void typeText(String text, Integer timeout);
 
-    public void clearText();
+    void clearText();
 
-    default public void typeText(String text) {
+    default void typeText(String text) {
         typeText(text, Component.defaultTimeout);
     }
 }
