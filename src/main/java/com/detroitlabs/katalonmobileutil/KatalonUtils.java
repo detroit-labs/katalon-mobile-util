@@ -8,7 +8,7 @@ import com.detroitlabs.katalonmobileutil.device.Device;
 
 public final class KatalonUtils {
 
-    private static ComponentFactory componentFactory = getComponentFactory();
+    private static ComponentFactory componentFactory = createComponentFactory();
 
     /**
      * Create a ComponentFactory instance for the correct platform
@@ -16,7 +16,7 @@ public final class KatalonUtils {
      *
      * @return A ComponentFactory for the platform being tested.
      */
-    private static ComponentFactory getComponentFactory() {
+    private static ComponentFactory createComponentFactory() {
         if (Device.isAndroid()) {
             return new AndroidComponentFactory();
         }
