@@ -7,10 +7,14 @@ import com.kms.katalon.core.testobject.TestObject;
 /**
  * MobileComponent
  */
-class MobileComponent extends Component {
+public class MobileComponent implements Component {
 
-    MobileComponent(TestObject component) {
-        super(component);
+    public final TestObject testObject;
+
+    protected MobileComponent(TestObject testObject) {
+        this.testObject = testObject;
+    }
+
     }
 
     @Override

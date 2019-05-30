@@ -7,10 +7,12 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 /**
  * WebComponent
  */
-class WebComponent extends Component {
+class WebComponent implements Component {
 
-    WebComponent(TestObject component) {
-        super(component);
+    public final TestObject testObject;
+
+    WebComponent(TestObject testObject) {
+        this.testObject = testObject;
     }
 
     @Override
