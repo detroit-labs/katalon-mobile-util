@@ -7,7 +7,7 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 /**
  * WebComponent
  */
-class WebComponent implements Component {
+public class WebComponent implements Component {
 
     public final TestObject testObject;
 
