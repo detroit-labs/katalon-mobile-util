@@ -5,7 +5,7 @@ import com.kms.katalon.core.model.FailureHandling;
 /**
  * A Component that can be pressed, clicked, or tapped.
  */
-public interface PressableComponent {
+public interface PressableComponent extends Component {
 
     /**
      * Press the Component.
@@ -19,7 +19,7 @@ public interface PressableComponent {
      * Press the Component. Uses the default timeout and failure handling from the Component class.
      */
     default void press() {
-        press(Component.defaultTimeout, Component.defaultFailureHandling);
+        press(defaultTimeout, defaultFailureHandling);
     }
 
     /**
@@ -28,7 +28,7 @@ public interface PressableComponent {
      * @param timeoutInSeconds The maximum time in seconds to attempt to find the element.
      */
     default void press(int timeoutInSeconds) {
-        press(timeoutInSeconds, Component.defaultFailureHandling);
+        press(timeoutInSeconds, defaultFailureHandling);
     }
 
     /**
@@ -37,7 +37,7 @@ public interface PressableComponent {
      * @param failureHandling The handling if the Component cannot be pressed.
      */
     default void press(FailureHandling failureHandling) {
-        press(Component.defaultTimeout, failureHandling);
+        press(defaultTimeout, failureHandling);
     }
 
 }

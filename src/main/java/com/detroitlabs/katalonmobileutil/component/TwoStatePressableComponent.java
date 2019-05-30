@@ -19,7 +19,7 @@ public interface TwoStatePressableComponent extends PressableComponent {
      * Press the alternate TestObject. Uses the default timeout and failure handling from the Component class.
      */
     default void pressAlternate() {
-        press(Component.defaultTimeout, Component.defaultFailureHandling);
+        press(defaultTimeout, defaultFailureHandling);
     }
 
     /**
@@ -28,7 +28,7 @@ public interface TwoStatePressableComponent extends PressableComponent {
      * @param timeoutInSeconds The maximum time in seconds to attempt to find the element.
      */
     default void pressAlternate(int timeoutInSeconds) {
-        press(timeoutInSeconds, Component.defaultFailureHandling);
+        press(timeoutInSeconds, defaultFailureHandling);
     }
 
     /**
@@ -37,6 +37,6 @@ public interface TwoStatePressableComponent extends PressableComponent {
      * @param failureHandling The handling if the Component cannot be pressed.
      */
     default void pressAlternate(FailureHandling failureHandling) {
-        press(Component.defaultTimeout, failureHandling);
+        press(defaultTimeout, failureHandling);
     }
 }
