@@ -1,15 +1,21 @@
 package com.detroitlabs.katalonmobileutil.component.mobile;
 
 import com.detroitlabs.katalonmobileutil.component.ComponentFactory;
+import com.detroitlabs.katalonmobileutil.component.Finder;
 
 /**
  * MobileComponentFactory
  */
-public abstract class MobileComponentFactory extends ComponentFactory {
+public abstract class MobileComponentFactory implements ComponentFactory {
+
+    protected final Finder finder;
 
     public MobileComponentFactory(String repository) {
-        super(repository);
+        finder = new Finder(repository);
     }
+
+    @Override
+    public abstract MobileTextField createTextField(String name);
 
     @Override
     public MobileComponent createAlert(String name) {

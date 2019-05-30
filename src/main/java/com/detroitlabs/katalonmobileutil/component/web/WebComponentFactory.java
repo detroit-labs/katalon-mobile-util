@@ -1,20 +1,26 @@
 package com.detroitlabs.katalonmobileutil.component.web;
 
 import com.detroitlabs.katalonmobileutil.component.ComponentFactory;
+import com.detroitlabs.katalonmobileutil.component.Finder;
 
 /**
  * WebComponentFactory
  */
-public class WebComponentFactory extends ComponentFactory {
+public class WebComponentFactory implements ComponentFactory {
 
     private static final String DEFAULT_REPOSITORY = "Web Objects";
+
+    /**
+     * The finder to use for getting TestObjects from the Object Repository.
+     */
+    protected final Finder finder;
 
     public WebComponentFactory() {
         this(DEFAULT_REPOSITORY);
     }
 
     public WebComponentFactory(String repository) {
-        super(repository);
+        finder = new Finder(repository);
     }
 
     @Override
