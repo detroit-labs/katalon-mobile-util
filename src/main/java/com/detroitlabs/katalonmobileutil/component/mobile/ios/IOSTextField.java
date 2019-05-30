@@ -57,7 +57,7 @@ public class IOSTextField extends IOSComponent implements MobileTextField {
 
     @Override
     public void hideKeyboard() {
-        AppiumDriver<?> driver = (AppiumDriver<?>) MobileDriverFactory.getDriver();
+        AppiumDriver<?> driver = MobileDriverFactory.getDriver();
         if (driver.getKeyboard() != null) {
             // The hideKeyboard function often crashes in iOS.
             // Find the DONE button on the keyboard toolbar and tap it, closing the keyboard

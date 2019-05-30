@@ -56,7 +56,7 @@ public interface MobileTextField extends TextField {
      * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
      */
     default void selectOption(String pickerChoice, Integer timeout) throws NoSuchPickerChoiceException {
-        List<String> pickerChoices = new ArrayList<String>();
+        List<String> pickerChoices = new ArrayList<>();
         pickerChoices.add(pickerChoice);
         // Assume that the picker choice is also the string that will be used to validate the selection.
         selectOption(pickerChoices, pickerChoice, timeout);
@@ -72,7 +72,7 @@ public interface MobileTextField extends TextField {
      * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
      */
     default void selectOption(String pickerChoice, String expectedFieldValue, Integer timeout) throws NoSuchPickerChoiceException {
-        List<String> pickerChoices = new ArrayList<String>();
+        List<String> pickerChoices = new ArrayList<>();
         pickerChoices.add(pickerChoice);
         selectOption(pickerChoices, expectedFieldValue, timeout);
     }

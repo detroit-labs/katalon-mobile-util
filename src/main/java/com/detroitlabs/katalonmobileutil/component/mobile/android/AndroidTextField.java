@@ -115,7 +115,7 @@ public class AndroidTextField extends AndroidComponent implements MobileTextFiel
 
     @Override
     public void hideKeyboard() {
-        AppiumDriver<?> driver = (AppiumDriver<?>) MobileDriverFactory.getDriver();
+        AppiumDriver<?> driver = MobileDriverFactory.getDriver();
         if (driver.getKeyboard() != null) {
             // Android's hideKeyboard seems more reliable.
             driver.hideKeyboard();
