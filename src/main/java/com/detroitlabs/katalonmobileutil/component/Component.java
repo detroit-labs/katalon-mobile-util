@@ -2,7 +2,6 @@ package com.detroitlabs.katalonmobileutil.component;
 
 import com.kms.katalon.core.configuration.RunConfiguration;
 import com.kms.katalon.core.model.FailureHandling;
-import com.kms.katalon.core.testobject.TestObject;
 
 /**
  * Component

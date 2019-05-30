@@ -2,19 +2,9 @@ package com.detroitlabs.katalonmobileutil.component.mobile;
 
 import com.detroitlabs.katalonmobileutil.component.TextField;
 import com.detroitlabs.katalonmobileutil.exception.NoSuchPickerChoiceException;
-import com.detroitlabs.katalonmobileutil.logging.Logger;
-import com.detroitlabs.katalonmobileutil.logging.Logger.LogLevel;
-import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
-import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
-import com.kms.katalon.core.model.FailureHandling;
-import com.kms.katalon.core.testobject.ConditionType;
 import com.kms.katalon.core.testobject.TestObject;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
-import org.openqa.selenium.interactions.Keyboard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
