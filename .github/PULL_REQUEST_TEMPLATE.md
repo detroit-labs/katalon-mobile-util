@@ -9,5 +9,5 @@
   - [ ] Update version
   - [ ] Update Katalon version if needed
 - [ ] Update readme
-  - [ ] Update table of contents with DocToc
+  - [ ] Update table of contents with DocToc if needed
   - [ ] Update release artifact link in Installation section
