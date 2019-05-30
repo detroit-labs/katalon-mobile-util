@@ -1,6 +1,7 @@
 package com.detroitlabs.katalonmobileutil.component.mobile.android;
 
 import com.detroitlabs.katalonmobileutil.component.mobile.MobileTextField;
+import com.detroitlabs.katalonmobileutil.exception.NoSuchPickerChoiceException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.detroitlabs.katalonmobileutil.testobject.Finder;
 import com.detroitlabs.katalonmobileutil.testobject.TestObjectConverter;
@@ -17,12 +18,13 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidKeyCode;
 import org.openqa.selenium.NoSuchElementException;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * AndroidTextField
  */
-public class AndroidTextField extends MobileTextField {
+public class AndroidTextField extends AndroidComponent implements MobileTextField {
 
     public AndroidTextField(TestObject textField) {
         super(textField);
@@ -132,5 +134,38 @@ public class AndroidTextField extends MobileTextField {
         Scroll.scrollListToElementWithText(pickerChoice, timeout);
         TestObject selection = Finder.findLabelWithText(pickerChoice);
         MobileBuiltInKeywords.tap(selection, timeout);
+    }
+
+    /**
+     * Select multiple values from a multipart picker.
+     *
+     * @param pickerChoices      value of the option to select for each part of the picker.
+     * @param expectedFieldValue value used to make sure that the picker choices were made correctly.
+     * @param timeout            timeout (in seconds) for picker-related actions.
+     * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
+     */
+    public void selectOption(List<String> pickerChoices, String expectedFieldValue, Integer timeout) throws NoSuchPickerChoiceException {
+
+        // Open the picker by tapping on the field that triggers it
+        MobileBuiltInKeywords.tap(testObject, timeout);
+
+        // Sometimes there will be multiple pickers side-by-side, e.g. multipart date formats for month, date, year
+        for (int i = 0; i < pickerChoices.size(); i++) {
+            selectOptionFromPicker(i, pickerChoices.get(i), timeout);
+        }
+
+        // Find the SELECT, DONE, or OK button on the picker wheel and tap it, applying the value to the field
+        tapButtonWithText(Arrays.asList("OK", "SELECT", "Select", "DONE", "Done"));
+
+        // It is possible to try to set the text of a field to something not in the picker list, in which case it fails silently.
+        // We need to verify that the selection was made correctly, or throw an exception.
+
+        String newTextFieldValue = getPickerValue(timeout);
+        Logger.debug("Verifying that the picker value(s) of: " + pickerChoices + " was set correctly on " + testObject + " which now has a value of: " + newTextFieldValue);
+        Logger.debug("Picker value set successfully!");
+        if (!expectedFieldValue.equalsIgnoreCase(newTextFieldValue)) {
+            throw (new NoSuchPickerChoiceException(pickerChoices));
+        }
+
     }
 }
