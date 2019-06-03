@@ -1,6 +1,7 @@
 package com.detroitlabs.katalonmobileutil.component.mobile;
 
 import com.detroitlabs.katalonmobileutil.component.Component;
+import com.detroitlabs.katalonmobileutil.device.Platform;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
@@ -54,5 +55,10 @@ public class MobileComponent implements Component {
     @Override
     public Boolean verifyElementPresent(Integer timeoutInSeconds) {
         return MobileBuiltInKeywords.verifyElementExist(testObject, timeoutInSeconds);
+    }
+
+    @Override
+    public Platform getPlatform() {
+        return Platform.MOBILE;
     }
 }

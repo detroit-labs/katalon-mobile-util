@@ -1,6 +1,7 @@
 package com.detroitlabs.katalonmobileutil.component.web;
 
 import com.detroitlabs.katalonmobileutil.component.Component;
+import com.detroitlabs.katalonmobileutil.device.Platform;
 import com.kms.katalon.core.testobject.TestObject;
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 
@@ -23,5 +24,10 @@ public class WebComponent implements Component {
     @Override
     public Boolean verifyElementPresent(Integer timeoutInSeconds) {
         return WebUiBuiltInKeywords.verifyElementPresent(testObject, timeoutInSeconds);
+    }
+
+    @Override
+    public Platform getPlatform() {
+        return Platform.WEB;
     }
 }
