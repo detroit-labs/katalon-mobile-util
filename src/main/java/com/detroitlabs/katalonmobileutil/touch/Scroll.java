@@ -2,6 +2,7 @@ package com.detroitlabs.katalonmobileutil.touch;
 
 import java.util.List;
 
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
@@ -176,7 +177,7 @@ public class Scroll {
 		// This simulates a swipe action, so releasing at the top of the screen will
 		// scroll the screen way further than we want. We need to release the press
 		// further down the screen.
-		touchAction.longPress(from.x, from.y).moveTo(to.x, to.y + (from.y - to.y) / 2).release().perform();
+		touchAction.longPress(PointOption.point(from.x, from.y)).moveTo(PointOption.point(to.x, to.y + (from.y - to.y) / 2)).release().perform();
 		
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(timeout);
