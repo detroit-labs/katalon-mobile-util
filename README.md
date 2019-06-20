@@ -48,7 +48,7 @@ For detailed usage, view the [Javadocs](https://detroit-labs.github.io/katalon-m
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.9.0/katalon-mobile-util-1.9.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.11.0/katalon-mobile-util-1.11.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 After installation, make sure you restart Katalon Studio for the library to be loaded correctly.
 
@@ -58,7 +58,7 @@ Although not required, you may build the **katalon-mobile-util** library from so
 
 ### Prerequisites
 
-This library requires [Katalon Studio](https://www.katalon.com/) to be installed.
+This library requires [Katalon Studio version 6.2.0](https://www.katalon.com/) to be installed.
 
 Building from source requires [Apache Maven](https://maven.apache.org/).
 
@@ -66,49 +66,17 @@ Building from source requires [Apache Maven](https://maven.apache.org/).
 
 The Katalon Studio jar files are not available via Maven Central and are not packaged with the **katalon-mobile-util** library, so we can set up a local maven repository to contain the required files:
 
-1. Create a `lib` directory which will act as a local Maven `.m2` repository:
+Run the script to move the jar files from Katalon Studio to the `lib` directory:
 
 ```
 cd katalon-mobile-util
-mkdir lib
+./scripts/install-dependencies.sh
 ```
 
-2. Copy the jar files from Katalon Studio to the `lib` directory:
+Build the katalon-mobile-util package:
 
 ```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_1.0.0.201905011535.jar" \
-  -DgroupId=com.kms.katalon \
-  -DartifactId=core \
-  -Dversion=1.0.0.201905011535 \
-  -Dpackaging=jar \
-  -DlocalRepositoryPath=lib
-```
-
-```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201905011535.jar" \
-  -DgroupId=com.kms.katalon.core \
-  -DartifactId=mobile \
-  -Dversion=1.0.0.201905011535 \
-  -Dpackaging=jar \
-  -DlocalRepositoryPath=lib
-```
-
-```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.webui_1.0.0.201905011535.jar" \
-  -DgroupId=com.kms.katalon.core \
-  -DartifactId=webui \
-  -Dversion=1.0.0.201905011535 \
-  -Dpackaging=jar \
-  -DlocalRepositoryPath=lib
-```
-
-4. Build the package:
-
-```
-mvn package -U
+mvn package
 ```
 
 The resulting `.jar` file will be created in the **katalon-mobile-util** library's `target` directory.
