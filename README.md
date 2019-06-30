@@ -25,7 +25,9 @@
       - [Using a TextField with a Picker list](#using-a-textfield-with-a-picker-list)
       - [Keyboard Handling](#keyboard-handling)
     - [Scrolling](#scrolling)
-      - [How to use Scrolling](#how-to-use-scrolling)
+      - [How to use Scroll](#how-to-use-scroll)
+    - [Swiping](#swiping)
+      - [How to use Swipe](#how-to-use-swipe)
     - [Logging](#logging)
       - [Log Levels](#log-levels)
       - [How to use Logger](#how-to-use-logger)
@@ -395,7 +397,7 @@ Katalon Studio provides a method for [scrolling](https://docs.katalon.com/displa
 
 **katalon-mobile-util** provides a wrapper to scroll lists using the [Appium TouchAction](http://appium.io/docs/en/writing-running-appium/touch-actions/).
 
-#### How to use Scrolling
+#### How to use Scroll
 
 Add this import statement to your test file:
 
@@ -428,6 +430,30 @@ Scroll a list of `CheckBoxes`.
 
 ```
 Scroll.scrollListToCheckboxWithText('My Option 1', timeout)
+```
+
+### Swiping
+
+Swiping differs from Scrolling by ignoring the elements of the screen and performing an action as if the user was swiping
+across the screen in a given direction. 
+
+Available directions to swipe are `LEFT_TO_RIGHT`, `RIGHT_TO_LEFT`, `TOP_TO_BOTTOM`, and `BOTTOM_TO_TOP`.
+(The first position is where the swipe action starts and the second position is where it will end, e.g. `BOTTOM_TO_TOP` 
+will start a press at the bottom of the screen and release at the top of the screen, effectively scrolling down through a list).
+
+#### How to use Swipe
+
+Add this import statement to your test file:
+
+```
+import com.detroitlabs.katalonmobileutil.touch.Swipe
+import com.detroitlabs.katalonmobileutil.touch.Swipe.SwipeDirection
+```
+
+Swipe in a specific direction:
+
+```
+Swipe.swipe(SwipeDirection.BOTTOM_TO_TOP)
 ```
 
 ### Logging
