@@ -26,6 +26,7 @@
       - [Keyboard Handling](#keyboard-handling)
     - [Scrolling](#scrolling)
       - [How to use Scroll](#how-to-use-scroll)
+      - [Scrolling more or less distance with ScrollFactor](#scrolling-more-or-less-distance-with-scrollfactor)
     - [Swiping](#swiping)
       - [How to use Swipe](#how-to-use-swipe)
     - [Logging](#logging)
@@ -399,10 +400,11 @@ Katalon Studio provides a method for [scrolling](https://docs.katalon.com/displa
 
 #### How to use Scroll
 
-Add this import statement to your test file:
+Add these imports statement to your test file:
 
 ```
 import com.detroitlabs.katalonmobileutil.touch.Scroll
+import com.detroitlabs.katalonmobileutil.touch.Scroll.ScrollFactor
 ```
 
 Scroll list of all `XCUIElementTypeStaticText` (for iOS) or `*TextView` (for Android) elements until you get to the given text:
@@ -431,6 +433,37 @@ Scroll a list of `CheckBoxes`.
 ```
 Scroll.scrollListToCheckboxWithText('My Option 1', timeout)
 ```
+
+#### Scrolling more or less distance with ScrollFactor
+
+Depending on the height of the section to be scrolled, and the items within it, you may need to adjust how far
+each scroll action travels. For example, if the list elements are not very tall, scrolling a large distance
+may scroll some items off the screen so that they are not detected.
+
+By using `ScrollFactor`, you can control the degree of scrolling:
+
+```
+Scroll.scrollListToElementWithText('Michigan', ScrollFactor.LARGE, timeout)
+```
+
+The following `ScrollFactors` are available:
+
+```
+ScrollFactor.SMALL   // Scrolls roughtly 25% of the scroll area on each swipe
+ScrollFactor.MEDIUM  // Scrolls roughtly 50% of the scroll area on each swipe
+ScrollFactor.LARGE   // Scrolls roughtly 75% of the scroll area on each swipe
+ScrollFactor.XLARGE  // Scrolls roughtly 100% of the scroll area on each swipe
+```
+
+`ScrollFactor` is an optional parameter (it defaults to `ScrollFactor.MEDIUM`).
+
+The default can be overridden by calling the `initialize()` function:
+
+```
+Scroll.initialize(ScrollFactor.SMALL)
+```
+
+All subsequent calls to `Scroll` functions during the test that don't provide a ScrollFactor will use the set `ScrollFactor`.
 
 ### Swiping
 
