@@ -214,7 +214,18 @@ Finder.setAndroidRepository('My Custom Android Folder')
 
 In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar labels in the table view to find a specific element.
 
-To find a specific label from a collection of similar labels on the screen, first create a new Label TestObject in the Object Repository. The new Label should have properties for the `type` and `name` for iOS (or `class` and `resource-id` for Android). You should leave off the `label` or `text` properties in order to keep the Label generic to represent the collection of 
+To find a specific label from a collection of similar labels on the screen, first create a 
+new Label TestObject in the Object Repository. The new Label should have properties for 
+the `type` and `name` for iOS (or `class` and `resource-id` for Android). 
+
+You should leave off the `label` or `text` properties in order to keep the Label generic to 
+represent the whole collection of labels.
+
+##### Generic iOS Test Object
+![Generic iOS Label](/../screenshots/img/generic_label_ios.png?raw=true "Generic iOS Label")
+
+##### Generic Android Test Object
+![Generic Android Label](/../screenshots/img/generic_label_android.png?raw=true "Generic Android Label")
 
 Then provide an index for which element in the list you want to find (indexes start at 1):
 
@@ -227,7 +238,19 @@ TestObject labelAtIndex = Finder.findLabelAtIndex('Generic label element', index
 
 In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar labels in the table view to find a specific element.
 
-To find a specific label from a collection of similar labels on the screen, first create a new Label TestObject in the Object Repository. The new Label should have properties for the `type` and `name` for iOS (or `class` and `resource-id` for Android). You should leave off the `label` or `text` properties in order to keep the Label generic to represent the collection of 
+To find a specific label from a collection of similar labels on the screen, first create a 
+new Label TestObject in the Object Repository. The new Label should have properties for 
+the `type` and `name` for iOS (or `class` and `resource-id` for Android).
+
+You should leave off the `label` or `text` properties in order to keep the Label generic to 
+ represent the whole collection of labels. 
+
+
+##### Generic iOS Test Object
+![Generic iOS Label](/../screenshots/img/generic_label_ios.png?raw=true "Generic iOS Label")
+
+##### Generic Android Test Object
+![Generic Android Label](/../screenshots/img/generic_label_android.png?raw=true "Generic Android Label")
 
 Then provide the text for the specific label you want to find:
 
@@ -237,7 +260,8 @@ TestObject labelWithText = Finder.findLabelWithText('Generic label element', 'La
 
 #### Finding a Checkbox in a List by the Checkbox Text
 
-In Android, `CheckBoxes` do not necessarily have a `resource-id` and unlike in iOS, the label and checkbox are not separate. To find a Checkbox on screen based on its text, in either iOS or Android:
+In Android, `CheckBoxes` do not necessarily have a `resource-id` and unlike in iOS, 
+the label and checkbox are not separate. To find a Checkbox on screen based on its text, in either iOS or Android:
 
 ```
 TestObject checkbox = Finder.findCheckboxWithText('Checkbox Text') 
