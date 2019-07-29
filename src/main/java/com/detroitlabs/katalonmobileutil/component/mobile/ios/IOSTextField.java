@@ -1,16 +1,15 @@
 package com.detroitlabs.katalonmobileutil.component.mobile.ios;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.detroitlabs.katalonmobileutil.component.mobile.MobileTextField;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import com.kms.katalon.core.testobject.ConditionType;
 import com.kms.katalon.core.testobject.TestObject;
-
 import io.appium.java_client.AppiumDriver;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * IOSTextField
@@ -38,10 +37,10 @@ public class IOSTextField extends MobileTextField {
     @Override
     public void selectOptionFromPicker(int pickerIndex, String pickerChoice, int timeout) {
         // Find the picker wheel and set its text, which spins the wheel
-		TestObject pickerWheel = new TestObject();
-		pickerWheel.addProperty("xpath", ConditionType.EQUALS, "(//XCUIElementTypePickerWheel)[" + (pickerIndex + 1) + "]");
-		MobileBuiltInKeywords.sendKeys(pickerWheel, pickerChoice);
-		Logger.debug("Current pickerWheel value: " + MobileBuiltInKeywords.getText(pickerWheel, timeout));
+        TestObject pickerWheel = new TestObject();
+        pickerWheel.addProperty("xpath", ConditionType.EQUALS, "(//XCUIElementTypePickerWheel)[" + (pickerIndex + 1) + "]");
+        MobileBuiltInKeywords.sendKeys(pickerWheel, pickerChoice);
+        Logger.debug("Current pickerWheel value: " + MobileBuiltInKeywords.getText(pickerWheel, timeout));
     }
 
     @Override
@@ -58,13 +57,13 @@ public class IOSTextField extends MobileTextField {
     @Override
     public void hideKeyboard() {
         AppiumDriver<?> driver = (AppiumDriver<?>) MobileDriverFactory.getDriver();
-		if (driver.getKeyboard() != null) {
-			// The hideKeyboard function often crashes in iOS.
+        if (driver.getKeyboard() != null) {
+            // The hideKeyboard function often crashes in iOS.
             // Find the DONE button on the keyboard toolbar and tap it, closing the keyboard
             tapButtonWithText(Arrays.asList("DONE", "Done"));
-		} else {
-			Logger.debug("Keyboard is already hidden.");
-		}
+        } else {
+            Logger.debug("Keyboard is already hidden.");
+        }
     }
 
     @Override

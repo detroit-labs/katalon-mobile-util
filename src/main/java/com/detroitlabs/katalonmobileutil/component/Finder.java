@@ -1,8 +1,8 @@
 package com.detroitlabs.katalonmobileutil.component;
 
-import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject;
-
 import com.kms.katalon.core.testobject.TestObject;
+
+import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject;
 
 public class Finder {
     private final String repository;
@@ -56,6 +56,10 @@ public class Finder {
     }
 
     public TestObject findGeneric(String name) {
+        return findObject(name);
+    }
+
+    private TestObject findObject(String name) {
         return findObject(null, name);
     }
 

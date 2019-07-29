@@ -1,23 +1,14 @@
-package com.detroitlabs.katalonmobileutil.component;
+package com.detroitlabs.katalonmobileutil;
 
+import com.detroitlabs.katalonmobileutil.component.*;
 import com.detroitlabs.katalonmobileutil.component.mobile.android.AndroidComponentFactory;
 import com.detroitlabs.katalonmobileutil.component.mobile.ios.IOSComponentFactory;
 import com.detroitlabs.katalonmobileutil.component.web.WebComponentFactory;
 import com.detroitlabs.katalonmobileutil.device.Device;
 
-/**
- * Creates Components based on the target platform.
- */
-public abstract class ComponentFactory {
+public final class KatalonUtils {
 
-    /**
-     * The finder to use for getting TestObjects from the Object Repository.
-     */
-    protected final Finder finder;
-
-    protected ComponentFactory(String repository) {
-        finder = new Finder(repository);
-    }
+    private static ComponentFactory componentFactory = createComponentFactory();
 
     /**
      * Create a ComponentFactory instance for the correct platform
@@ -25,9 +16,7 @@ public abstract class ComponentFactory {
      *
      * @return A ComponentFactory for the platform being tested.
      */
-    @Deprecated
-    public static ComponentFactory getComponentFactory() {
-        // TODO: Remove this because it create a cyclic dependency on the implementation classes. Breaking change.
+    private static ComponentFactory createComponentFactory() {
         if (Device.isAndroid()) {
             return new AndroidComponentFactory();
         }
@@ -45,7 +34,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A TextField Component from Object Repository/(Web/IOS/Android) Objects/Text Fields
      */
-    public abstract TextField createTextField(String name);
+    public static TextField createTextField(String name) {
+        return componentFactory.createTextField(name);
+    }
 
     /**
      * Get an Alert Component by name.
@@ -53,7 +44,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return An Alert Component from Object Repository/(Web/IOS/Android) Objects/Alerts.
      */
-    public abstract Component createAlert(String name);
+    public static Component createAlert(String name) {
+        return componentFactory.createAlert(name);
+    }
 
     /**
      * Get a PressableComponent by name.
@@ -61,7 +54,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Buttons.
      */
-    public abstract PressableComponent createButton(String name);
+    public static PressableComponent createButton(String name) {
+        return componentFactory.createButton(name);
+    }
 
     /**
      * Get a PressableComponent by name.
@@ -69,7 +64,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Checkboxes.
      */
-    public abstract PressableComponent createCheckbox(String name);
+    public static PressableComponent createCheckbox(String name) {
+        return componentFactory.createCheckbox(name);
+    }
 
     /**
      * Get a Container Component by name.
@@ -77,7 +74,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A Container Component from Object Repository/(Web/IOS/Android) Objects/Containers.
      */
-    public abstract Component createContainer(String name);
+    public static Component createContainer(String name) {
+        return componentFactory.createContainer(name);
+    }
 
     /**
      * Get an Image Component by name.
@@ -85,7 +84,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return An Image Component from Object Repository/(Web/IOS/Android) Objects/Images.
      */
-    public abstract Component createImage(String name);
+    public static Component createImage(String name) {
+        return componentFactory.createImage(name);
+    }
 
     /**
      * Get a Label Component by name.
@@ -93,7 +94,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A Label Component from Object Repository/(Web/IOS/Android) Objects/Labels.
      */
-    public abstract Component createLabel(String name);
+    public static Component createLabel(String name) {
+        return componentFactory.createLabel(name);
+    }
 
     /**
      * Get a PressableComponent by name.
@@ -101,7 +104,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Links.
      */
-    public abstract PressableComponent createLink(String name);
+    public static PressableComponent createLink(String name) {
+        return componentFactory.createLink(name);
+    }
 
     /**
      * Get a SegmentedControl Component by name.
@@ -109,7 +114,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A SegmentedControl Component from Object Repository/(Web/IOS/Android) Objects/Segmented Controls.
      */
-    public abstract Component createSegmentedControl(String name);
+    public static Component createSegmentedControl(String name) {
+        return componentFactory.createSegmentedControl(name);
+    }
 
     /**
      * Get a TwoStatePressableComponent by name.
@@ -118,7 +125,9 @@ public abstract class ComponentFactory {
      * @param altStateName The secondary TestObject's name in the Object Repository.
      * @return A TwoStatePressableComponent from Object Repository/(Web/IOS/Android) Objects/Switches.
      */
-    public abstract TwoStatePressableComponent createSwitch(String name, String altStateName);
+    public static TwoStatePressableComponent createSwitch(String name, String altStateName) {
+        return componentFactory.createSwitch(name, altStateName);
+    }
 
     /**
      * Get a PressableComponent by name.
@@ -126,7 +135,9 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A PressableComponent from Object Repository/(Web/IOS/Android) Objects/Tabs.
      */
-    public abstract PressableComponent createTab(String name);
+    public static PressableComponent createTab(String name) {
+        return componentFactory.createTab(name);
+    }
 
     /**
      * Get a Component by name.
@@ -134,6 +145,7 @@ public abstract class ComponentFactory {
      * @param name The TestObject's name in the Object Repository.
      * @return A Component from Object Repository/(Web/IOS/Android) Objects.
      */
-    public abstract Component createGeneric(String name);
-
+    public static Component createGeneric(String name) {
+        return componentFactory.createGeneric(name);
+    }
 }

@@ -12,12 +12,14 @@ public class WebTextField extends WebComponent implements TextField {
 
     public WebTextField(TestObject textField) {
         super(textField);
-	}
+    }
 
-	public void typeText(String text, Integer timeout) {
+    @Override
+    public void typeText(String text, Integer timeout) {
         WebUiBuiltInKeywords.sendKeys(testObject, text);
     }
 
+    @Override
     public void clearText() {
         clearText(defaultFailureHandling);
     }

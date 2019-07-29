@@ -21,5 +21,5 @@ public class AndroidComponentFactory extends MobileComponentFactory {
     public AndroidTextField createTextField(String name) {
         return new AndroidTextField(finder.findTextField(name));
     }
-   
+
 }

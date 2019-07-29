@@ -17,5 +17,6 @@ public abstract class Component {
     }
 
     public abstract Boolean verifyElementPresent();
+
     public abstract Boolean verifyElementPresent(Integer timeoutInSeconds);
 }

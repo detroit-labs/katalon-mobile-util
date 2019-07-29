@@ -13,10 +13,12 @@ class MobileComponent extends Component {
         super(component);
     }
 
+    @Override
     public Boolean verifyElementPresent() {
         return verifyElementPresent(defaultTimeout);
     }
 
+    @Override
     public Boolean verifyElementPresent(Integer timeoutInSeconds) {
         return MobileBuiltInKeywords.verifyElementExist(testObject, timeoutInSeconds);
     }

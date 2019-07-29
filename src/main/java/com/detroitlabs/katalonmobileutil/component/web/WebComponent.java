@@ -13,10 +13,12 @@ class WebComponent extends Component {
         super(component);
     }
 
+    @Override
     public Boolean verifyElementPresent() {
         return verifyElementPresent(defaultTimeout);
     }
 
+    @Override
     public Boolean verifyElementPresent(Integer timeoutInSeconds) {
         return WebUiBuiltInKeywords.verifyElementPresent(testObject, timeoutInSeconds);
     }

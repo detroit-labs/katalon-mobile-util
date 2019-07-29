@@ -14,6 +14,7 @@ public class WebPressableComponent extends WebComponent implements PressableComp
         super(component);
     }
 
+    @Override
     public void press(int timeoutInSeconds, FailureHandling failureHandling) {
         WebUiBuiltInKeywords.click(testObject, failureHandling);
     }
