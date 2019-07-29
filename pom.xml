@@ -5,7 +5,7 @@
 
 	<groupId>com.detroitlabs</groupId>
 	<artifactId>katalon-mobile-util</artifactId>
-	<version>1.11.1-SNAPSHOT</version>
+	<version>1.13.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>katalon-mobile-util</name>
@@ -16,7 +16,7 @@
 		<!-- Change this to point to your project's /Drivers directory -->
 		<project.target.katalon.directory>/My-Project/Drivers</project.target.katalon.directory>
 		<!-- Change this to your Katalon Studio plugins version -->
-		<project.target.katalon.version>1.0.0.201905011535</project.target.katalon.version>
+		<project.target.katalon.version>1.0.0.201906110939</project.target.katalon.version>
 	</properties>
 
 	<build>
@@ -87,7 +87,7 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>5.0.4</version>
+			<version>6.1.0</version>
 		</dependency>
 		<!-- Katalon jars are not included in maven repositories and need to be copied to the ${basedir}/lib --> 
 		<!-- See http://mark.koli.ch/maven-add-local-jar-dependency-to-classpath -->
