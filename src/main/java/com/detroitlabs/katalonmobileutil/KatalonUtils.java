@@ -6,7 +6,7 @@ import com.detroitlabs.katalonmobileutil.component.mobile.ios.IOSComponentFactor
 import com.detroitlabs.katalonmobileutil.component.web.WebComponentFactory;
 import com.detroitlabs.katalonmobileutil.device.Device;
 
-public final class KatalonUtils {
+public class KatalonUtils {
 
     private static ComponentFactory componentFactory = createComponentFactory();
 
