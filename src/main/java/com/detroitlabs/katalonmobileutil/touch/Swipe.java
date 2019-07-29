@@ -5,6 +5,7 @@ import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
 
 public class Swipe {
 
@@ -57,7 +58,7 @@ public class Swipe {
         }
 
         Logger.debug("Swiping from (" + startX + ", " + startY + ") to (" + endX + ", " + endY + ")");
-        touchAction.longPress(startX, startY).moveTo(endX, endY).release().perform();
+        touchAction.longPress(PointOption.point(startX, startY)).moveTo(PointOption.point(endX, endY)).release().perform();
 
     }
 

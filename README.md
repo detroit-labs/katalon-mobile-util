@@ -25,7 +25,10 @@
       - [Using a TextField with a Picker list](#using-a-textfield-with-a-picker-list)
       - [Keyboard Handling](#keyboard-handling)
     - [Scrolling](#scrolling)
-      - [How to use Scrolling](#how-to-use-scrolling)
+      - [How to use Scroll](#how-to-use-scroll)
+      - [Scrolling more or less distance with ScrollFactor](#scrolling-more-or-less-distance-with-scrollfactor)
+    - [Swiping](#swiping)
+      - [How to use Swipe](#how-to-use-swipe)
     - [Logging](#logging)
       - [Log Levels](#log-levels)
       - [How to use Logger](#how-to-use-logger)
@@ -48,7 +51,7 @@ For detailed usage, view the [Javadocs](https://detroit-labs.github.io/katalon-m
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.11.2/katalon-mobile-util-1.11.2.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.12.1/katalon-mobile-util-1.12.1.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 After installation, make sure you restart Katalon Studio for the library to be loaded correctly.
 
@@ -58,7 +61,7 @@ Although not required, you may build the **katalon-mobile-util** library from so
 
 ### Prerequisites
 
-This library requires [Katalon Studio](https://www.katalon.com/) to be installed.
+This library requires [Katalon Studio version 6.2.0](https://www.katalon.com/) to be installed.
 
 Building from source requires [Apache Maven](https://maven.apache.org/).
 
@@ -66,49 +69,17 @@ Building from source requires [Apache Maven](https://maven.apache.org/).
 
 The Katalon Studio jar files are not available via Maven Central and are not packaged with the **katalon-mobile-util** library, so we can set up a local maven repository to contain the required files:
 
-1. Create a `lib` directory which will act as a local Maven `.m2` repository:
+Run the script to move the jar files from Katalon Studio to the `lib` directory:
 
 ```
 cd katalon-mobile-util
-mkdir lib
+./scripts/install-dependencies.sh
 ```
 
-2. Copy the jar files from Katalon Studio to the `lib` directory:
+Build the katalon-mobile-util package:
 
 ```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core_1.0.0.201811290916.jar" \
-  -DgroupId=com.kms.katalon \
-  -DartifactId=core \
-  -Dversion=1.0.0.201811290916 \
-  -Dpackaging=jar \
-  -DlocalRepositoryPath=lib
-```
-
-```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.mobile_1.0.0.201811290916.jar" \
-  -DgroupId=com.kms.katalon.core \
-  -DartifactId=mobile \
-  -Dversion=1.0.0.201811290916 \
-  -Dpackaging=jar \
-  -DlocalRepositoryPath=lib
-```
-
-```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file \
-  -Dfile="/Applications/Katalon Studio.app/Contents/Eclipse/plugins/com.kms.katalon.core.webui_1.0.0.201811290916.jar" \
-  -DgroupId=com.kms.katalon.core \
-  -DartifactId=webui \
-  -Dversion=1.0.0.201811290916 \
-  -Dpackaging=jar \
-  -DlocalRepositoryPath=lib
-```
-
-4. Build the package:
-
-```
-mvn package -U
+mvn package
 ```
 
 The resulting `.jar` file will be created in the **katalon-mobile-util** library's `target` directory.
@@ -243,7 +214,18 @@ Finder.setAndroidRepository('My Custom Android Folder')
 
 In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar labels in the table view to find a specific element.
 
-To find a specific label from a collection of similar labels on the screen, first create a new Label TestObject in the Object Repository. The new Label should have properties for the `type` and `name` for iOS (or `class` and `resource-id` for Android). You should leave off the `label` or `text` properties in order to keep the Label generic to represent the collection of 
+To find a specific label from a collection of similar labels on the screen, first create a 
+new Label TestObject in the Object Repository. The new Label should have properties for 
+the `type` and `name` for iOS (or `class` and `resource-id` for Android). 
+
+You should leave off the `label` or `text` properties in order to keep the Label generic to 
+represent the whole collection of labels.
+
+##### Generic iOS Test Object
+![Generic iOS Label](/../screenshots/img/generic_label_ios.png?raw=true "Generic iOS Label")
+
+##### Generic Android Test Object
+![Generic Android Label](/../screenshots/img/generic_label_android.png?raw=true "Generic Android Label")
 
 Then provide an index for which element in the list you want to find (indexes start at 1):
 
@@ -256,7 +238,19 @@ TestObject labelAtIndex = Finder.findLabelAtIndex('Generic label element', index
 
 In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar labels in the table view to find a specific element.
 
-To find a specific label from a collection of similar labels on the screen, first create a new Label TestObject in the Object Repository. The new Label should have properties for the `type` and `name` for iOS (or `class` and `resource-id` for Android). You should leave off the `label` or `text` properties in order to keep the Label generic to represent the collection of 
+To find a specific label from a collection of similar labels on the screen, first create a 
+new Label TestObject in the Object Repository. The new Label should have properties for 
+the `type` and `name` for iOS (or `class` and `resource-id` for Android).
+
+You should leave off the `label` or `text` properties in order to keep the Label generic to 
+ represent the whole collection of labels. 
+
+
+##### Generic iOS Test Object
+![Generic iOS Label](/../screenshots/img/generic_label_ios.png?raw=true "Generic iOS Label")
+
+##### Generic Android Test Object
+![Generic Android Label](/../screenshots/img/generic_label_android.png?raw=true "Generic Android Label")
 
 Then provide the text for the specific label you want to find:
 
@@ -266,7 +260,8 @@ TestObject labelWithText = Finder.findLabelWithText('Generic label element', 'La
 
 #### Finding a Checkbox in a List by the Checkbox Text
 
-In Android, `CheckBoxes` do not necessarily have a `resource-id` and unlike in iOS, the label and checkbox are not separate. To find a Checkbox on screen based on its text, in either iOS or Android:
+In Android, `CheckBoxes` do not necessarily have a `resource-id` and unlike in iOS, 
+the label and checkbox are not separate. To find a Checkbox on screen based on its text, in either iOS or Android:
 
 ```
 TestObject checkbox = Finder.findCheckboxWithText('Checkbox Text') 
@@ -427,12 +422,13 @@ Katalon Studio provides a method for [scrolling](https://docs.katalon.com/displa
 
 **katalon-mobile-util** provides a wrapper to scroll lists using the [Appium TouchAction](http://appium.io/docs/en/writing-running-appium/touch-actions/).
 
-#### How to use Scrolling
+#### How to use Scroll
 
-Add this import statement to your test file:
+Add these imports statement to your test file:
 
 ```
 import com.detroitlabs.katalonmobileutil.touch.Scroll
+import com.detroitlabs.katalonmobileutil.touch.Scroll.ScrollFactor
 ```
 
 Scroll list of all `XCUIElementTypeStaticText` (for iOS) or `*TextView` (for Android) elements until you get to the given text:
@@ -460,6 +456,61 @@ Scroll a list of `CheckBoxes`.
 
 ```
 Scroll.scrollListToCheckboxWithText('My Option 1', timeout)
+```
+
+#### Scrolling more or less distance with ScrollFactor
+
+Depending on the height of the section to be scrolled, and the items within it, you may need to adjust how far
+each scroll action travels. For example, if the list elements are not very tall, scrolling a large distance
+may scroll some items off the screen so that they are not detected.
+
+By using `ScrollFactor`, you can control the degree of scrolling:
+
+```
+Scroll.scrollListToElementWithText('Michigan', ScrollFactor.LARGE, timeout)
+```
+
+The following `ScrollFactors` are available:
+
+```
+ScrollFactor.SMALL   // Scrolls roughtly 25% of the scroll area on each swipe
+ScrollFactor.MEDIUM  // Scrolls roughtly 50% of the scroll area on each swipe
+ScrollFactor.LARGE   // Scrolls roughtly 75% of the scroll area on each swipe
+ScrollFactor.XLARGE  // Scrolls roughtly 100% of the scroll area on each swipe
+```
+
+`ScrollFactor` is an optional parameter (it defaults to `ScrollFactor.MEDIUM`).
+
+The default can be overridden by calling the `initialize()` function:
+
+```
+Scroll.initialize(ScrollFactor.SMALL)
+```
+
+All subsequent calls to `Scroll` functions during the test that don't provide a ScrollFactor will use the set `ScrollFactor`.
+
+### Swiping
+
+Swiping differs from Scrolling by ignoring the elements of the screen and performing an action as if the user was swiping
+across the screen in a given direction. 
+
+Available directions to swipe are `LEFT_TO_RIGHT`, `RIGHT_TO_LEFT`, `TOP_TO_BOTTOM`, and `BOTTOM_TO_TOP`.
+(The first position is where the swipe action starts and the second position is where it will end, e.g. `BOTTOM_TO_TOP` 
+will start a press at the bottom of the screen and release at the top of the screen, effectively scrolling down through a list).
+
+#### How to use Swipe
+
+Add this import statement to your test file:
+
+```
+import com.detroitlabs.katalonmobileutil.touch.Swipe
+import com.detroitlabs.katalonmobileutil.touch.Swipe.SwipeDirection
+```
+
+Swipe in a specific direction:
+
+```
+Swipe.swipe(SwipeDirection.BOTTOM_TO_TOP)
 ```
 
 ### Logging
