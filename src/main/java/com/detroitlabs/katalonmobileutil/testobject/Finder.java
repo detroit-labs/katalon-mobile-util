@@ -33,51 +33,104 @@ public class Finder {
 	}
 
 	public static TestObject findAlert(String name) {
-		return findObject("Alerts", name);
+		return findObject(TestObjectType.ALERT, name);
 	}
 
 	public static TestObject findButton(String name) {
-		return findObject("Buttons", name);
+		return findObject(TestObjectType.BUTTON, name);
 	}
 
 	public static TestObject findCheckbox(String name) {
-		return findObject("Checkboxes", name);
+		return findObject(TestObjectType.CHECKBOX, name);
 	}
 
 	public static TestObject findContainer(String name) {
-		return findObject("Containers", name);
+		return findObject(TestObjectType.CONTAINER, name);
 	}
 
 	public static TestObject findImage(String name) {
-		return findObject("Images", name);
+		return findObject(TestObjectType.IMAGE, name);
 	}
 
 	public static TestObject findLabel(String name) {
-		return findObject("Labels", name);
+		return findObject(TestObjectType.LABEL, name);
 	}
 
 	public static TestObject findLink(String name) {
-		return findObject("Links", name);
+		return findObject(TestObjectType.LINK, name);
 	}
 
 	public static TestObject findSegmentedControl(String name) {
-		return findObject("Segmented Controls", name);
+		return findObject(TestObjectType.SEGMENTED_CONTROL, name);
 	}
 
 	public static TestObject findSwitch(String name) {
-		return findObject("Switches", name);
+		return findObject(TestObjectType.SWITCH, name);
 	}
 
 	public static TestObject findTab(String name) {
-		return findObject("Tabs", name);
+		return findObject(TestObjectType.TAB, name);
 	}
 
 	public static TestObject findTextField(String name) {
-		return findObject("Text Fields", name);
+		return findObject(TestObjectType.TEXT_FIELD, name);
 	}
 
 	public static TestObject findGeneric(String name) {
-		return findObject(null, name);
+		return findObject(TestObjectType.GENERIC, name);
+	}
+
+	public static TestObject find(TestObjectType type, String name) {
+		return findObject(type, name);
+	}
+
+	/**
+	 * Find a TestObject at a given index from a list of similar TestObjects on the screen.
+	 * <p>
+	 * There must already exist a TestObject in the Object Repository that
+	 * will serve as a template.
+	 * <p>
+	 * For iOS, the TestObject should have a "name" property that matches the
+	 * accessibility id of the collection of elements.
+	 * <p>
+	 * For Android, the TestObject should have a "class" property and a "resource-id" property that
+	 * contains the resource-id shared by the collection of elements.
+	 * @param type
+	 * 			  the type of the TestObject you want to find.
+	 * @param testObjectName
+	 *            the name of the TestObject in the Object Repository which will be used
+	 *            as the template for finding all of the elements with the same
+	 *            class/type and accessibility/resource id.
+	 * @param index
+	 *            the place of the element in the list that you want to return. The
+	 *            first element is at index 1.
+	 * @return the matching TestObject
+	 */
+	public static TestObject findElementAtIndex(TestObjectType type, String testObjectName, int index) {
+
+		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
+
+		TestObject templateObject = Finder.find(type, testObjectName);
+		String resourceId = TestObjectConverter.resourceIdFromTestObject(templateObject);
+		String typeFromObject = TestObjectConverter.typeFromTestObject(templateObject);
+
+		String xpath = "(" + XPathBuilder.addResourceId(XPathBuilder.createXPath(typeFromObject), resourceId) + ")[" + index + "]";
+
+		RemoteWebElement listElement = null;
+
+		Logger.debug("Looking for " + type.getName() + " with xpath: " + xpath);
+		try {
+			listElement = (RemoteWebElement) driver.findElementByXPath(xpath);
+		} catch (WebDriverException ex) {
+			String resourceType = Device.isIOS() ? "accessibility id" : "resource-id";
+			throw (new ListItemsNotFoundException(xpath, resourceId, resourceType, index));
+		}
+
+		Logger.debug("Found " + type.getName() + ":" + listElement);
+		TestObject objectAtIndex = TestObjectConverter.fromElement(listElement);
+
+		// return the test object
+		return objectAtIndex;
 	}
 
 	/**
@@ -93,7 +146,7 @@ public class Finder {
 	 * For Android, the TestObject should have a "class" property that ends in
 	 * "TextView" and a "resource-id" property that contains the resource-id shared
 	 * by the collection of labels.
-	 * 
+	 *
 	 * @param testObjectName
 	 *            the name of the Label in the Object Repository which will be used
 	 *            as the template for finding all of the labels with the same
@@ -105,28 +158,7 @@ public class Finder {
 	 */
 	public static TestObject findLabelAtIndex(String testObjectName, int index) {
 
-		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
-
-		TestObject templateObject = Finder.findLabel(testObjectName);
-		String resourceId = TestObjectConverter.resourceIdFromTestObject(templateObject);
-
-		String xpath = "(" + XPathBuilder.xpathForLabelWithResourceId(resourceId) + ")[" + index + "]";
-
-		RemoteWebElement listElement = null;
-
-		Logger.debug("Looking for labels with xpath: " + xpath);
-		try {
-			listElement = (RemoteWebElement) driver.findElementByXPath(xpath);
-		} catch (WebDriverException ex) {
-			String resourceType = Device.isIOS() ? "accessibility id" : "resource-id";
-			throw (new ListItemsNotFoundException(xpath, resourceId, resourceType, index));
-		}
-
-		Logger.debug("Found label:" + listElement);
-		TestObject objectAtIndex = TestObjectConverter.fromElement(listElement);
-
-		// return the test object
-		return objectAtIndex;
+		return findElementAtIndex(TestObjectType.LABEL, testObjectName, index);
 	}
 
 	/**
@@ -284,7 +316,9 @@ public class Finder {
 		return objectAtIndex;
 	}
 
-	private static TestObject findObject(String type, String name) {
+	private static TestObject findObject(TestObjectType type, String name) {
+
+		String typeDirectory = "";
 
 		String objectRepo = "";
 		if (Device.isWeb()) {
@@ -294,9 +328,9 @@ public class Finder {
 			objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
 		}
 
-		type = type != null ? type + "/" : "";
+		typeDirectory = type != null ? type.getName() + "/" : "";
 
-		String object = objectRepo + '/' + type + name;
+		String object = objectRepo + '/' + typeDirectory + name;
 
 		return findTestObject(object);
 	}
