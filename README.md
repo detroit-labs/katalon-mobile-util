@@ -210,16 +210,28 @@ Finder.setIOSRepository('My Custom iOS Folder')
 Finder.setAndroidRepository('My Custom Android Folder')
 ```
 
-#### Finding a Label from a List by Index
+TIP: All of the available TestObject types can be used by importing:
 
-In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar labels in the table view to find a specific element.
+```
+import com.detroitlabs.katalonmobileutil.testobject.TestObjectType
 
-To find a specific label from a collection of similar labels on the screen, first create a 
-new Label TestObject in the Object Repository. The new Label should have properties for 
+// Gives you access to:
+TestObjectType.ALERT
+TestObjectType.CHECKBOX
+TestObjectType.LABEL
+// etc.
+```
+
+#### Finding an Element from a List by Index
+
+In iOS, we can't specify an `accessibility id` for a `UITableView`, but we can use the `accessibility id` assigned to similar elements in the table view to find a specific element.
+
+To find a specific element from a collection of similar elements on the screen, first create a 
+new TestObject in the Object Repository in the appropriate directory for its type. The new object should have properties for 
 the `type` and `name` for iOS (or `class` and `resource-id` for Android). 
 
-You should leave off the `label` or `text` properties in order to keep the Label generic to 
-represent the whole collection of labels.
+TIP: You should leave off the `label` or `text` properties in order to keep the Label generic to 
+represent the whole collection of elements.
 
 ##### Generic iOS Test Object
 ![Generic iOS Label](/../screenshots/img/generic_label_ios.png?raw=true "Generic iOS Label")
@@ -230,8 +242,10 @@ represent the whole collection of labels.
 Then provide an index for which element in the list you want to find (indexes start at 1):
 
 ```
+import com.detroitlabs.katalonmobileutil.testobject.TestObjectType
+
 int index = 3 // first element in the list is at index 1, so this gets the 3rd element
-TestObject labelAtIndex = Finder.findLabelAtIndex('Generic label element', index) 
+TestObject labelAtIndex = Finder.findElementAtIndex(TestObjectType.LABEL, 'Generic label element', index) 
 ```
 
 #### Finding a Label from a List by the Label Text
