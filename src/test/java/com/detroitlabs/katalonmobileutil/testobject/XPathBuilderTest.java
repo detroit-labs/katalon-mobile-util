@@ -15,9 +15,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.detroitlabs.katalonmobileutil.device.Device;
 
-@PrepareForTest(Device.class)
 @RunWith(PowerMockRunner.class)
-//@PowerMockIgnore({ "org.mockito.*" })
+@PrepareForTest(Device.class)
 class XPathBuilderTest {
 	
 	// Treat as @Before/@BeforeAll
