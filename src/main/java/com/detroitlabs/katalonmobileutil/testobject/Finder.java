@@ -328,7 +328,7 @@ public class Finder {
 			objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
 		}
 
-		typeDirectory = type != null ? type.getName() + "/" : "";
+		typeDirectory = type != null && type.getName() != null ? type.getName() + "/" : "";
 
 		String object = objectRepo + '/' + typeDirectory + name;
 
