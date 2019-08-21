@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Keyboard;
 
@@ -22,7 +24,6 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidKeyCode;
 
 public class TextField {
 	
@@ -212,7 +213,7 @@ public class TextField {
 		} else {
 			// For Android, we can use the Tab key
 			AndroidDriver<?> driver = (AndroidDriver<?>) MobileDriverFactory.getDriver();
-			driver.pressKeyCode(AndroidKeyCode.KEYCODE_TAB);
+			driver.pressKey(new KeyEvent(AndroidKey.TAB));
 		}
 	}
 	
@@ -279,7 +280,7 @@ public class TextField {
 		p.setValue(pickerChoice);
 		
 		// In order for the picker change to take effect, need to apply it to the field
-		driver.pressKeyCode(AndroidKeyCode.ENTER);
+		driver.pressKey(new KeyEvent(AndroidKey.ENTER));
 		
 	}
 	

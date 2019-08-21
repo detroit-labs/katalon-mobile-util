@@ -15,7 +15,8 @@ import com.kms.katalon.core.testobject.TestObject;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidKeyCode;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import org.openqa.selenium.NoSuchElementException;
 
 import java.util.Arrays;
@@ -80,7 +81,7 @@ public class AndroidTextField extends AndroidComponent implements MobileTextFiel
             p.setValue(pickerChoice);
 
             // In order for the picker change to take effect, need to apply it to the field
-            driver.pressKeyCode(AndroidKeyCode.ENTER);
+            driver.pressKey(new KeyEvent(AndroidKey.ENTER));
         } catch (NoSuchElementException e) {
             selectOptionFromTextList(pickerChoice, timeout);
         }
@@ -110,7 +111,7 @@ public class AndroidTextField extends AndroidComponent implements MobileTextFiel
     public void nextField() {
         // For Android, we can use the Tab key
         AndroidDriver<?> driver = (AndroidDriver<?>) MobileDriverFactory.getDriver();
-        driver.pressKeyCode(AndroidKeyCode.KEYCODE_TAB);
+        driver.pressKey(new KeyEvent(AndroidKey.TAB));
     }
 
     @Override
