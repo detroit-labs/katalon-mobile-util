@@ -31,7 +31,10 @@ public class Scroll {
 		ScrollFactor(int factor) {
 			this.factor = factor;
 		}
+	}
 
+	public enum ScrollDirection {
+		UP, DOWN
 	}
 
 	static String lastScrolledElement = null;
@@ -128,7 +131,38 @@ public class Scroll {
 			xpath = XPathBuilder.addResourceId(xpath, elementId);
 		}
 
-		return scrollListToElementWithXPath(xpath, elementText, scrollFactor, timeout);
+		return scrollListToElementWithXPath(xpath, elementText, scrollFactor, ScrollDirection.DOWN, timeout);
+
+	}
+
+	/**
+	 * Scrolls through a list of a specific collection of elements on the screen, attempting to find the requested text.
+	 * Throws an exception if the text is not found.
+	 * @param elementId identifier of the collection of text elements to scroll (Accessibility id/name for iOS and resource-id for Android).
+	 * @param elementText text to attempt to find in the scrolling list.
+	 * @param scrollFactor how big the scroll action should be before releasing, from SMALL to XLARGE
+	 * @param scrollDirection which way the scrolling of the list should go, DOWN or UP
+	 * @param timeout delay in seconds between each scroll action.
+	 * @return true if the text was found.
+	 */
+	public static boolean scrollListToElementWithText(String elementId, String elementText, ScrollFactor scrollFactor, ScrollDirection scrollDirection, Integer timeout) {
+		String xpath = "";
+
+		if (Device.isIOS()) {
+			xpath = XPathBuilder.createXPath("XCUIElementTypeStaticText");
+			// iOS lists may have all elements in them from the start, even if not visible
+			xpath = XPathBuilder.addVisible(xpath);
+		} else if (Device.isAndroid()) {
+			xpath = XPathBuilder.createXPath("TextView");
+		} else {
+			throw new UnsupportedOperationException("Device type is not supported.");
+		}
+
+		if (elementId != null) {
+			xpath = XPathBuilder.addResourceId(xpath, elementId);
+		}
+
+		return scrollListToElementWithXPath(xpath, elementText, scrollFactor, scrollDirection, timeout);
 
 	}
 
@@ -171,14 +205,14 @@ public class Scroll {
 			throw new UnsupportedOperationException("Device type is not supported.");
 		}
 
-		return scrollListToElementWithXPath(xpath, elementText, scrollFactor, timeout);
+		return scrollListToElementWithXPath(xpath, elementText, scrollFactor, ScrollDirection.DOWN, timeout);
 	}
 
-	private static boolean scrollListToElementWithXPath(String xpath, String elementText, ScrollFactor scrollFactor, Integer timeout) {
+	private static boolean scrollListToElementWithXPath(String xpath, String elementText, ScrollFactor scrollFactor, ScrollDirection scrollDirection, Integer timeout) {
 		boolean isElementFound = false;
 		while (isElementFound == false) {
 			try {
-				 Logger.debug("Checking for specific element: " + elementText);
+				Logger.debug("Checking for specific element: " + elementText);
 				AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 				String xpathWithText = XPathBuilder.addLabel(xpath, elementText);
 				Logger.debug("Trying to find xpath with text: " + xpathWithText);
@@ -190,13 +224,13 @@ public class Scroll {
 			} catch (WebDriverException ex) {
 				// In this case, we're using the WebDriverException to trigger the scroll event, so it's ok that it occurs.
 				Logger.debug("Didn't find any matching elements.");
-				scrollEntireList(xpath, elementText, scrollFactor, timeout);
+				scrollEntireList(xpath, elementText, scrollFactor, scrollDirection, timeout);
 			}
 		}
 		return isElementFound;
 	}
 	
-	private static void scrollEntireList(String xpath, String elementText, ScrollFactor scrollFactor, Integer timeout) {
+	private static void scrollEntireList(String xpath, String elementText, ScrollFactor scrollFactor, ScrollDirection scrollDirection, Integer timeout) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 			
 		Logger.debug("Getting a scroll list of all elements.");
@@ -220,32 +254,34 @@ public class Scroll {
 		RemoteWebElement justAboveBottomElement = listElements.get(listElements.size() - 2);
 		if (bottomElement.getSize().height < justAboveBottomElement.getSize().height) {
 			bottomElement = justAboveBottomElement;
-		}		
+		}
+		RemoteWebElement topElement = listElements.get(0);
+		Logger.debug("Top element is now: " + topElement.getText() + " -> " + topElement.getLocation());
 		
 		Logger.debug("Bottom element is now: " + bottomElement.getText() + " -> " + bottomElement.getLocation());	
 		
 		// Check if the last element is the same as the previous time we scrolled, if so,
 		// it means we hit the end of the list without finding the element
 		// and should throw an error.
-		Logger.debug("Comparing the previous last element in the list: " + lastScrolledElement);
-		Logger.debug("with the new last element in the list: " + (bottomElement != null ? bottomElement.getText() : "null"));	
-		if (lastScrolledElement != null && lastScrolledElement.equals(bottomElement.getText())) {
-			Logger.error("Scrolled to the bottom of the list and we didn't find the element.");
+		String boundaryElementText = scrollDirection == ScrollDirection.DOWN ? "last" : "first";
+		Logger.debug("Comparing the previous " + boundaryElementText + " element in the list: " + lastScrolledElement);
+		RemoteWebElement boundaryElement = scrollDirection == ScrollDirection.DOWN ? bottomElement : topElement;
+		Logger.debug("with the new " + boundaryElementText + " element in the list: " + (boundaryElement != null ? boundaryElement.getText() : "null"));
+		if (lastScrolledElement != null && lastScrolledElement.equals(boundaryElement.getText())) {
+			Logger.error("Scrolled to the end of the list and we didn't find the element.");
 			// reset the last scrolled element for the next time we do scrolling
 			lastScrolledElement = null;
 			throw(new ListItemsNotFoundException(xpath, elementText));
 		}
 		
-		Logger.debug("Resetting lastScrolledElement to " + bottomElement.hashCode() + " " + bottomElement.getText());
-		lastScrolledElement = bottomElement.getText();
-		RemoteWebElement topElement = listElements.get(0);
-		Logger.debug("Top element: " + topElement.getText() + " -> " + topElement.getLocation());
+		Logger.debug("Resetting lastScrolledElement to " + boundaryElement.hashCode() + " " + boundaryElement.getText());
+		lastScrolledElement = boundaryElement.getText();
 		
 		// Press and scroll from the last element in the list all the way to the top
 		Logger.debug("Scrolling...");
 		TouchAction touchAction = new TouchAction(driver);
-		Point from = bottomElement.getLocation();
-		Point to = topElement.getLocation();
+		Point from = scrollDirection == ScrollDirection.DOWN ? bottomElement.getLocation() : topElement.getLocation();
+		Point to = scrollDirection == ScrollDirection.DOWN ? topElement.getLocation() : bottomElement.getLocation();
 
 		// This simulates a swipe action, so releasing at the top of the screen will
 		// scroll the screen way further than we want. We may need to release the press
