@@ -1,7 +1,9 @@
 package com.detroitlabs.katalonmobileutil.touch;
 
-import java.util.List;
+import java.util.*;
 
+import com.detroitlabs.katalonmobileutil.testobject.TestObjectConverter;
+import com.kms.katalon.core.testobject.TestObject;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
@@ -37,7 +39,10 @@ public class Scroll {
 		UP, DOWN
 	}
 
+	// used to determine when we've hit the end of the list and should stop attempting to scroll
 	static String lastScrolledElement = null;
+
+	// controls how much of the list to scroll on each "swipe"
 	private static ScrollFactor baseScrollFactor = ScrollFactor.MEDIUM;
 
     /**
@@ -47,6 +52,36 @@ public class Scroll {
      */
 	public static void initialize(ScrollFactor scrollFactor) {
 		baseScrollFactor = scrollFactor;
+	}
+
+	/**
+	 * Scrolls through a list of a specific collection of elements on the screen, attempting to find the element at the
+	 * given index.
+	 *
+	 * @param elementId identifier of the collection of text elements to scroll (Accessibility id/name for iOS and resource-id for Android).
+	 * @param index index for the element in the list to find. NOTE: This index starts at 1.
+	 * @param timeout delay in seconds between each scroll action.
+	 * @return Katalon Test Object that was found or null if not found.
+	 */
+	public static TestObject scrollListToElementAtIndex(String elementId, Integer index, Integer timeout) {
+
+		String xpath = "";
+
+		if (Device.isIOS()) {
+			xpath = XPathBuilder.createXPath("XCUIElementTypeStaticText");
+			// iOS lists may have all elements in them from the start, even if not visible
+			xpath = XPathBuilder.addVisible(xpath);
+		} else if (Device.isAndroid()) {
+			xpath = XPathBuilder.createXPath("TextView");
+		} else {
+			throw new UnsupportedOperationException("Device type is not supported.");
+		}
+
+		if (elementId != null) {
+			xpath = XPathBuilder.addResourceId(xpath, elementId);
+		}
+
+		return scrollListToElementAtIndex(xpath, index, ScrollFactor.MEDIUM, timeout);
 	}
 
 	/**
@@ -229,7 +264,45 @@ public class Scroll {
 		}
 		return isElementFound;
 	}
-	
+
+	private static TestObject scrollListToElementAtIndex(String xpath, Integer index, ScrollFactor scrollFactor, Integer timeout) {
+
+		final Set<String> runningList = new LinkedHashSet<>();
+
+		boolean isIndexFound = false;
+		TestObject elementAtIndex = null;
+		while (isIndexFound == false) {
+			try {
+				Logger.debug("Checking scroll list for index: " + index);
+				AppiumDriver<?> driver = MobileDriverFactory.getDriver();
+
+				driver.findElementsByXPath(xpath).forEach(rwe->runningList.add(rwe.getText()));
+				Logger.debug("Running List so far: " + runningList);
+				if (runningList.size() >= index) {
+					isIndexFound = true;
+					String textAtIndex = runningList.toArray()[index - 1].toString(); // arrays are 0 based
+					Logger.debug("Found element at index: " + index + " : " + textAtIndex);
+
+					// reset the last scrolled element for the next time we do scrolling
+					lastScrolledElement = null;
+
+					// return the found element at index, since the full list and index aren't available in the calling test
+					// need to look up the found element by text (or we could keep track of the elements in a hash by text)
+					String xpathWithLabel = XPathBuilder.addLabel(xpath, textAtIndex);
+					elementAtIndex = TestObjectConverter.fromElement((RemoteWebElement)driver.findElementByXPath(xpathWithLabel));
+
+				} else {
+					scrollEntireList(xpath, null, scrollFactor, ScrollDirection.DOWN, timeout);
+				}
+			} catch (WebDriverException ex) {
+				// In this case, we're using the WebDriverException to trigger the scroll event, so it's ok that it occurs.
+				Logger.debug("Didn't find any matching elements yet.");
+				scrollEntireList(xpath, null, scrollFactor, ScrollDirection.DOWN, timeout);
+			}
+		}
+		return elementAtIndex;
+	}
+
 	private static void scrollEntireList(String xpath, String elementText, ScrollFactor scrollFactor, ScrollDirection scrollDirection, Integer timeout) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 			

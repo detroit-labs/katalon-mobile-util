@@ -25,7 +25,7 @@ class XPathBuilderTest {
 	}
 	
 	@Before
-	public void beforeEach() throws Exception {
+	public void beforeEach() {
 		PowerMockito.when(Device.isIOS()).thenReturn(true);
 	}
 
@@ -177,6 +177,14 @@ class XPathBuilderTest {
 		PowerMockito.when(Device.isIOS()).thenReturn(false);
 		xpath = "//*[contains(@class, 'Spinner')]";
 		assertEquals(xpath + "/*[contains(@class, 'TextView')]", XPathBuilder.addChildWithType(xpath, "TextView"));
-	}	
+	}
+
+	@Test
+	@DisplayName("adding an index to an xpath creates an xpath with the index appended")
+	public void addingAnIndexToAnXPath_returnsAnXPathWithTheIndex() {
+		Integer index = 3;
+		String xpath = "//*[@type='XCUIElementTypeOther']";
+		assertEquals("(" + xpath + ")[" + index + "]", XPathBuilder.addIndex(xpath, 3));
+	}
 
 }

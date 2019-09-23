@@ -139,7 +139,19 @@ public class XPathBuilder {
 		}
 		
 		return newXPath;
-	}	
+	}
+
+	/**
+	 * Adds an index qualifier to an existing xpath
+	 * @param xpath - existing xpath
+	 * @param index - index to look for. NOTE: xpath indexes start at 1.
+	 * @return new xpath with index appended
+	 */
+	public static String addIndex(String xpath, Integer index) {
+		String newXPath = xpath;
+		newXPath = "(" + xpath + ")[" + index + "]";
+		return newXPath;
+	}
 	
 	private static String textXPath(String labelText) {
 		// xpath 1 doesn't have a way to ignore case, so we need to force-lowercase both strings
