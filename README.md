@@ -15,8 +15,12 @@
     - [TestObjects](#testobjects)
       - [Organization](#organization)
       - [How to use TestObject Finder](#how-to-use-testobject-finder)
-      - [Finding a Label from a List by Index](#finding-a-label-from-a-list-by-index)
+      - [Finding an Element from a List by Index](#finding-an-element-from-a-list-by-index)
+        - [Generic iOS TestObject](#generic-ios-testobject)
+        - [Generic Android TestObject](#generic-android-testobject)
       - [Finding a Label from a List by the Label Text](#finding-a-label-from-a-list-by-the-label-text)
+        - [Generic iOS TestObject](#generic-ios-testobject-1)
+        - [Generic Android TestObject](#generic-android-testobject-1)
       - [Finding a Checkbox in a List by the Checkbox Text](#finding-a-checkbox-in-a-list-by-the-checkbox-text)
       - [Converting from Selenium WebElements to Katalon TestObjects](#converting-from-selenium-webelements-to-katalon-testobjects)
     - [Button](#button)
@@ -27,6 +31,8 @@
     - [Scrolling](#scrolling)
       - [How to use Scroll](#how-to-use-scroll)
       - [Scrolling more or less distance with ScrollFactor](#scrolling-more-or-less-distance-with-scrollfactor)
+      - [Scrolling up or down in a list with ScrollDirection](#scrolling-up-or-down-in-a-list-with-scrolldirection)
+      - [Scrolling to a specific index in a list](#scrolling-to-a-specific-index-in-a-list)
     - [Swiping](#swiping)
       - [How to use Swipe](#how-to-use-swipe)
     - [Logging](#logging)
@@ -233,10 +239,10 @@ the `type` and `name` for iOS (or `class` and `resource-id` for Android).
 TIP: You should leave off the `label` or `text` properties in order to keep the Label generic to 
 represent the whole collection of elements.
 
-##### Generic iOS Test Object
+##### Generic iOS TestObject
 ![Generic iOS Label](/../screenshots/img/generic_label_ios.png?raw=true "Generic iOS Label")
 
-##### Generic Android Test Object
+##### Generic Android TestObject
 ![Generic Android Label](/../screenshots/img/generic_label_android.png?raw=true "Generic Android Label")
 
 Then provide an index for which element in the list you want to find (indexes start at 1):
@@ -260,10 +266,10 @@ You should leave off the `label` or `text` properties in order to keep the Label
  represent the whole collection of labels. 
 
 
-##### Generic iOS Test Object
+##### Generic iOS TestObject
 ![Generic iOS Label](/../screenshots/img/generic_label_ios.png?raw=true "Generic iOS Label")
 
-##### Generic Android Test Object
+##### Generic Android TestObject
 ![Generic Android Label](/../screenshots/img/generic_label_android.png?raw=true "Generic Android Label")
 
 Then provide the text for the specific label you want to find:
@@ -442,6 +448,7 @@ Add these imports statement to your test file:
 
 ```
 import com.detroitlabs.katalonmobileutil.touch.Scroll
+import com.detroitlabs.katalonmobileutil.touch.Scroll.ScrollDirection
 import com.detroitlabs.katalonmobileutil.touch.Scroll.ScrollFactor
 ```
 
@@ -454,7 +461,8 @@ Scroll list of all `XCUIElementTypeStaticText` (for iOS) or `*TextView` (for And
 
 Where `timeout` is the delay between "swipes" when scrolling.
 
-Scroll specific list of elements with the `accessibility id` (for iOS) or `resource-id` (for Android) until you get to the given text. In this case, all of the elements in the collection should have the same ids, e.g. `state_label`:
+Scroll specific list of elements with the `accessibility id` (for iOS) or `resource-id` (for Android) until you get to the given text. 
+In this case, all of the elements in the collection should have the same ids, e.g. `state_label`:
 
  ```
  Scroll.scrollListToElementWithText('state_label', 'Michigan', timeout)
@@ -487,10 +495,10 @@ Scroll.scrollListToElementWithText('Michigan', ScrollFactor.LARGE, timeout)
 The following `ScrollFactors` are available:
 
 ```
-ScrollFactor.SMALL   // Scrolls roughtly 25% of the scroll area on each swipe
-ScrollFactor.MEDIUM  // Scrolls roughtly 50% of the scroll area on each swipe
-ScrollFactor.LARGE   // Scrolls roughtly 75% of the scroll area on each swipe
-ScrollFactor.XLARGE  // Scrolls roughtly 100% of the scroll area on each swipe
+ScrollFactor.SMALL   // Scrolls roughly 25% of the scroll area on each swipe
+ScrollFactor.MEDIUM  // Scrolls roughly 50% of the scroll area on each swipe
+ScrollFactor.LARGE   // Scrolls roughly 75% of the scroll area on each swipe
+ScrollFactor.XLARGE  // Scrolls roughly 100% of the scroll area on each swipe
 ```
 
 `ScrollFactor` is an optional parameter (it defaults to `ScrollFactor.MEDIUM`).
@@ -502,6 +510,40 @@ Scroll.initialize(ScrollFactor.SMALL)
 ```
 
 All subsequent calls to `Scroll` functions during the test that don't provide a ScrollFactor will use the set `ScrollFactor`.
+
+#### Scrolling up or down in a list with ScrollDirection
+
+By default, when searching for an element in a list, the list is scrolled _downward_. There are times when your test
+may need to scroll the list _upward_. This can be controlled with `ScrollDirection`:
+
+```
+Scroll.scrollListToElementWithText​('state_label', 'Michigan', ScrollFactor.MEDIUM,  ScrollDirection.UP, timeout)
+```
+
+The following `ScrollDirections` are available:
+
+```
+ScrollDirection.DOWN   // Scrolls the list toward the bottom
+ScrollDirection.UP     // Scrolls the list toward the top
+```
+
+`ScrollDirection` is an optional parameter (it defaults to `ScrollDirection.DOWN`).
+
+#### Scrolling to a specific index in a list
+
+There are times when the text of the elements in a list won't be known, so the test must scroll to a specific index:
+
+```
+int index = 4
+int timeout = 1
+TestObject elementAtIndex = Scroll.scrollListToElementAtIndex​('state_label', index, timeout)
+``` 
+
+Where `index` is the location of the desired element in the list. Unlike `scrollListToElementWithText`, this function will
+return a TestObject of the element at that index (if it is found). The TestObject can then be inspected to get the text.
+
+**NOTE:** The list starts at index 1, not 0. 
+
 
 ### Swiping
 
