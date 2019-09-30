@@ -103,7 +103,7 @@ public class TextField {
 	 * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
 	 */
 	public static void selectOption(TestObject field, String pickerChoice, Integer timeout) throws NoSuchPickerChoiceException {
-		List<String> pickerChoices = new ArrayList<String>();
+		List<String> pickerChoices = new ArrayList<>();
 		pickerChoices.add(pickerChoice);
 		// Assume that the picker choice is also the string that will be used to validate the selection.
 		TextField.selectOption(field, pickerChoices, pickerChoice, timeout);
@@ -119,7 +119,7 @@ public class TextField {
 	 * @throws NoSuchPickerChoiceException when no matching picker options were found for the requested choice.
 	 */
 	public static void selectOption(TestObject field, String pickerChoice, String expectedFieldValue, Integer timeout) throws NoSuchPickerChoiceException {
-		List<String> pickerChoices = new ArrayList<String>();
+		List<String> pickerChoices = new ArrayList<>();
 		pickerChoices.add(pickerChoice);
 		TextField.selectOption(field, pickerChoices, expectedFieldValue, timeout);
 	}	
@@ -161,7 +161,7 @@ public class TextField {
 		}
 		
 		// Find the SELECT, DONE, or OK button on the picker wheel and tap it, applying the value to the field
-		TextField.tapButtonWithText(Arrays.asList("OK", "SELECT", "Select", "DONE", "Done"));
+		TextField.tapKeyboardToolbarButtonWithText(Arrays.asList("OK", "SELECT", "Select", "DONE", "Done"));
 		
 		// It is possible to try to set the text of a field to something not in the picker list, in which case it fails silently.
 		// We need to verify that the selection was made correctly, or throw an exception.
@@ -176,7 +176,7 @@ public class TextField {
 	}
 	
 	private static String getPickerValue(TestObject field, Integer timeout) {
-		String pickerValue = null;
+		String pickerValue;
 		if (Device.isIOS()) {
 			pickerValue = MobileBuiltInKeywords.getText(field, timeout);
 		} else {
@@ -209,7 +209,7 @@ public class TextField {
 		// TODO: Check if keyboard is open?
 		if (Device.isIOS()) {
 			// For iOS, look at the buttons and find one that matches "Next", but there can be a few variations
-			tapButtonWithText(Arrays.asList("NEXT", "Next", ">"));
+			tapKeyboardToolbarButtonWithText(Arrays.asList("NEXT", "Next", ">"));
 		} else {
 			// For Android, we can use the Tab key
 			AndroidDriver<?> driver = (AndroidDriver<?>) MobileDriverFactory.getDriver();
@@ -218,12 +218,12 @@ public class TextField {
 	}
 	
 	public static void hideKeyboard() {
-		AppiumDriver<?> driver = (AppiumDriver<?>) MobileDriverFactory.getDriver();
+		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 		if (driver.getKeyboard() != null) {
 			if (Device.isIOS()) {
 				// The hideKeyboard function often crashes in iOS.
 				// Find the DONE button on the keyboard toolbar and tap it, closing the keyboard
-				tapButtonWithText(Arrays.asList("DONE", "Done"));
+				tapKeyboardToolbarButtonWithText(Arrays.asList("DONE", "Done"));
 			} else {
 				// Android's hideKeyboard seems more reliable.
 				driver.hideKeyboard();
@@ -234,23 +234,18 @@ public class TextField {
 		
 	}
 	
-	private static void tapButtonWithText(List<String> names) {
+	private static void tapKeyboardToolbarButtonWithText(List<String> names) {
+		String xpathForButton;
 		if (Device.isIOS()) {
-			tapButtonWithText(names, "XCUIElementTypeButton", "name");
+			String xpathForKeyboardToolbar = XPathBuilder.createXPath("XCUIElementTypeToolbar");
+			String xpathForButtonOnly = XPathBuilder.xpathWithPossibleListOfValues("XCUIElementTypeButton", "label", names);
+			xpathForButton = XPathBuilder.addChildXPath(xpathForKeyboardToolbar, xpathForButtonOnly);
 		} else {
-			tapButtonWithText(names, "android.widget.Button", "text");
+			xpathForButton = XPathBuilder.xpathWithPossibleListOfValues("android.widget.Button", "text", names);
 		}
-	}
-	
-	private static void tapButtonWithText(List<String>names, String objectClass, String objectProperty) {
+
 		TestObject button = new TestObject();
-		// Xpath 1 (used by Selenium) doesn't have matches, so this is a substitute
-		StringBuilder sb = new StringBuilder();
-		sb.append("@").append(objectProperty).append("='").append(names.get(0)).append("'");
-		for (int i=1; i<names.size(); i++) {
-			sb.append(" or @").append(objectProperty).append("='").append(names.get(i)).append("'");
-		}
-		button.addProperty("xpath", ConditionType.EQUALS, "//" + objectClass + "[" + sb.toString() + "]");
+		button.addProperty("xpath", ConditionType.EQUALS, xpathForButton);
 		Logger.debug("Tapping the button to close the keyboard or picker:");
 		Logger.printTestObject(button, LogLevel.DEBUG);
 		MobileBuiltInKeywords.tap(button, 1, FailureHandling.OPTIONAL);

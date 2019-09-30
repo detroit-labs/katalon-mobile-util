@@ -187,4 +187,20 @@ class XPathBuilderTest {
 		assertEquals("(" + xpath + ")[" + index + "]", XPathBuilder.addIndex(xpath, 3));
 	}
 
+	@Test
+	@DisplayName("adding a child xpath to an existing xpath creates a hierarchical xpath of parent/child")
+	public void addingAChildXPathCreatesANewXpath() {
+		String parent = "//*[@type='XCUIElementTypeToolbar']";
+		String child = "//*[@type='XCUIElementTypeButton']";
+		assertEquals(parent + child, XPathBuilder.addChildXPath(parent, child));
+	}
+
+	@Test
+	@DisplayName("creating an xpath with a list of possible values for an object returns an xpath")
+	public void creatingAnXPathWithAListOfPossibleValuesReturnsANewXPath() {
+		String objectType = "XCUIElementTypeButton";
+		String objectProperty = "label";
+		List<String> values = Arrays.asList("a", "b");
+		assertEquals("//*[@type='XCUIElementTypeButton' and (@label='a' or @label='b')]", XPathBuilder.xpathWithPossibleListOfValues(objectType, objectProperty, values));
+	}
 }

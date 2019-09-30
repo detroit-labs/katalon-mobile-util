@@ -142,15 +142,42 @@ public class XPathBuilder {
 	}
 
 	/**
+	 * Combines two existing paths to form a hierarchical xpath
+	 * @param parent - parent xpath
+	 * @param child - child xpath
+	 * @return new xpath with the parent/child relationship
+	 */
+	public static String addChildXPath(String parent, String child) {
+		String newXPath = parent + child;
+		return newXPath;
+	}
+
+	/**
 	 * Adds an index qualifier to an existing xpath
 	 * @param xpath - existing xpath
 	 * @param index - index to look for. NOTE: xpath indexes start at 1.
 	 * @return new xpath with index appended
 	 */
 	public static String addIndex(String xpath, Integer index) {
-		String newXPath = xpath;
-		newXPath = "(" + xpath + ")[" + index + "]";
+		String newXPath = "(" + xpath + ")[" + index + "]";
 		return newXPath;
+	}
+
+	/**
+	 * Creates an xpath that allows for a property to have optional values
+	 * @param objectType - the class or type of object
+	 * @param objectProperty - the property to check on the object
+	 * @param values - the possible values to look for
+	 * @return new xpath with the included optional values
+	 */
+	public static String xpathWithPossibleListOfValues(String objectType, String objectProperty, List<String>values) {
+		// Xpath 1 (used by Selenium) doesn't have matches, so this is a substitute
+		StringBuilder sb = new StringBuilder();
+		sb.append("@").append(objectProperty).append("='").append(values.get(0)).append("'");
+		for (int i=1; i<values.size(); i++) {
+			sb.append(" or @").append(objectProperty).append("='").append(values.get(i)).append("'");
+		}
+		return "//*[@type='" + objectType + "' and (" + sb.toString() + ")]";
 	}
 	
 	private static String textXPath(String labelText) {
