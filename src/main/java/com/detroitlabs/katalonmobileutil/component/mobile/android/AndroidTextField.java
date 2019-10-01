@@ -19,7 +19,6 @@ import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import org.openqa.selenium.NoSuchElementException;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -155,9 +154,6 @@ public class AndroidTextField extends AndroidComponent implements MobileTextFiel
             selectOptionFromPicker(i, pickerChoices.get(i), timeout);
         }
 
-        // Find the SELECT, DONE, or OK button on the picker wheel and tap it, applying the value to the field
-        tapButtonWithText(Arrays.asList("OK", "SELECT", "Select", "DONE", "Done"));
-
         // It is possible to try to set the text of a field to something not in the picker list, in which case it fails silently.
         // We need to verify that the selection was made correctly, or throw an exception.
 
@@ -169,4 +165,11 @@ public class AndroidTextField extends AndroidComponent implements MobileTextFiel
         }
 
     }
+
+    @Override
+    public boolean isKeyboardShowing() {
+        AndroidDriver<?> driver = (AndroidDriver<?>)MobileDriverFactory.getDriver();
+        return driver.isKeyboardShown();
+    }
+
 }

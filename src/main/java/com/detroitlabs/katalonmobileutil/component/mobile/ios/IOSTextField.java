@@ -1,13 +1,18 @@
 package com.detroitlabs.katalonmobileutil.component.mobile.ios;
 
 import com.detroitlabs.katalonmobileutil.component.mobile.MobileTextField;
+import com.detroitlabs.katalonmobileutil.device.Device;
 import com.detroitlabs.katalonmobileutil.exception.NoSuchPickerChoiceException;
 import com.detroitlabs.katalonmobileutil.logging.Logger;
+import com.detroitlabs.katalonmobileutil.testobject.XPathBuilder;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.mobile.keyword.internal.MobileDriverFactory;
+import com.kms.katalon.core.model.FailureHandling;
 import com.kms.katalon.core.testobject.ConditionType;
 import com.kms.katalon.core.testobject.TestObject;
-import io.appium.java_client.AppiumDriver;
+import com.kms.katalon.core.util.KeywordUtil;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.HideKeyboardStrategy;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +24,32 @@ public class IOSTextField extends IOSComponent implements MobileTextField {
 
     public IOSTextField(TestObject textField) {
         super(textField);
+    }
+
+    public enum IOSReturnKey {
+        RETURN("return"),
+        GO("Go"),
+        GOOGLE("Google"),
+        JOIN("Join"),
+        NEXT("Next"),
+        ROUTE("Route"),
+        SEARCH("Search"),
+        SEND("Send"),
+        YAHOO("Yahoo"),
+        DONE("Done"),
+        EMERGENCY_CALL("Emergency Call"),
+        CONTINUE("Continue");
+
+        private String name;
+
+        IOSReturnKey(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
     }
 
     @Override
@@ -56,15 +87,74 @@ public class IOSTextField extends IOSComponent implements MobileTextField {
     }
 
     @Override
+    /**
+     * Hide the keyboard using a variety of methods. Will continue if it is unsuccessful.
+     * Starts with trying to use the Done button on the keyboard toolbar.
+     * Then attempts all of the possible return key values in iOS (https://developer.apple.com/documentation/uikit/uireturnkeytype)
+     * Then attempts to tap outside of the keyboard.
+     */
     public void hideKeyboard() {
-        AppiumDriver<?> driver = MobileDriverFactory.getDriver();
-        if (driver.getKeyboard() != null) {
+        IOSDriver<?> driver = (IOSDriver<?>)MobileDriverFactory.getDriver();
+        if (isKeyboardShowing()) {
             // The hideKeyboard function often crashes in iOS.
             // Find the DONE button on the keyboard toolbar and tap it, closing the keyboard
-            tapButtonWithText(Arrays.asList("DONE", "Done"));
+            Logger.debug("Trying to close the keyboard by tapping the Done button in the keyboard toolbar.");
+            tapKeyboardToolbarButtonWithText(Arrays.asList("DONE", "Done"));
+            MobileBuiltInKeywords.delay(1);
+            Logger.debug("driver keyboard: " + isKeyboardShowing());
+
+            // If the Done button didn't work, try to close the keyboard using one of the predefined return keys
+            // supported by iOS keyboards.
+            if (isKeyboardShowing()) {
+                for (IOSTextField.IOSReturnKey returnKey : IOSTextField.IOSReturnKey.values()) {
+                    submitForm(returnKey);
+                    if (!isKeyboardShowing()) break;
+                }
+            }
+
+            // If the keyboard buttons didn't work, try tapping outside the keyboard
+            if (isKeyboardShowing()) {
+                Logger.debug("Trying to close the keyboard by tapping outside.");
+                driver.hideKeyboard(HideKeyboardStrategy.TAP_OUTSIDE);
+            }
+
+            if (isKeyboardShowing()) {
+                Logger.warn("Could not find a way to close the keyboard.");
+                KeywordUtil.markWarning("Could not find a way to close the keyboard.");
+            } else {
+                Logger.debug("Keyboard successfully hidden.");
+            }
         } else {
             Logger.debug("Keyboard is already hidden.");
         }
+    }
+
+    public void tapKeyboardToolbarButtonWithText(List<String> names) {
+        String xpathForButton;
+        if (Device.isIOS()) {
+            String xpathForKeyboardToolbar = XPathBuilder.createXPath("XCUIElementTypeToolbar");
+            String xpathForButtonOnly = XPathBuilder.xpathWithPossibleListOfValues("XCUIElementTypeButton", "label", names);
+            xpathForButton = XPathBuilder.addChildXPath(xpathForKeyboardToolbar, xpathForButtonOnly);
+        } else {
+            xpathForButton = XPathBuilder.xpathWithPossibleListOfValues("android.widget.Button", "text", names);
+        }
+
+        TestObject button = new TestObject();
+        button.addProperty("xpath", ConditionType.EQUALS, xpathForButton);
+        Logger.debug("Tapping the button to close the keyboard or picker:");
+        Logger.printTestObject(button, Logger.LogLevel.DEBUG);
+        MobileBuiltInKeywords.tap(button, 1, FailureHandling.OPTIONAL);
+    }
+
+    /**
+     * Submits the form given a specific iOS keyboard key.
+     * Note: This is largely influenced by how the keyboard in the application is implemented; it might do nothing.
+     * @param key - one of the predefined key iOS return key values
+     */
+    public void submitForm(IOSReturnKey key) {
+        IOSDriver<?> driver = (IOSDriver<?>)MobileDriverFactory.getDriver();
+        Logger.debug("Trying to close the keyboard with: " + key.getName());
+        driver.hideKeyboard(HideKeyboardStrategy.PRESS_KEY, key.getName());
     }
 
     @Override
@@ -103,5 +193,16 @@ public class IOSTextField extends IOSComponent implements MobileTextField {
             throw (new NoSuchPickerChoiceException(pickerChoices));
         }
 
+    }
+
+    @Override
+    public boolean isKeyboardShowing() {
+        IOSDriver<?> driver = (IOSDriver<?>)MobileDriverFactory.getDriver();
+        try {
+            driver.findElementByClassName("XCUIElementTypeKeyboard");
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

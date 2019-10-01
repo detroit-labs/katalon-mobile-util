@@ -21,13 +21,15 @@ public interface MobileTextField extends TextField {
 
     void selectOptionFromPicker(int pickerIndex, String pickerChoice, int timeout);
 
-    void selectOption(List<String> pickerChoice, String expectedFieldValue, Integer timeout) throws NoSuchPickerChoiceException;
+    void selectOption(List<String> pickerChoices, String expectedFieldValue, Integer timeout) throws NoSuchPickerChoiceException;
 
     String getPickerValue(Integer timeout);
 
     void tapButtonWithText(List<String> names);
 
     void clearText(Integer timeout, TestObject clearButton);
+
+    boolean isKeyboardShowing();
 
     @Override
     default void clearText() {
