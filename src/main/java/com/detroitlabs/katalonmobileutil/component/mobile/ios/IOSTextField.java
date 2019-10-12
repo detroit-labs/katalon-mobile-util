@@ -52,6 +52,11 @@ public class IOSTextField extends IOSComponent implements MobileTextField {
 
     }
 
+    /**
+     * Clear exising text in the TextField
+     * @param timeout Seconds to wait before throwing an error.
+     * @param clearButton Unused in iOS. Pass null to parameter.
+     */
     @Override
     public void clearText(Integer timeout, TestObject clearButton) {
         // iOS identifies the text fields directly with accessibilityIds.
@@ -59,6 +64,11 @@ public class IOSTextField extends IOSComponent implements MobileTextField {
         MobileBuiltInKeywords.clearText(testObject, timeout);
     }
 
+    /**
+     * Type text into the TextField
+     * @param text String to set in the field.
+     * @param timeout seconds to wait before throwing an error.
+     */
     @Override
     public void typeText(String text, Integer timeout) {
         // iOS identifies the text fields directly with accessibilityIds.

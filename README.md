@@ -360,7 +360,9 @@ Button.tap('OK button', timeout, FailureHandling.OPTIONAL)
 
 ### TextField
 
-iOS and Android text fields are represented differently within the structure of a screen. iOS text fields are often directly accessible as `XCUIElementTypeTextField` with an `accessibility id` or (`name` as it is referred to in Katalon Studio `TestObjects`). We can interact with these fields using Katalon's `MobileBuiltInKeywords` class:
+iOS and Android text fields are represented differently within the structure of a screen. 
+iOS text fields are often directly accessible as `XCUIElementTypeTextField` with an `accessibility id` or (`name` as it is referred to in Katalon Studio `TestObjects`). 
+We can interact with these fields using Katalon's `MobileBuiltInKeywords` class:
 
 ```
 MobileBuiltInKeywords.setText(textFieldObject, 'Text to set', timeout)
