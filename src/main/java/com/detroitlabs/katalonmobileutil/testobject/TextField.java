@@ -1,7 +1,6 @@
 package com.detroitlabs.katalonmobileutil.testobject;
 
 import com.detroitlabs.katalonmobileutil.component.mobile.MobileComponent;
-import com.detroitlabs.katalonmobileutil.component.mobile.MobileTextField;
 import com.detroitlabs.katalonmobileutil.component.mobile.android.AndroidTextField;
 import com.detroitlabs.katalonmobileutil.component.mobile.ios.IOSTextField;
 import com.detroitlabs.katalonmobileutil.component.web.WebTextField;
@@ -9,7 +8,6 @@ import com.detroitlabs.katalonmobileutil.device.Device;
 import com.detroitlabs.katalonmobileutil.exception.NoSuchPickerChoiceException;
 import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords;
 import com.kms.katalon.core.testobject.TestObject;
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.util.ArrayList;
@@ -20,6 +18,10 @@ public class TextField {
 
     private com.detroitlabs.katalonmobileutil.component.TextField textField;
     private TestObject testObject;
+
+    public TextField(String testObjectName) {
+    	this(Finder.findTextField(testObjectName));
+	}
 
     public TextField(TestObject testObject) {
     	this.testObject = testObject;

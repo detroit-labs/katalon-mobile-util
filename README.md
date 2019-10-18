@@ -390,18 +390,18 @@ Clear and set the text field:
 
 ```
 int timeout = 10
-TestObject streetAddress = Finder.findTextField('Street address form field')
-TextField.clearText(streetAddress, timeout, clearButton)
-TextField.typeText(streetAddress, '123 My Street', timeout)
+TextField streetAddressTextField = new TextField('Street address form field')
+streetAddressTextField.clearText(timeout, clearButton)
+streetAddressTextField.typeText('123 My Street', timeout)
 ```
 
 For iOS, using a clear button is unnecessary, so it can be omitted from the call:
 
 ```
 int timeout = 10
-TestObject streetAddress = Finder.findTextField('Street address form field')
-TextField.clearText(streetAddress, timeout)
-TextField.typeText(streetAddress, '123 My Street', timeout)
+TextField streetAddressTextField = new TextField('Street address form field')
+streetAddressTextField.clearText(timeout)
+streetAddressTextField.typeText('123 My Street', timeout)
 ```
 
 #### Using a TextField with a Picker list
@@ -412,14 +412,16 @@ To fill in a TextField by selecting its value from a list, e.g. selecting "Michi
 
 ```
 int timeout = 10
-TestObject stateField = Finder.findTextField('State form field')
-TextField.selectOption(stateField, 'Michigan', timeout)
+TextField stateField = new TextField('State form field')
+stateField.selectOption('Michigan', timeout)
 ```
 
 To fill in a TextField that is built from multiple values, e.g. a multi-part date, provide a value for each part of the picker. Date picker selections often get transformed when displayed in the form, so we also provide the expected value of the field when the picker selections are made. If the values don't match, the test will fail.
 
 ```
-TextField.selectOption(expirationDateField, ['September', '12', '2018'], '9/12/2018', timeout)
+int timeout = 10
+TextField expirationDateField = new TextField('Expiration date field')
+expirationDateField.selectOption(['September', '12', '2018'], '9/12/2018', timeout)
 ```
 
 #### Keyboard Handling
