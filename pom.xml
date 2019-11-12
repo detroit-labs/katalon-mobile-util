@@ -5,7 +5,7 @@
 
 	<groupId>com.detroitlabs</groupId>
 	<artifactId>katalon-mobile-util</artifactId>
-	<version>1.13.1</version>
+	<version>1.14.0</version>
 	<packaging>jar</packaging>
 
 	<name>katalon-mobile-util</name>
@@ -16,7 +16,7 @@
 		<!-- Change this to point to your project's /Drivers directory -->
 		<project.target.katalon.directory>/My-Project/Drivers</project.target.katalon.directory>
 		<!-- Change this to your Katalon Studio plugins version -->
-		<project.target.katalon.version>1.0.0.201906110939</project.target.katalon.version>
+		<project.target.katalon.version>1.0.0.201911010937</project.target.katalon.version>
 	</properties>
 
 	<build>

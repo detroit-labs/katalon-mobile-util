@@ -51,7 +51,7 @@ For detailed usage, view the [Javadocs](https://detroit-labs.github.io/katalon-m
 
 To use this **katalon-mobile-util** library in Katalon Studio tests, it is not required that you build from source.
 
-Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.13.1/katalon-mobile-util-1.13.1.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
+Place the [release artifact jar](https://github.com/detroit-labs/katalon-mobile-util/releases/download/1.14.0/katalon-mobile-util-1.14.0.jar) into your Katalon test project's `/Drivers` directory, or follow the Katalon Studio instructions: [How to import external library into your automation project](https://www.katalon.com/resources-center/tutorials/import-java-library/).
 
 After installation, make sure you restart Katalon Studio for the library to be loaded correctly.
 
@@ -61,7 +61,7 @@ Although not required, you may build the **katalon-mobile-util** library from so
 
 ### Prerequisites
 
-This library requires [Katalon Studio version 6.2.0](https://www.katalon.com/) to be installed.
+This library requires [Katalon Studio version 7.x](https://www.katalon.com/) to be installed.
 
 Building from source requires [Apache Maven](https://maven.apache.org/).
 

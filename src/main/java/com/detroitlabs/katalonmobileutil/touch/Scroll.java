@@ -61,7 +61,7 @@ public class Scroll {
 	 * @param timeout delay in seconds between each scroll action.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToElementWithText(String elementText, Integer timeout) {
+	public static boolean scrollListToElementWithText(String elementText, Number timeout) {
 		return scrollListToElementWithText(elementText, baseScrollFactor, timeout);
 	}
 
@@ -81,7 +81,7 @@ public class Scroll {
 	 * @param timeout delay in seconds between each scroll action.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToElementWithText(String elementText, ScrollFactor scrollFactor, Integer timeout) {
+	public static boolean scrollListToElementWithText(String elementText, ScrollFactor scrollFactor, Number timeout) {
 		if (Device.isIOS() || Device.isAndroid()) {
 			return scrollListToElementWithText(null, elementText, scrollFactor, timeout);
 		}
@@ -98,7 +98,7 @@ public class Scroll {
 	 * @param timeout delay in seconds between each scroll action.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToElementWithText(String elementId, String elementText, Integer timeout) {
+	public static boolean scrollListToElementWithText(String elementId, String elementText, Number timeout) {
 		return scrollListToElementWithText(elementId, elementText, baseScrollFactor, timeout);
 	}
 
@@ -111,7 +111,7 @@ public class Scroll {
 	 * @param timeout delay in seconds between each scroll action.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToElementWithText(String elementId, String elementText, ScrollFactor scrollFactor, Integer timeout) {
+	public static boolean scrollListToElementWithText(String elementId, String elementText, ScrollFactor scrollFactor, Number timeout) {
 		String xpath = "";
 
 		if (Device.isIOS()) {
@@ -142,7 +142,7 @@ public class Scroll {
 	 * @param timeout delay in seconds between each scroll action. 
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToCheckboxWithText(String elementText, Integer timeout) {
+	public static boolean scrollListToCheckboxWithText(String elementText, Number timeout) {
 		return scrollListToCheckboxWithText(elementText, baseScrollFactor, timeout);
 	}
 
@@ -157,7 +157,7 @@ public class Scroll {
 	 * @param timeout delay in seconds between each scroll action.
 	 * @return true if the text was found.
 	 */
-	public static boolean scrollListToCheckboxWithText(String elementText, ScrollFactor scrollFactor, Integer timeout) {
+	public static boolean scrollListToCheckboxWithText(String elementText, ScrollFactor scrollFactor, Number timeout) {
 		String xpath = "";
 
 		if (Device.isIOS()) {
@@ -174,7 +174,7 @@ public class Scroll {
 		return scrollListToElementWithXPath(xpath, elementText, scrollFactor, timeout);
 	}
 
-	private static boolean scrollListToElementWithXPath(String xpath, String elementText, ScrollFactor scrollFactor, Integer timeout) {
+	private static boolean scrollListToElementWithXPath(String xpath, String elementText, ScrollFactor scrollFactor, Number timeout) {
 		boolean isElementFound = false;
 		while (isElementFound == false) {
 			try {
@@ -196,7 +196,7 @@ public class Scroll {
 		return isElementFound;
 	}
 	
-	private static void scrollEntireList(String xpath, String elementText, ScrollFactor scrollFactor, Integer timeout) {
+	private static void scrollEntireList(String xpath, String elementText, ScrollFactor scrollFactor, Number timeout) {
 		AppiumDriver<?> driver = MobileDriverFactory.getDriver();
 			
 		Logger.debug("Getting a scroll list of all elements.");
