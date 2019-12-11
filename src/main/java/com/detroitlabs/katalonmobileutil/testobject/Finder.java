@@ -2,6 +2,7 @@ package com.detroitlabs.katalonmobileutil.testobject;
 
 import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject;
 
+import com.detroitlabs.katalonmobileutil.device.Platform;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -20,6 +21,8 @@ public class Finder {
 	private static String androidRepository = "Android Objects";
 	private static String webRepository = "Web Objects";
 
+	private static Platform platform;
+
 	public static void setIOSRepository(String repository) {
 		iOSRepository = repository;
 	}
@@ -30,6 +33,11 @@ public class Finder {
 
 	public static void setWebRepository(String repository) {
 		webRepository = repository;
+	}
+
+	public static void setPlatform(Platform platformPref) {
+		platform = platformPref;
+		Logger.debug("Finder is now using platform: " + platform.getName());
 	}
 
 	public static TestObject findAlert(String name) {
@@ -318,14 +326,34 @@ public class Finder {
 
 	private static TestObject findObject(TestObjectType type, String name) {
 
-		String typeDirectory = "";
+		String typeDirectory;
+		String objectRepo;
 
-		String objectRepo = "";
-		if (Device.isWeb()) {
-			objectRepo = webRepository;
-		}
-		else {
-			objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
+		// First, check if the tester has set the platform for Finder directly
+		if (platform != null) {
+			Logger.debug("Finder is using user-specified platform: " + platform.getName() + " to find the Test Object named '" + name + "'");
+			switch (platform) {
+				case IOS:
+					objectRepo = iOSRepository;
+					break;
+				case ANDROID:
+					objectRepo = androidRepository;
+					break;
+				case WEB:
+					objectRepo = webRepository;
+					break;
+				default:
+					objectRepo = "";
+			}
+		} else {
+			// Fall back on checking the device's platform to set the test object location
+			Logger.debug("Finder is using device platform: " + Device.getDeviceOS() + " to find the Test Object named " + name + "'");
+			if (Device.isWeb()) {
+				objectRepo = webRepository;
+			}
+			else {
+				objectRepo = Device.isIOS() ? iOSRepository : androidRepository;
+			}
 		}
 
 		typeDirectory = type != null && type.getName() != null ? type.getName() + "/" : "";

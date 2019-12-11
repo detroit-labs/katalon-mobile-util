@@ -1,6 +1,7 @@
 package com.detroitlabs.katalonmobileutil.testobject;
 
 import com.detroitlabs.katalonmobileutil.device.Device;
+import com.detroitlabs.katalonmobileutil.device.Platform;
 import com.kms.katalon.core.logging.KeywordLogger;
 import com.kms.katalon.core.testobject.ObjectRepository;
 import com.kms.katalon.core.testobject.TestObject;
@@ -44,6 +45,15 @@ public class FinderTest {
     public void findingAGenericTestObject_callsFindTestObjectWithGenericPath() {
         PowerMockito.when(ObjectRepository.findTestObject("iOS Objects/Test Generic")).thenReturn(new TestObject());
         TestObject label = Finder.findGeneric("Test Generic");
+        assertNotNull(label);
+    }
+
+    @Test
+    @DisplayName("setting a device makes subsequent calls to findTestObject use that device's test object locations")
+    public void settingDevice_callsFindTestObjectWithPlatformPath() {
+        Finder.setPlatform(Platform.IOS);
+        PowerMockito.when(ObjectRepository.findTestObject("iOS Objects/Labels/Test Label")).thenReturn(new TestObject());
+        TestObject label = Finder.findLabel("Test Label");
         assertNotNull(label);
     }
 
