@@ -247,14 +247,29 @@ public class Scroll {
 		Point from = bottomElement.getLocation();
 		Point to = topElement.getLocation();
 
+		// It is possible that the detected element position is outside of the dimensions of the device
+		int maxScreenHeight = MobileBuiltInKeywords.getDeviceHeight();
+		if (from.y >= maxScreenHeight) {
+			// Start the scroll from the bottom of the screen, allowing for a buffer of the height of the element
+			from = new Point(from.x, maxScreenHeight - bottomElement.getSize().height);
+			Logger.debug("The detected element is outside of the device height. Resetting to: " + from.y);
+		}
+
 		// This simulates a swipe action, so releasing at the top of the screen will
 		// scroll the screen way further than we want. We may need to release the press
 		// further down the screen. Allowing the tester to set a scrollFactor will give them more control
 		// over how far the list scrolls.
 		int endY = from.y - (int)((from.y - to.y) * (double)scrollFactor.factor / 100.0);
 		Logger.debug("Scrolling from " + from.y + " to " + endY + " using scrollFactor " + scrollFactor);
-		touchAction.longPress(PointOption.point(from.x, from.y)).moveTo(PointOption.point(to.x, endY)).release().perform();
-		
+
+		try {
+			touchAction.longPress(PointOption.point(from.x, from.y)).moveTo(PointOption.point(to.x, endY)).release().perform();
+		} catch (Exception ex) {
+			Logger.debug("Encountered an exception when attempting to scroll: " + ex.getMessage());
+			Logger.debug("Attempting to Swipe instead.");
+			Swipe.swipe(Swipe.SwipeDirection.BOTTOM_TO_TOP);
+		}
+
 		// Sometimes need a delay after scrolling before checking for the element
 		MobileBuiltInKeywords.delay(timeout);
 		
