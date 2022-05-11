@@ -143,10 +143,10 @@ Determines the platform of the test device and allows for branching logic
 
 ```
 if (Device.isIOS()) {
-	println("This is an iOS device.")
+  println("This is an iOS device.")
 }
 if (Device.isAndroid()) {
-	println("This is an Android device.")
+  println("This is an Android device.")
 }
 ```
 
@@ -162,7 +162,7 @@ Device.stopApp(uninstallApp)
 
 #### Organization
 
-The basic elements of Katalon Studio tests are [TestObjects](https://docs.katalon.com/display/KD/Manage+Test+Object). These objects are stored in the Object Repository. To keep thing consistently organized, **katalon-mobile-util** assumes that the following structure will be used to store `TestObjects`:
+The basic elements of Katalon Studio tests are [TestObjects](https://docs.katalon.com/display/KD/Manage+Test+Object). These objects are stored in the Object Repository. To keep things consistently organized, **katalon-mobile-util** assumes that the following structure will be used to store `TestObjects`:
 
 ![Object Repository](/../screenshots/img/object_repository.png?raw=true "Object Repository")
 
@@ -487,10 +487,10 @@ Scroll.scrollListToElementWithText('Michigan', ScrollFactor.LARGE, timeout)
 The following `ScrollFactors` are available:
 
 ```
-ScrollFactor.SMALL   // Scrolls roughtly 25% of the scroll area on each swipe
-ScrollFactor.MEDIUM  // Scrolls roughtly 50% of the scroll area on each swipe
-ScrollFactor.LARGE   // Scrolls roughtly 75% of the scroll area on each swipe
-ScrollFactor.XLARGE  // Scrolls roughtly 100% of the scroll area on each swipe
+ScrollFactor.SMALL   // Scrolls roughly 25% of the scroll area on each swipe
+ScrollFactor.MEDIUM  // Scrolls roughly 50% of the scroll area on each swipe
+ScrollFactor.LARGE   // Scrolls roughly 75% of the scroll area on each swipe
+ScrollFactor.XLARGE  // Scrolls roughly 100% of the scroll area on each swipe
 ```
 
 `ScrollFactor` is an optional parameter (it defaults to `ScrollFactor.MEDIUM`).
